@@ -17,28 +17,29 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      transition: background-color 2s ease; /* 배경색 부드럽게 전환 */
     }
 
     /* =========================================
-       새로 추가된 '방송국 스튜디오' 배경 마법
+       수정됨: 스튜디오 배경이 까만 벽 '앞으로' 나오게 설정!
        ========================================= */
     #studioBackground {
       position: absolute;
       top: 0; left: 0; width: 100%; height: 100%;
-      /* 화려한 스튜디오 무대 이미지 */
-      background: url('https://images.unsplash.com/photo-1598550874175-4d0ef43ee90d?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
-      opacity: 0; /* 처음엔 투명하게 숨겨둠 */
-      z-index: -1;
-      transition: opacity 2s ease-in-out; /* 2초 동안 스르륵 나타남 */
+      /* 멋진 무대/조명 스튜디오 사진 */
+      background: url('https://images.unsplash.com/photo-1470229722913-7c092bce8566?q=80&w=1920&auto=format&fit=crop') no-repeat center center/cover;
+      opacity: 0; 
+      z-index: 1; /* 까만 배경보다 앞으로 나오게 숫자 1로 변경! */
+      transition: opacity 2s ease-in-out; 
     }
 
+    /* 안의 내용물들은 배경보다 더 앞에 있어야 하므로 숫자를 높여줍니다. */
     header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 30px 50px;
-      z-index: 10;
+      position: relative;
+      z-index: 10; 
     }
     .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
     .logo span { color: #fbbf24; }
@@ -63,7 +64,6 @@
       z-index: 10;
     }
 
-    /* 화면 전환 시 글씨를 부드럽게 숨기기 위한 설정 */
     .title {
       font-size: 6rem;
       font-weight: 900;
@@ -77,7 +77,7 @@
       position: relative;
       width: 500px;
       max-width: 90%;
-      transition: transform 1.5s ease; /* 검색창 이동 효과 */
+      transition: transform 1.5s ease; 
     }
     
     input {
@@ -171,10 +171,8 @@
         inputField.value = '';
         chatBox.innerHTML = ''; 
 
-        // '방송국'이라는 단어가 포함되어 있는지 확인!
         if(userText.includes('방송국')) {
           
-          // 1. Yin AI의 반응
           setTimeout(() => {
             const yinMessage = document.createElement('div');
             yinMessage.className = 'ai-message yin-msg';
@@ -182,24 +180,22 @@
             chatBox.appendChild(yinMessage);
           }, 500);
 
-          // 2. Yang AI의 반응 및 화면 전환 마법 실행!
           setTimeout(() => {
             const yangMessage = document.createElement('div');
             yangMessage.className = 'ai-message yang-msg';
             yangMessage.innerHTML = `<strong>Yang (실행):</strong> 메인 무대, 관객석, 진행 테이블 구조 분석 완료. 3D 스튜디오 룸 데이터를 로드합니다. 이동합니다! ⚡`;
             chatBox.appendChild(yangMessage);
 
-            // 화면 전환 애니메이션 (글씨 숨기고, 배경 켜기)
+            // 화면 전환 애니메이션 (이제 사진이 제대로 보입니다!)
             setTimeout(() => {
-              title.style.opacity = '0'; // CONNECT 글씨 스르륵 사라짐
-              background.style.opacity = '1'; // 숨겨둔 방송국 배경 스르륵 나타남
-              searchBox.style.transform = 'translateY(150px)'; // 검색창 살짝 아래로 이동
+              title.style.opacity = '0'; 
+              background.style.opacity = '1'; 
+              searchBox.style.transform = 'translateY(150px)'; 
             }, 1000);
 
           }, 2500);
 
         } else {
-          // 방송국이 아닌 다른 일반 대화를 쳤을 때
           setTimeout(() => {
             const yinMessage = document.createElement('div');
             yinMessage.className = 'ai-message yin-msg';
