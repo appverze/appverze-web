@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APPVERZE - CONNECT</title>
   <style>
-    /* 기본 럭셔리 라운지 배경 및 폰트 설정 */
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
     
     body {
@@ -18,6 +17,20 @@
       display: flex;
       flex-direction: column;
       overflow: hidden;
+      transition: background-color 2s ease; /* 배경색 부드럽게 전환 */
+    }
+
+    /* =========================================
+       새로 추가된 '방송국 스튜디오' 배경 마법
+       ========================================= */
+    #studioBackground {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      /* 화려한 스튜디오 무대 이미지 */
+      background: url('https://images.unsplash.com/photo-1598550874175-4d0ef43ee90d?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+      opacity: 0; /* 처음엔 투명하게 숨겨둠 */
+      z-index: -1;
+      transition: opacity 2s ease-in-out; /* 2초 동안 스르륵 나타남 */
     }
 
     header {
@@ -25,12 +38,9 @@
       justify-content: space-between;
       align-items: center;
       padding: 30px 50px;
+      z-index: 10;
     }
-    .logo {
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: 2px;
-    }
+    .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
     .logo span { color: #fbbf24; }
     
     .lounge-btn {
@@ -50,13 +60,16 @@
       justify-content: center;
       align-items: center;
       position: relative;
+      z-index: 10;
     }
 
+    /* 화면 전환 시 글씨를 부드럽게 숨기기 위한 설정 */
     .title {
       font-size: 6rem;
       font-weight: 900;
       letter-spacing: -2px;
       margin-bottom: 40px;
+      transition: opacity 1.5s ease; 
     }
     .title .dot { color: #fbbf24; }
 
@@ -64,7 +77,9 @@
       position: relative;
       width: 500px;
       max-width: 90%;
+      transition: transform 1.5s ease; /* 검색창 이동 효과 */
     }
+    
     input {
       width: 100%;
       padding: 20px 30px;
@@ -75,30 +90,18 @@
       font-size: 1.1rem;
       outline: none;
       box-sizing: border-box;
+      backdrop-filter: blur(10px);
       transition: all 0.3s ease;
     }
-    input:focus {
-      border-color: #555;
-      background-color: rgba(255, 255, 255, 0.1);
-    }
+    input:focus { border-color: #555; background-color: rgba(255, 255, 255, 0.1); }
     input::placeholder { color: #777; text-align: center; }
     
     .submit-btn {
       position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 35px;
-      height: 35px;
-      background-color: #fbbf24;
-      border: none;
-      border-radius: 50%;
-      cursor: pointer;
-      transition: transform 0.2s;
+      right: 15px; top: 50%; transform: translateY(-50%);
+      width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer;
     }
-    .submit-btn:hover { transform: translateY(-50%) scale(1.1); }
 
-    /* AI 대화창 홀로그램 스타일 */
     #chatContainer {
       position: absolute;
       top: 15%; 
@@ -127,17 +130,8 @@
       line-height: 1.6;
     }
 
-    /* Yin AI (음 - 보라/파랑 감성) */
-    .yin-msg {
-      border-left: 5px solid #a855f7;
-      box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
-    }
-
-    /* Yang AI (양 - 금색/흰색 논리) */
-    .yang-msg {
-      border-left: 5px solid #fbbf24;
-      box-shadow: 0 0 25px rgba(251, 191, 36, 0.3);
-    }
+    .yin-msg { border-left: 5px solid #a855f7; box-shadow: 0 0 25px rgba(168, 85, 247, 0.3); }
+    .yang-msg { border-left: 5px solid #fbbf24; box-shadow: 0 0 25px rgba(251, 191, 36, 0.3); }
 
     @keyframes fadeUp {
       to { opacity: 1; transform: translateY(0); }
@@ -146,6 +140,8 @@
 </head>
 <body>
 
+  <div id="studioBackground"></div>
+
   <header>
     <div class="logo">APPVERZE<span>.</span></div>
     <a href="#" class="lounge-btn">LOUNGE HUB</a>
@@ -153,10 +149,9 @@
 
   <main>
     <div id="chatContainer"></div>
-
-    <div class="title">CONNECT<span class="dot">.</span></div>
+    <div class="title" id="mainTitle">CONNECT<span class="dot">.</span></div>
     
-    <div class="input-wrapper">
+    <div class="input-wrapper" id="searchBox">
       <input type="text" id="chatInput" placeholder="친구야 안녕? 이라고 말을 걸어보세요">
       <button class="submit-btn" id="submitBtn"></button>
     </div>
@@ -166,6 +161,9 @@
     const inputField = document.getElementById('chatInput');
     const chatBox = document.getElementById('chatContainer');
     const submitBtn = document.getElementById('submitBtn');
+    const background = document.getElementById('studioBackground');
+    const title = document.getElementById('mainTitle');
+    const searchBox = document.getElementById('searchBox');
 
     function triggerAI() {
       if (inputField.value.trim() !== '') {
@@ -173,21 +171,49 @@
         inputField.value = '';
         chatBox.innerHTML = ''; 
 
-        // 1. Yin AI 대답
-        setTimeout(() => {
-          const yinMessage = document.createElement('div');
-          yinMessage.className = 'ai-message yin-msg';
-          yinMessage.innerHTML = `<strong>Yin (감성):</strong> 네, 안녕하세요! 오늘 하루 어떠셨나요? 무슨 일이든 다 들어드릴게요. 💜`;
-          chatBox.appendChild(yinMessage);
-        }, 500);
+        // '방송국'이라는 단어가 포함되어 있는지 확인!
+        if(userText.includes('방송국')) {
+          
+          // 1. Yin AI의 반응
+          setTimeout(() => {
+            const yinMessage = document.createElement('div');
+            yinMessage.className = 'ai-message yin-msg';
+            yinMessage.innerHTML = `<strong>Yin (감성):</strong> 와! 대형 유튜브 방송국이라니 너무 기대돼요! 멋진 무대와 조명을 세팅해 드릴게요. 💜`;
+            chatBox.appendChild(yinMessage);
+          }, 500);
 
-        // 2. Yang AI 대답
-        setTimeout(() => {
-          const yangMessage = document.createElement('div');
-          yangMessage.className = 'ai-message yang-msg';
-          yangMessage.innerHTML = `<strong>Yang (실행):</strong> 환영합니다. "${userText}" 라고 하셨군요. 어떤 서비스 공간(Room)을 생성해 드릴까요? 즉시 분석을 시작하겠습니다. ⚡`;
-          chatBox.appendChild(yangMessage);
-        }, 2000);
+          // 2. Yang AI의 반응 및 화면 전환 마법 실행!
+          setTimeout(() => {
+            const yangMessage = document.createElement('div');
+            yangMessage.className = 'ai-message yang-msg';
+            yangMessage.innerHTML = `<strong>Yang (실행):</strong> 메인 무대, 관객석, 진행 테이블 구조 분석 완료. 3D 스튜디오 룸 데이터를 로드합니다. 이동합니다! ⚡`;
+            chatBox.appendChild(yangMessage);
+
+            // 화면 전환 애니메이션 (글씨 숨기고, 배경 켜기)
+            setTimeout(() => {
+              title.style.opacity = '0'; // CONNECT 글씨 스르륵 사라짐
+              background.style.opacity = '1'; // 숨겨둔 방송국 배경 스르륵 나타남
+              searchBox.style.transform = 'translateY(150px)'; // 검색창 살짝 아래로 이동
+            }, 1000);
+
+          }, 2500);
+
+        } else {
+          // 방송국이 아닌 다른 일반 대화를 쳤을 때
+          setTimeout(() => {
+            const yinMessage = document.createElement('div');
+            yinMessage.className = 'ai-message yin-msg';
+            yinMessage.innerHTML = `<strong>Yin (감성):</strong> 네, 안녕하세요! 어떤 공간(Room)을 상상하고 계신가요? 💜`;
+            chatBox.appendChild(yinMessage);
+          }, 500);
+
+          setTimeout(() => {
+            const yangMessage = document.createElement('div');
+            yangMessage.className = 'ai-message yang-msg';
+            yangMessage.innerHTML = `<strong>Yang (실행):</strong> 환영합니다. "${userText}" 라고 하셨군요. '방송국 만들어줘' 라고 명령하시면 즉시 공간을 생성해 드립니다. ⚡`;
+            chatBox.appendChild(yangMessage);
+          }, 2000);
+        }
       }
     }
 
