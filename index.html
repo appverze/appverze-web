@@ -1,47 +1,201 @@
-<style>
-  /* AI 대화창 홀로그램 스타일 */
-  #chatContainer {
-    position: absolute;
-    top: 30%; /* CONNECT 글씨 위쪽으로 띄우기 */
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 80%;
-    max-width: 600px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    z-index: 100;
-    pointer-events: none; /* 클릭 방해 금지 */
-  }
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>APPVERZE - CONNECT</title>
+  <style>
+    /* 기본 럭셔리 라운지 배경 및 폰트 설정 */
+    @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+    
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0b0b0f;
+      color: white;
+      font-family: 'Pretendard', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-  /* 메시지 기본 모양 (유리 질감) */
-  .ai-message {
-    padding: 15px 20px;
-    border-radius: 12px;
-    color: white;
-    font-size: 1.1rem;
-    backdrop-filter: blur(10px);
-    background: rgba(0, 0, 0, 0.6);
-    opacity: 0;
-    transform: translateY(20px);
-    animation: fadeUp 0.5s forwards;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    line-height: 1.5;
-  }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 50px;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+    .logo span { color: #fbbf24; }
+    
+    .lounge-btn {
+      padding: 10px 20px;
+      border-radius: 30px;
+      background-color: white;
+      color: black;
+      font-weight: bold;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
 
-  /* Yin AI (음 - 보라/파랑 감성) */
-  .yin-msg {
-    border-left: 5px solid #a855f7;
-    box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
-  }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
 
-  /* Yang AI (양 - 금색/흰색 논리) */
-  .yang-msg {
-    border-left: 5px solid #fbbf24;
-    box-shadow: 0 0 20px rgba(251, 191, 36, 0.3);
-  }
+    .title {
+      font-size: 6rem;
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 40px;
+    }
+    .title .dot { color: #fbbf24; }
 
-  @keyframes fadeUp {
-    to { opacity: 1; transform: translateY(0); }
-  }
-</style>
+    .input-wrapper {
+      position: relative;
+      width: 500px;
+      max-width: 90%;
+    }
+    input {
+      width: 100%;
+      padding: 20px 30px;
+      border-radius: 40px;
+      border: 1px solid #333;
+      background-color: rgba(255, 255, 255, 0.05);
+      color: white;
+      font-size: 1.1rem;
+      outline: none;
+      box-sizing: border-box;
+      transition: all 0.3s ease;
+    }
+    input:focus {
+      border-color: #555;
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+    input::placeholder { color: #777; text-align: center; }
+    
+    .submit-btn {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 35px;
+      height: 35px;
+      background-color: #fbbf24;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .submit-btn:hover { transform: translateY(-50%) scale(1.1); }
+
+    /* AI 대화창 홀로그램 스타일 */
+    #chatContainer {
+      position: absolute;
+      top: 15%; 
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 600px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      z-index: 100;
+      pointer-events: none;
+    }
+
+    .ai-message {
+      padding: 20px;
+      border-radius: 12px;
+      color: white;
+      font-size: 1.1rem;
+      backdrop-filter: blur(15px);
+      background: rgba(20, 20, 25, 0.85);
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s forwards;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      line-height: 1.6;
+    }
+
+    /* Yin AI (음 - 보라/파랑 감성) */
+    .yin-msg {
+      border-left: 5px solid #a855f7;
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
+    }
+
+    /* Yang AI (양 - 금색/흰색 논리) */
+    .yang-msg {
+      border-left: 5px solid #fbbf24;
+      box-shadow: 0 0 25px rgba(251, 191, 36, 0.3);
+    }
+
+    @keyframes fadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="logo">APPVERZE<span>.</span></div>
+    <a href="#" class="lounge-btn">LOUNGE HUB</a>
+  </header>
+
+  <main>
+    <div id="chatContainer"></div>
+
+    <div class="title">CONNECT<span class="dot">.</span></div>
+    
+    <div class="input-wrapper">
+      <input type="text" id="chatInput" placeholder="친구야 안녕? 이라고 말을 걸어보세요">
+      <button class="submit-btn" id="submitBtn"></button>
+    </div>
+  </main>
+
+  <script>
+    const inputField = document.getElementById('chatInput');
+    const chatBox = document.getElementById('chatContainer');
+    const submitBtn = document.getElementById('submitBtn');
+
+    function triggerAI() {
+      if (inputField.value.trim() !== '') {
+        const userText = inputField.value;
+        inputField.value = '';
+        chatBox.innerHTML = ''; 
+
+        // 1. Yin AI 대답
+        setTimeout(() => {
+          const yinMessage = document.createElement('div');
+          yinMessage.className = 'ai-message yin-msg';
+          yinMessage.innerHTML = `<strong>Yin (감성):</strong> 네, 안녕하세요! 오늘 하루 어떠셨나요? 무슨 일이든 다 들어드릴게요. 💜`;
+          chatBox.appendChild(yinMessage);
+        }, 500);
+
+        // 2. Yang AI 대답
+        setTimeout(() => {
+          const yangMessage = document.createElement('div');
+          yangMessage.className = 'ai-message yang-msg';
+          yangMessage.innerHTML = `<strong>Yang (실행):</strong> 환영합니다. "${userText}" 라고 하셨군요. 어떤 서비스 공간(Room)을 생성해 드릴까요? 즉시 분석을 시작하겠습니다. ⚡`;
+          chatBox.appendChild(yangMessage);
+        }, 2000);
+      }
+    }
+
+    inputField.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') triggerAI();
+    });
+
+    submitBtn.addEventListener('click', triggerAI);
+  </script>
+</body>
+</html>
