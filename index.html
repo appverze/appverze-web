@@ -122,6 +122,28 @@
       width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer;
     }
 
+    .suggestions {
+      margin-top: 20px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      transition: opacity 0.5s ease;
+    }
+    .suggestion-chip {
+      padding: 10px 20px;
+      border-radius: 30px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.2);
+      font-size: 0.95rem;
+      cursor: pointer;
+      backdrop-filter: blur(5px);
+      transition: all 0.3s ease;
+    }
+    .suggestion-chip:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: #fbbf24;
+    }
+
     #chatContainer {
       position: absolute;
       top: 15%; 
@@ -129,11 +151,17 @@
       transform: translateX(-50%);
       width: 80%;
       max-width: 600px;
+      max-height: 70vh;
+      overflow-y: auto;
       display: flex;
       flex-direction: column;
       gap: 15px;
       z-index: 100;
-      pointer-events: none;
+      pointer-events: auto;
+      scrollbar-width: none;
+    }
+    #chatContainer::-webkit-scrollbar {
+      display: none;
     }
 
     .ai-message {
@@ -201,8 +229,13 @@
     <div class="title" id="mainTitle">CONNECT<span class="dot">.</span></div>
     
     <div class="input-wrapper" id="searchBox">
-      <input type="text" id="chatInput" placeholder="친구야 안녕? 이라고 말을 걸어보세요">
+      <input type="text" id="chatInput" placeholder="연인, 친구 관계에 대한 고민을 말해보세요">
       <button class="submit-btn" id="submitBtn"></button>
+    </div>
+
+    <div class="suggestions" id="suggestionsBox">
+      <div class="suggestion-chip" onclick="document.getElementById('chatInput').value='연인과 최근에 자주 다투는데 어떻게 관계를 회복할 수 있을까요?'; document.getElementById('submitBtn').click();">💕 AI 연인 관계 고민 나누기</div>
+      <div class="suggestion-chip" onclick="document.getElementById('chatInput').value='친구와 오해가 생겨서 멀어졌는데 어떻게 풀면 좋을까요?'; document.getElementById('submitBtn').click();">🤝 친구 갈등 관계 정리하기</div>
     </div>
   </main>
 
@@ -241,11 +274,14 @@
       </svg>
     </div>`;
 
-    function triggerAI() {
+    async function triggerAI() {
       if (inputField.value.trim() !== '') {
         const userText = inputField.value;
         inputField.value = '';
         chatBox.innerHTML = ''; 
+
+        const suggestionsBox = document.getElementById('suggestionsBox');
+        if(suggestionsBox) suggestionsBox.style.display = 'none';
 
         if(userText.includes('방송국')) {
           
@@ -273,19 +309,75 @@
           }, 2500);
 
         } else {
-          setTimeout(() => {
-            const yinMessage = document.createElement('div');
-            yinMessage.className = 'ai-message yin-msg';
-            yinMessage.innerHTML = yinAvatar + `<div class="msg-content"><strong>Yin (감성):</strong> 네, 안녕하세요! 어떤 공간(Room)을 상상하고 계신가요? 💜</div>`;
-            chatBox.appendChild(yinMessage);
-          }, 500);
+          // ChatGPT API 연동
+          const loadingMsg = document.createElement('div');
+          loadingMsg.className = 'ai-message';
+          loadingMsg.style.background = 'rgba(255,255,255,0.1)';
+          loadingMsg.innerHTML = `<div class="msg-content" style="text-align:center; width:100%;"><strong>AI가 당신의 고민을 깊이 생각하고 있습니다... 💭</strong></div>`;
+          chatBox.appendChild(loadingMsg);
 
-          setTimeout(() => {
-            const yangMessage = document.createElement('div');
-            yangMessage.className = 'ai-message yang-msg';
-            yangMessage.innerHTML = yangAvatar + `<div class="msg-content"><strong>Yang (실행):</strong> 환영합니다. "${userText}" 라고 하셨군요. '방송국 만들어줘' 라고 명령하시면 즉시 공간을 생성해 드립니다. ⚡</div>`;
-            chatBox.appendChild(yangMessage);
-          }, 2000);
+          try {
+            const apiKey = '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';
+            const systemPrompt = `당신은 사용자의 고민을 상담해주는 두 가지 인격을 가진 AI입니다. 
+사용자가 '연인' 관련 질문을 하면 연인 관계 고민을, '친구' 관련 질문을 하면 친구와의 갈등 관계를 중점적으로 다뤄주세요.
+반드시 아래 형식으로 답변을 작성해주세요:
+[YIN]
+(공감과 감성, 따뜻한 위로를 담은 Yin의 답변. 이모티콘 사용)
+[YANG]
+(논리적 분석, 현실적인 조언, 실행 가능한 해결책을 담은 Yang의 답변. 이모티콘 사용)`;
+
+            const response = await fetch('https://api.openai.com/v1/chat/completions', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+              },
+              body: JSON.stringify({
+                model: 'gpt-4o-mini',
+                messages: [
+                  { role: 'system', content: systemPrompt },
+                  { role: 'user', content: userText }
+                ],
+                temperature: 0.7
+              })
+            });
+
+            const data = await response.json();
+            const responseText = data.choices[0].message.content;
+            
+            chatBox.removeChild(loadingMsg);
+
+            // [YIN] 과 [YANG] 텍스트 파싱
+            const yinMatch = responseText.match(/\[YIN\]([\s\S]*?)(?:\[YANG\]|$)/i);
+            const yangMatch = responseText.match(/\[YANG\]([\s\S]*)/i);
+
+            const yinText = yinMatch ? yinMatch[1].trim() : "공감 중 오류가 발생했어요.";
+            const yangText = yangMatch ? yangMatch[1].trim() : "분석 중 오류가 발생했어요.";
+
+            setTimeout(() => {
+              const yinMessage = document.createElement('div');
+              yinMessage.className = 'ai-message yin-msg';
+              yinMessage.innerHTML = yinAvatar + `<div class="msg-content"><strong>Yin (감성):</strong><br>${yinText.replace(/\n/g, '<br>')}</div>`;
+              chatBox.appendChild(yinMessage);
+            }, 300);
+
+            setTimeout(() => {
+              const yangMessage = document.createElement('div');
+              yangMessage.className = 'ai-message yang-msg';
+              yangMessage.innerHTML = yangAvatar + `<div class="msg-content"><strong>Yang (실행):</strong><br>${yangText.replace(/\n/g, '<br>')}</div>`;
+              chatBox.appendChild(yangMessage);
+              
+              // 스크롤 맨 아래로
+              chatBox.scrollTop = chatBox.scrollHeight;
+            }, 1500);
+
+          } catch (error) {
+            chatBox.removeChild(loadingMsg);
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'ai-message';
+            errorMsg.innerHTML = `<div class="msg-content"><strong>오류:</strong> AI 서버와 연결할 수 없습니다. API 키나 네트워크 상태를 확인해주세요.</div>`;
+            chatBox.appendChild(errorMsg);
+          }
         }
       }
     }
