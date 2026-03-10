@@ -344,8 +344,21 @@
             const yinMatch = responseText.match(/\[YIN\]([\s\S]*?)(?:\[YANG\]|$)/i);
             const yangMatch = responseText.match(/\[YANG\]([\s\S]*)/i);
 
-            const yinText = yinMatch ? yinMatch[1].trim() : "공감 중 오류가 발생했어요.";
-            const yangText = yangMatch ? yangMatch[1].trim() : "분석 중 오류가 발생했어요.";
+            // 정규식 매칭이 실패할 경우를 대비한 폴백 처리
+            let yinText = "공감 중 오류가 발생했어요.";
+            let yangText = "분석 중 오류가 발생했어요.";
+
+            if (yinMatch && yinMatch[1]) {
+              yinText = yinMatch[1].trim();
+            } else if (!yangMatch) {
+              // YIN/YANG 태그가 아예 없이 답변이 온 경우
+              yinText = responseText;
+              yangText = "어떤 상황인지 조금 더 자세히 말씀해 주시면, 제가 논리적으로 분석해 드릴게요! 💡";
+            }
+
+            if (yangMatch && yangMatch[1]) {
+              yangText = yangMatch[1].trim();
+            }
 
             setTimeout(() => {
               const yinMessage = document.createElement('div');
