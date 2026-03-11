@@ -10,6 +10,8 @@
   <link rel="preload" as="image" href="studio-chair-right.svg">
   <link rel="preload" as="image" href="studio-camera-main.svg">
   <link rel="preload" as="image" href="studio-camera-back.svg">
+  <link rel="preload" as="image" href="studio-microphone.svg">
+  <link rel="preload" as="image" href="studio-mixer.svg">
   <link rel="preload" as="image" href="studio-male.svg">
   <link rel="preload" as="image" href="studio-female.svg">
   <link rel="preload" as="image" href="lounge-hub.svg">
@@ -37,7 +39,8 @@
        진짜 스튜디오 사진을 띄우는 설정!
        ========================================= */
     #studioBgImage, #studioDeskImage, #studioChairLeftImage, #studioChairRightImage,
-    #studioCameraMainImage, #studioCameraBackImage, #studioMaleImage, #studioFemaleImage,
+    #studioCameraMainImage, #studioCameraBackImage, #studioMicrophoneImage, #studioMixerImage,
+    #studioMaleImage, #studioFemaleImage,
     #loungeImage, #shoppingImage, #gameDevImage {
       position: fixed;
       top: 0; 
@@ -52,7 +55,8 @@
       pointer-events: none;
     }
     #studioBgImage.show, #studioDeskImage.show, #studioChairLeftImage.show, #studioChairRightImage.show,
-    #studioCameraMainImage.show, #studioCameraBackImage.show, #studioMaleImage.show, #studioFemaleImage.show,
+    #studioCameraMainImage.show, #studioCameraBackImage.show, #studioMicrophoneImage.show, #studioMixerImage.show,
+    #studioMaleImage.show, #studioFemaleImage.show,
     #loungeImage.show, #shoppingImage.show, #gameDevImage.show {
       opacity: 0.85;
       visibility: visible;
@@ -62,8 +66,9 @@
       animation: studioFloat 6s ease-in-out infinite;
     }
     #studioBgImage { z-index: 1; }
-    #studioDeskImage, #studioChairLeftImage, #studioChairRightImage, #studioCameraMainImage, #studioCameraBackImage { z-index: 2; }
-    #studioMaleImage, #studioFemaleImage { z-index: 3; }
+    #studioDeskImage, #studioChairLeftImage, #studioChairRightImage, #studioCameraBackImage, #studioMicrophoneImage, #studioMixerImage { z-index: 2; }
+    #studioCameraMainImage { z-index: 3; }
+    #studioMaleImage, #studioFemaleImage { z-index: 4; }
     #studioMaleImage.show, #studioFemaleImage.show { opacity: 1; }
     @keyframes studioFloat {
       0%, 100% { transform: scale(1) translate(0, 0); }
@@ -260,6 +265,8 @@
   <img id="studioChairRightImage" src="studio-chair-right.svg" alt="Studio Right Chair">
   <img id="studioCameraMainImage" src="studio-camera-main.svg" alt="Studio Main Camera">
   <img id="studioCameraBackImage" src="studio-camera-back.svg" alt="Studio Back Camera">
+  <img id="studioMicrophoneImage" src="studio-microphone.svg" alt="Studio Microphone">
+  <img id="studioMixerImage" src="studio-mixer.svg" alt="Studio Mixer">
   <img id="studioMaleImage" src="studio-male.svg" alt="Studio Male Avatar">
   <img id="studioFemaleImage" src="studio-female.svg" alt="Studio Female Avatar">
   <img id="loungeImage" src="lounge-hub.svg" alt="Lounge Hub">
@@ -299,6 +306,8 @@
     const studioChairRightImage = document.getElementById('studioChairRightImage');
     const studioCameraMainImage = document.getElementById('studioCameraMainImage');
     const studioCameraBackImage = document.getElementById('studioCameraBackImage');
+    const studioMicrophoneImage = document.getElementById('studioMicrophoneImage');
+    const studioMixerImage = document.getElementById('studioMixerImage');
     const studioMaleImage = document.getElementById('studioMaleImage');
     const studioFemaleImage = document.getElementById('studioFemaleImage');
     const loungeImage = document.getElementById('loungeImage');
@@ -314,6 +323,8 @@
       studioChairRightImage,
       studioCameraMainImage,
       studioCameraBackImage,
+      studioMicrophoneImage,
+      studioMixerImage,
       studioMaleImage,
       studioFemaleImage
     ];
