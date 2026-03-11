@@ -76,6 +76,37 @@
     #studioCameraMainImage {
       object-position: left center;
     }
+
+    /* 스튜디오 남/여 아바타 코너 라벨 */
+    .corner-label {
+      position: fixed;
+      top: 20px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.8);
+      color: #e5e7eb;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      z-index: 20;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+      transform: translateY(-6px);
+      pointer-events: none;
+    }
+    .corner-label.show {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    #studioMaleLabel {
+      left: 20px;
+    }
+    #studioFemaleLabel {
+      right: 20px;
+    }
     @keyframes studioFloat {
       0%, 100% { transform: scale(1) translate(0, 0); }
       50% { transform: scale(1.02) translate(0, -0.5%); }
@@ -280,6 +311,9 @@
   <img id="shoppingCharacterRobloxImage" src="shopping-character-roblox.svg" alt="Shopping Roblox Character">
   <img id="gameDevImage" src="game-dev.svg" alt="Game Dev Studio">
 
+  <div id="studioMaleLabel" class="corner-label">STUDIO MALE AVATAR</div>
+  <div id="studioFemaleLabel" class="corner-label">STUDIO FEMALE AVATAR</div>
+
   <header>
     <a href="index.html" class="logo">APPVERZE<span>.</span></a>
     <a href="#" class="lounge-btn">LOUNGE HUB</a>
@@ -321,6 +355,8 @@
     const shoppingImage = document.getElementById('shoppingImage');
     const shoppingCharacterRobloxImage = document.getElementById('shoppingCharacterRobloxImage');
     const gameDevImage = document.getElementById('gameDevImage');
+    const studioMaleLabel = document.getElementById('studioMaleLabel');
+    const studioFemaleLabel = document.getElementById('studioFemaleLabel');
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
     const loungeBtn = document.querySelector('.lounge-btn');
@@ -339,10 +375,14 @@
 
     function showStudioScene() {
       studioSceneLayers.forEach((el) => el.classList.add('show'));
+      if (studioMaleLabel) studioMaleLabel.classList.add('show');
+      if (studioFemaleLabel) studioFemaleLabel.classList.add('show');
     }
 
     function hideStudioScene() {
       studioSceneLayers.forEach((el) => el.classList.remove('show'));
+      if (studioMaleLabel) studioMaleLabel.classList.remove('show');
+      if (studioFemaleLabel) studioFemaleLabel.classList.remove('show');
     }
 
     const yinAvatar = `<div class="avatar">
