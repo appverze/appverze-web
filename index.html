@@ -250,6 +250,40 @@
     </div>
   </main>
 
+  <!-- YouTube ON AIR + LIVE CHAT overlay -->
+  <div id="youtubeArea" style="
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 520px;
+    height: 300px;
+    display: none;
+    z-index: 200;
+    display: flex;
+    gap: 8px;
+  ">
+    <!-- ON AIR: YouTube video -->
+    <iframe
+      id="ytPlayer"
+      width="340"
+      height="300"
+      src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&mute=1"
+      title="YouTube live stream"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+
+    <!-- LIVE CHAT: YouTube live chat -->
+    <iframe
+      id="ytLiveChat"
+      width="180"
+      height="300"
+      src="https://www.youtube.com/live_chat?v=VIDEO_ID&embed_domain=YOUR_DOMAIN.com"
+      frameborder="0"
+    ></iframe>
+  </div>
+
   <script>
     const inputField = document.getElementById('chatInput');
     const chatBox = document.getElementById('chatContainer');
@@ -261,6 +295,7 @@
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
     const loungeBtn = document.querySelector('.lounge-btn');
+    const youtubeArea = document.getElementById('youtubeArea');
 
     const yinAvatar = `<div class="avatar">
       <svg viewBox="0 0 100 100">
@@ -318,6 +353,7 @@
               shoppingImage.classList.remove('show');
               gameDevImage.classList.remove('show');
               studioImage.classList.add('show');
+              if (youtubeArea) youtubeArea.style.display = 'flex';
               searchBox.style.transform = 'translateY(150px)';
             }, 1000);
 
@@ -345,6 +381,7 @@
               loungeImage.classList.remove('show');
               gameDevImage.classList.remove('show');
               shoppingImage.classList.add('show');
+              if (youtubeArea) youtubeArea.style.display = 'none';
               searchBox.style.transform = 'translateY(150px)';
             }, 1000);
 
@@ -372,6 +409,7 @@
               loungeImage.classList.remove('show');
               shoppingImage.classList.remove('show');
               gameDevImage.classList.add('show');
+              if (youtubeArea) youtubeArea.style.display = 'none';
               searchBox.style.transform = 'translateY(150px)';
             }, 1000);
 
@@ -487,6 +525,7 @@
           shoppingImage.classList.remove('show');
           gameDevImage.classList.remove('show');
           loungeImage.classList.add('show');
+          if (youtubeArea) youtubeArea.style.display = 'none';
           searchBox.style.transform = 'translateY(150px)';
         }, 1000);
 
