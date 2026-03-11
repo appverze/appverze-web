@@ -16,6 +16,7 @@
   <link rel="preload" as="image" href="studio-female.svg">
   <link rel="preload" as="image" href="lounge-hub.svg">
   <link rel="preload" as="image" href="shopping-mall.svg">
+  <link rel="preload" as="image" href="shopping-character-roblox.svg">
   <link rel="preload" as="image" href="game-dev.svg">
   <style>
     *, *::before, *::after { box-sizing: border-box; }
@@ -41,7 +42,7 @@
     #studioBgImage, #studioDeskImage, #studioChairLeftImage, #studioChairRightImage,
     #studioCameraMainImage, #studioCameraBackImage, #studioMicrophoneImage, #studioMixerImage,
     #studioMaleImage, #studioFemaleImage,
-    #loungeImage, #shoppingImage, #gameDevImage {
+    #loungeImage, #shoppingImage, #shoppingCharacterRobloxImage, #gameDevImage {
       position: fixed;
       top: 0; 
       left: 0; 
@@ -57,7 +58,7 @@
     #studioBgImage.show, #studioDeskImage.show, #studioChairLeftImage.show, #studioChairRightImage.show,
     #studioCameraMainImage.show, #studioCameraBackImage.show, #studioMicrophoneImage.show, #studioMixerImage.show,
     #studioMaleImage.show, #studioFemaleImage.show,
-    #loungeImage.show, #shoppingImage.show, #gameDevImage.show {
+    #loungeImage.show, #shoppingImage.show, #shoppingCharacterRobloxImage.show, #gameDevImage.show {
       opacity: 0.85;
       visibility: visible;
     }
@@ -276,6 +277,7 @@
   <img id="studioFemaleImage" src="studio-female.svg" alt="Studio Female Avatar">
   <img id="loungeImage" src="lounge-hub.svg" alt="Lounge Hub">
   <img id="shoppingImage" src="shopping-mall.svg" alt="Shopping Mall">
+  <img id="shoppingCharacterRobloxImage" src="shopping-character-roblox.svg" alt="Shopping Roblox Character">
   <img id="gameDevImage" src="game-dev.svg" alt="Game Dev Studio">
 
   <header>
@@ -317,6 +319,7 @@
     const studioFemaleImage = document.getElementById('studioFemaleImage');
     const loungeImage = document.getElementById('loungeImage');
     const shoppingImage = document.getElementById('shoppingImage');
+    const shoppingCharacterRobloxImage = document.getElementById('shoppingCharacterRobloxImage');
     const gameDevImage = document.getElementById('gameDevImage');
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
@@ -418,13 +421,14 @@
             yangMessage.innerHTML = yangAvatar + `<div class="msg-content"><strong>Yang (실행):</strong> 상품 진열대, 결제 시스템, 라이브 채팅창 연동 완료. 쇼핑몰 스튜디오 데이터를 로드합니다. 판매를 시작합니다! 💳</div>`;
             chatBox.appendChild(yangMessage);
 
-            // 화면 전환 마법 (쇼핑몰 스튜디오 이미지 표시)
+            // 화면 전환 마법 (쇼핑몰 스튜디오 이미지 + Roblox 캐릭터 표시)
             setTimeout(() => {
               title.classList.add('hidden');
               hideStudioScene();
               loungeImage.classList.remove('show');
               gameDevImage.classList.remove('show');
               shoppingImage.classList.add('show');
+              shoppingCharacterRobloxImage.classList.add('show');
               searchBox.style.transform = 'translateY(150px)';
             }, 1000);
 
@@ -451,6 +455,7 @@
               hideStudioScene();
               loungeImage.classList.remove('show');
               shoppingImage.classList.remove('show');
+              shoppingCharacterRobloxImage.classList.remove('show');
               gameDevImage.classList.add('show');
               searchBox.style.transform = 'translateY(150px)';
             }, 1000);
