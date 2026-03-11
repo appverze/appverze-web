@@ -70,6 +70,11 @@
     #studioCameraMainImage { z-index: 3; }
     #studioMaleImage, #studioFemaleImage { z-index: 4; }
     #studioMaleImage.show, #studioFemaleImage.show { opacity: 1; }
+
+    /* 메인 카메라 레이어를 화면 좌측 기준으로 */
+    #studioCameraMainImage {
+      object-position: left center;
+    }
     @keyframes studioFloat {
       0%, 100% { transform: scale(1) translate(0, 0); }
       50% { transform: scale(1.02) translate(0, -0.5%); }
