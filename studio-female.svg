@@ -1,56 +1,44 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
-  <defs>
-    <filter id="shadowSoft" x="-50%" y="-50%" width="200%" height="200%">
-      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#020617" flood-opacity="0.42" />
-    </filter>
-  </defs>
+  <!-- Roblox ¤À| ì1 DÀ -->
+  <g id="studioFemaleRoblox" transform="translate(1120, 720)">
+    <!-- ø¼ -->
+    <ellipse cx="0" cy="140" rx="90" ry="22" fill="#020617" opacity="0.4" />
 
-  <g id="femaleWalker" transform="translate(0, 0)" filter="url(#shadowSoft)">
-    <animateMotion dur="8.5s" repeatCount="indefinite" rotate="0"
-      path="M 900 684 A 90 90 0 1 1 899.9 684 L 1460 684" />
-    <animateTransform attributeName="transform" type="translate" values="0 0; 0 4; 0 0; 0 -4; 0 0" dur="0.9s" repeatCount="indefinite" additive="sum" />
+    <!-- ä¬ -->
+    <rect x="-55" y="40" width="45" height="90" rx="6" fill="#312e81" />
+    <rect x="10" y="40" width="45" height="90" rx="6" fill="#1e1b4b" />
 
-    <ellipse cx="0" cy="120" rx="80" ry="16" fill="#020617" opacity="0.28" />
-    <g id="femaleHead">
-      <circle cx="0" cy="-112" r="38" fill="#f5cfb4" />
-      <path d="M -44 -130 C -30 -170, 30 -170, 44 -128 C 24 -145, -24 -145, -44 -130 Z" fill="#1f2937" />
-      <path d="M -40 -122 C -54 -90, -46 -42, -16 -26 L -8 -36 C -30 -48, -34 -88, -24 -116 Z" fill="#1f2937" />
-      <path d="M 40 -122 C 54 -90, 46 -42, 16 -26 L 8 -36 C 30 -48, 34 -88, 24 -116 Z" fill="#1f2937" />
-      <line x1="-18" y1="-120" x2="-6" y2="-121" stroke="#8b4a2e" stroke-width="2.2" stroke-linecap="round" />
-      <line x1="6" y1="-121" x2="18" y2="-120" stroke="#8b4a2e" stroke-width="2.2" stroke-linecap="round" />
-      <ellipse cx="-10" cy="-110" rx="3.8" ry="4.3" fill="#111827" />
-      <ellipse cx="10" cy="-110" rx="3.8" ry="4.3" fill="#111827" />
-      <circle cx="-11" cy="-111" r="1.1" fill="#f8fafc" />
-      <circle cx="9" cy="-111" r="1.1" fill="#f8fafc" />
-      <path d="M -1 -103 Q 2 -99 0 -95" fill="none" stroke="#af6a4b" stroke-width="1.8" stroke-linecap="round" />
-      <path d="M -10 -86 Q 0 -80 10 -86" fill="none" stroke="#9d174d" stroke-width="2.4" stroke-linecap="round" />
-    </g>
+    <!-- à -->
+    <rect x="-60" y="122" width="55" height="18" rx="5" fill="#111827" />
+    <rect x="5" y="122" width="55" height="18" rx="5" fill="#0b1120" />
 
-    <rect x="-24" y="-70" width="48" height="70" rx="14" fill="#7c3aed" />
-    <rect x="-8" y="-76" width="16" height="16" rx="6" fill="#f5cfb4" />
+    <!-- ¸µ (ü¼ lm ÄÜ/¤è0 Œ) -->
+    <rect x="-80" y="-40" width="160" height="90" rx="10" fill="#ec4899" />
+    <!-- L| ¤¸|t -->
+    <rect x="-80" y="-10" width="160" height="8" fill="#f9a8d4" opacity="0.9" />
 
-    <g transform="translate(-22,-42)">
-      <rect x="0" y="0" width="11" height="48" rx="6" fill="#6d28d9">
-        <animateTransform attributeName="transform" type="rotate" values="-24 5.5 0; 20 5.5 0; -24 5.5 0" dur="0.9s" repeatCount="indefinite" />
-      </rect>
-    </g>
-    <g transform="translate(11,-42)">
-      <rect x="0" y="0" width="11" height="48" rx="6" fill="#6d28d9">
-        <animateTransform attributeName="transform" type="rotate" values="20 5.5 0; -24 5.5 0; 20 5.5 0" dur="0.9s" repeatCount="indefinite" />
-      </rect>
-    </g>
+    <!--  -->
+    <rect x="-110" y="-40" width="30" height="80" rx="8" fill="#f472b6" />
+    <rect x="80" y="-40" width="30" height="80" rx="8" fill="#f472b6" />
 
-    <g transform="translate(-14,0)">
-      <rect x="0" y="0" width="13" height="72" rx="7" fill="#312e81">
-        <animateTransform attributeName="transform" type="rotate" values="22 6.5 0; -24 6.5 0; 22 6.5 0" dur="0.9s" repeatCount="indefinite" />
-      </rect>
-      <rect x="-4" y="70" width="22" height="10" rx="5" fill="#111827" />
-    </g>
-    <g transform="translate(1,0)">
-      <rect x="0" y="0" width="13" height="72" rx="7" fill="#312e81">
-        <animateTransform attributeName="transform" type="rotate" values="-24 6.5 0; 22 6.5 0; -24 6.5 0" dur="0.9s" repeatCount="indefinite" />
-      </rect>
-      <rect x="-4" y="70" width="22" height="10" rx="5" fill="#111827" />
-    </g>
+    <!--  -->
+    <rect x="-112" y="30" width="32" height="22" rx="10" fill="#fed7aa" />
+    <rect x="80" y="30" width="32" height="22" rx="10" fill="#fed7aa" />
+
+    <!-- © -->
+    <rect x="-24" y="-70" width="48" height="20" rx="6" fill="#fed7aa" />
+
+    <!-- 8¬ (]) -->
+    <rect x="-40" y="-130" width="80" height="70" rx="10" fill="#fed7aa" />
+
+    <!-- 8¬t}: ü¼ q ä´ -->
+    <path d="M -40 -130 L 40 -130 L 40 -80 Q 0 -105 -40 -80 Z" fill="#1f2937" />
+    <path d="M -40 -120 C -60 -80, -40 -40, -10 -20 L 0 -32 C -20 -46, -28 -76, -22 -104 Z" fill="#111827" />
+    <path d="M 40 -120 C 60 -80, 40 -40, 10 -20 L 0 -32 C 20 -46, 28 -76, 22 -104 Z" fill="#111827" />
+
+    <!-- ¼t -->
+    <circle cx="-15" cy="-100" r="4.5" fill="#0f172a" />
+    <circle cx="15" cy="-100" r="4.5" fill="#0f172a" />
+    <path d="M -10 -82 Q 0 -78 10 -82" stroke="#9f1239" stroke-width="3" fill="none" stroke-linecap="round" />
   </g>
 </svg>
