@@ -121,6 +121,39 @@
       align-items: center;
     }
 
+    .camera-menu {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.45);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(18px);
+      z-index: 150;
+    }
+
+    .camera-tab {
+      border: none;
+      padding: 6px 14px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      color: #f9fafb;
+      font-size: 0.78rem;
+      letter-spacing: 0.02em;
+      cursor: default;
+      white-space: nowrap;
+    }
+
+    .camera-tab.active {
+      background: linear-gradient(135deg, #fbbf24, #f97316);
+      color: #111827;
+      box-shadow: 0 0 12px rgba(251, 191, 36, 0.6);
+    }
+
     .title {
       font-size: 6rem;
       font-weight: 900;
@@ -287,6 +320,13 @@
   </header>
 
   <main>
+    <div class="camera-menu">
+      <button class="camera-tab active">돌리캠</button>
+      <button class="camera-tab">플레이뷰</button>
+      <button class="camera-tab">캠원</button>
+      <button class="camera-tab">캠투</button>
+    </div>
+
     <div id="chatContainer"></div>
     <div class="title" id="mainTitle">CONNECT<span class="dot">.</span></div>
     
