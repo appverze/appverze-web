@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <defs>
+    <filter id="shadowSoft" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#020617" flood-opacity="0.42" />
+    </filter>
+  </defs>
+
+  <g id="femaleWalker" transform="translate(0, 0)" filter="url(#shadowSoft)">
+    <animateMotion dur="8.5s" repeatCount="indefinite" rotate="0"
+      path="M 900 684 A 90 90 0 1 1 899.9 684 L 1460 684" />
+    <animateTransform attributeName="transform" type="translate" values="0 0; 0 4; 0 0; 0 -4; 0 0" dur="0.9s" repeatCount="indefinite" additive="sum" />
+
+    <ellipse cx="0" cy="120" rx="80" ry="16" fill="#020617" opacity="0.28" />
+    <g id="femaleHead">
+      <circle cx="0" cy="-112" r="38" fill="#f5cfb4" />
+      <path d="M -44 -130 C -30 -170, 30 -170, 44 -128 C 24 -145, -24 -145, -44 -130 Z" fill="#1f2937" />
+      <path d="M -40 -122 C -54 -90, -46 -42, -16 -26 L -8 -36 C -30 -48, -34 -88, -24 -116 Z" fill="#1f2937" />
+      <path d="M 40 -122 C 54 -90, 46 -42, 16 -26 L 8 -36 C 30 -48, 34 -88, 24 -116 Z" fill="#1f2937" />
+      <line x1="-18" y1="-120" x2="-6" y2="-121" stroke="#8b4a2e" stroke-width="2.2" stroke-linecap="round" />
+      <line x1="6" y1="-121" x2="18" y2="-120" stroke="#8b4a2e" stroke-width="2.2" stroke-linecap="round" />
+      <ellipse cx="-10" cy="-110" rx="3.8" ry="4.3" fill="#111827" />
+      <ellipse cx="10" cy="-110" rx="3.8" ry="4.3" fill="#111827" />
+      <circle cx="-11" cy="-111" r="1.1" fill="#f8fafc" />
+      <circle cx="9" cy="-111" r="1.1" fill="#f8fafc" />
+      <path d="M -1 -103 Q 2 -99 0 -95" fill="none" stroke="#af6a4b" stroke-width="1.8" stroke-linecap="round" />
+      <path d="M -10 -86 Q 0 -80 10 -86" fill="none" stroke="#9d174d" stroke-width="2.4" stroke-linecap="round" />
+    </g>
+
+    <rect x="-24" y="-70" width="48" height="70" rx="14" fill="#7c3aed" />
+    <rect x="-8" y="-76" width="16" height="16" rx="6" fill="#f5cfb4" />
+
+    <g transform="translate(-22,-42)">
+      <rect x="0" y="0" width="11" height="48" rx="6" fill="#6d28d9">
+        <animateTransform attributeName="transform" type="rotate" values="-24 5.5 0; 20 5.5 0; -24 5.5 0" dur="0.9s" repeatCount="indefinite" />
+      </rect>
+    </g>
+    <g transform="translate(11,-42)">
+      <rect x="0" y="0" width="11" height="48" rx="6" fill="#6d28d9">
+        <animateTransform attributeName="transform" type="rotate" values="20 5.5 0; -24 5.5 0; 20 5.5 0" dur="0.9s" repeatCount="indefinite" />
+      </rect>
+    </g>
+
+    <g transform="translate(-14,0)">
+      <rect x="0" y="0" width="13" height="72" rx="7" fill="#312e81">
+        <animateTransform attributeName="transform" type="rotate" values="22 6.5 0; -24 6.5 0; 22 6.5 0" dur="0.9s" repeatCount="indefinite" />
+      </rect>
+      <rect x="-4" y="70" width="22" height="10" rx="5" fill="#111827" />
+    </g>
+    <g transform="translate(1,0)">
+      <rect x="0" y="0" width="13" height="72" rx="7" fill="#312e81">
+        <animateTransform attributeName="transform" type="rotate" values="-24 6.5 0; 22 6.5 0; -24 6.5 0" dur="0.9s" repeatCount="indefinite" />
+      </rect>
+      <rect x="-4" y="70" width="22" height="10" rx="5" fill="#111827" />
+    </g>
+  </g>
+</svg>

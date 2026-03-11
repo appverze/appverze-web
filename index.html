@@ -5,7 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APPVERZE - CONNECT</title>
   <link rel="preload" as="image" href="studio-bg.svg">
-  <link rel="preload" as="image" href="studio-person.svg">
+  <link rel="preload" as="image" href="studio-desk.svg">
+  <link rel="preload" as="image" href="studio-chair-left.svg">
+  <link rel="preload" as="image" href="studio-chair-right.svg">
+  <link rel="preload" as="image" href="studio-camera-main.svg">
+  <link rel="preload" as="image" href="studio-camera-back.svg">
+  <link rel="preload" as="image" href="studio-male.svg">
+  <link rel="preload" as="image" href="studio-female.svg">
   <link rel="preload" as="image" href="lounge-hub.svg">
   <link rel="preload" as="image" href="shopping-mall.svg">
   <link rel="preload" as="image" href="game-dev.svg">
@@ -30,7 +36,9 @@
     /* =========================================
        진짜 스튜디오 사진을 띄우는 설정!
        ========================================= */
-    #studioBgImage, #studioPersonImage, #loungeImage, #shoppingImage, #gameDevImage {
+    #studioBgImage, #studioDeskImage, #studioChairLeftImage, #studioChairRightImage,
+    #studioCameraMainImage, #studioCameraBackImage, #studioMaleImage, #studioFemaleImage,
+    #loungeImage, #shoppingImage, #gameDevImage {
       position: fixed;
       top: 0; 
       left: 0; 
@@ -43,7 +51,9 @@
       transition: opacity 1.5s ease-in-out, visibility 1.5s ease-in-out;
       pointer-events: none;
     }
-    #studioBgImage.show, #studioPersonImage.show, #loungeImage.show, #shoppingImage.show, #gameDevImage.show {
+    #studioBgImage.show, #studioDeskImage.show, #studioChairLeftImage.show, #studioChairRightImage.show,
+    #studioCameraMainImage.show, #studioCameraBackImage.show, #studioMaleImage.show, #studioFemaleImage.show,
+    #loungeImage.show, #shoppingImage.show, #gameDevImage.show {
       opacity: 0.85;
       visibility: visible;
     }
@@ -51,23 +61,14 @@
     #studioBgImage.show {
       animation: studioFloat 6s ease-in-out infinite;
     }
-    /* 방송국 사람 레이어: 분리된 인물만 별도 움직임 */
-    #studioPersonImage {
-      z-index: 2;
-    }
-    #studioPersonImage.show {
-      opacity: 1;
-      animation: personLayerFloat 2.8s ease-in-out infinite;
-    }
+    #studioBgImage { z-index: 1; }
+    #studioDeskImage, #studioChairLeftImage, #studioChairRightImage, #studioCameraMainImage, #studioCameraBackImage { z-index: 2; }
+    #studioMaleImage, #studioFemaleImage { z-index: 3; }
+    #studioMaleImage.show, #studioFemaleImage.show { opacity: 1; }
     @keyframes studioFloat {
       0%, 100% { transform: scale(1) translate(0, 0); }
       50% { transform: scale(1.02) translate(0, -0.5%); }
     }
-    @keyframes personLayerFloat {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-8px) scale(1.01); }
-    }
-
     /* 화면 위로 올라올 내용물들 */
     header, main {
       position: relative;
@@ -254,7 +255,13 @@
 <body>
 
   <img id="studioBgImage" src="studio-bg.svg" alt="Studio Background">
-  <img id="studioPersonImage" src="studio-person.svg" alt="Studio Person">
+  <img id="studioDeskImage" src="studio-desk.svg" alt="Studio Desk">
+  <img id="studioChairLeftImage" src="studio-chair-left.svg" alt="Studio Left Chair">
+  <img id="studioChairRightImage" src="studio-chair-right.svg" alt="Studio Right Chair">
+  <img id="studioCameraMainImage" src="studio-camera-main.svg" alt="Studio Main Camera">
+  <img id="studioCameraBackImage" src="studio-camera-back.svg" alt="Studio Back Camera">
+  <img id="studioMaleImage" src="studio-male.svg" alt="Studio Male Avatar">
+  <img id="studioFemaleImage" src="studio-female.svg" alt="Studio Female Avatar">
   <img id="loungeImage" src="lounge-hub.svg" alt="Lounge Hub">
   <img id="shoppingImage" src="shopping-mall.svg" alt="Shopping Mall">
   <img id="gameDevImage" src="game-dev.svg" alt="Game Dev Studio">
@@ -287,13 +294,37 @@
     const chatBox = document.getElementById('chatContainer');
     const submitBtn = document.getElementById('submitBtn');
     const studioBgImage = document.getElementById('studioBgImage');
-    const studioPersonImage = document.getElementById('studioPersonImage');
+    const studioDeskImage = document.getElementById('studioDeskImage');
+    const studioChairLeftImage = document.getElementById('studioChairLeftImage');
+    const studioChairRightImage = document.getElementById('studioChairRightImage');
+    const studioCameraMainImage = document.getElementById('studioCameraMainImage');
+    const studioCameraBackImage = document.getElementById('studioCameraBackImage');
+    const studioMaleImage = document.getElementById('studioMaleImage');
+    const studioFemaleImage = document.getElementById('studioFemaleImage');
     const loungeImage = document.getElementById('loungeImage');
     const shoppingImage = document.getElementById('shoppingImage');
     const gameDevImage = document.getElementById('gameDevImage');
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
     const loungeBtn = document.querySelector('.lounge-btn');
+    const studioSceneLayers = [
+      studioBgImage,
+      studioDeskImage,
+      studioChairLeftImage,
+      studioChairRightImage,
+      studioCameraMainImage,
+      studioCameraBackImage,
+      studioMaleImage,
+      studioFemaleImage
+    ];
+
+    function showStudioScene() {
+      studioSceneLayers.forEach((el) => el.classList.add('show'));
+    }
+
+    function hideStudioScene() {
+      studioSceneLayers.forEach((el) => el.classList.remove('show'));
+    }
 
     const yinAvatar = `<div class="avatar">
       <svg viewBox="0 0 100 100">
@@ -350,8 +381,7 @@
               loungeImage.classList.remove('show');
               shoppingImage.classList.remove('show');
               gameDevImage.classList.remove('show');
-              studioBgImage.classList.add('show');
-              studioPersonImage.classList.add('show');
+              showStudioScene();
               searchBox.style.transform = 'translateY(150px)';
             }, 1000);
 
@@ -375,8 +405,7 @@
             // 화면 전환 마법 (쇼핑몰 스튜디오 이미지 표시)
             setTimeout(() => {
               title.classList.add('hidden');
-              studioBgImage.classList.remove('show');
-              studioPersonImage.classList.remove('show');
+              hideStudioScene();
               loungeImage.classList.remove('show');
               gameDevImage.classList.remove('show');
               shoppingImage.classList.add('show');
@@ -403,8 +432,7 @@
             // 화면 전환 마법 (게임 제작소 스튜디오 이미지 표시)
             setTimeout(() => {
               title.classList.add('hidden');
-              studioBgImage.classList.remove('show');
-              studioPersonImage.classList.remove('show');
+              hideStudioScene();
               loungeImage.classList.remove('show');
               shoppingImage.classList.remove('show');
               gameDevImage.classList.add('show');
@@ -525,8 +553,7 @@
         // 화면 전환 마법 (라운지 허브 이미지 표시)
         setTimeout(() => {
           title.classList.add('hidden');
-          studioBgImage.classList.remove('show');
-          studioPersonImage.classList.remove('show');
+          hideStudioScene();
           shoppingImage.classList.remove('show');
           gameDevImage.classList.remove('show');
           loungeImage.classList.add('show');

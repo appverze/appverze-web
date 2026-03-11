@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <g id="rightChair" transform="translate(1320, 720)">
+    <rect x="-30" y="-82" width="60" height="64" rx="14" fill="#4c1d95" />
+    <rect x="-22" y="-28" width="44" height="36" rx="10" fill="#5b21b6" />
+    <rect x="-25" y="8" width="8" height="56" rx="4" fill="#312e81" />
+    <rect x="17" y="8" width="8" height="56" rx="4" fill="#312e81" />
+  </g>
+</svg>

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
+  <g id="studioCamera" transform="translate(960, 690)">
+    <path d="M 0 24 L -26 198 M 0 24 L 20 198 M 0 24 L 64 198" stroke="#334155" stroke-width="8" stroke-linecap="round" />
+    <rect x="-48" y="-40" width="100" height="62" rx="12" fill="#1e293b" stroke="#475569" stroke-width="4" />
+    <rect x="-78" y="-24" width="30" height="24" rx="6" fill="#0f172a" />
+    <circle cx="26" cy="-8" r="18" fill="#0f172a" stroke="#64748b" stroke-width="4" />
+    <circle cx="26" cy="-8" r="8" fill="#38bdf8" opacity="0.85" />
+    <rect x="-20" y="-54" width="34" height="12" rx="5" fill="#ef4444" />
+  </g>
+</svg>
