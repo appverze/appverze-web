@@ -6,7 +6,7 @@
     </filter>
   </defs>
 
-  <g transform="translate(750, 850)">
+  <g transform="translate(1400, 850)">
     <path d="M 0 150 L 50 -50 L 150 -120" fill="none" stroke="#111" stroke-width="16" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M 0 150 L 50 -50 L 150 -120" fill="none" stroke="#333" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" />
     <g transform="translate(150, -120) rotate(35)">
