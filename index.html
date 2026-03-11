@@ -13,7 +13,6 @@
       display: flex; flex-direction: column; overflow: hidden;
     }
 
-    /* 방송국 스튜디오 사진 */
     #studioImage {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: cover; opacity: 0; z-index: 1; transition: opacity 1.5s ease-in-out;
@@ -27,19 +26,37 @@
     .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
     .logo span { color: #fbbf24; }
     
-    .nav-buttons { display: flex; gap: 15px; }
+    .nav-buttons { display: flex; gap: 15px; align-items: center; }
     .lounge-btn {
       padding: 10px 20px; border-radius: 30px; background-color: white; color: black;
       font-weight: bold; text-decoration: none; font-size: 0.9rem;
     }
     
-    /* 새로 추가된 로그인/가입 버튼 */
     .login-btn {
       padding: 10px 20px; border-radius: 30px; background-color: #a855f7; color: white;
       font-weight: bold; text-decoration: none; font-size: 0.9rem;
       transition: all 0.3s ease; border: 1px solid #a855f7; cursor: pointer;
     }
     .login-btn:hover { box-shadow: 0 0 15px rgba(168, 85, 247, 0.6); }
+
+    /* =========================================
+       새로 추가된 '디지털 지갑(Wallet)' 스타일
+       ========================================= */
+    .wallet-display {
+      display: none; /* 처음엔 숨겨둠 (가입하면 나타남) */
+      align-items: center; gap: 8px; padding: 8px 20px;
+      border-radius: 30px; background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.5);
+      box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+      animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    .coin-icon { font-size: 1.2rem; }
+    .coin-amount { font-weight: bold; color: #fbbf24; font-size: 1rem; letter-spacing: 1px; }
+
+    @keyframes popIn {
+      0% { opacity: 0; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
 
     main {
       flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
@@ -66,7 +83,6 @@
       width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer;
     }
 
-    /* AI 대화창 */
     #chatContainer {
       position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
       width: 80%; max-width: 600px; display: flex; flex-direction: column; gap: 15px;
@@ -82,9 +98,7 @@
 
     @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
 
-    /* =========================================
-       새로 추가된 '회원가입/로그인 모달창' 스타일
-       ========================================= */
+    /* 모달창 스타일 */
     #modalOverlay {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
       background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); z-index: 999;
@@ -93,7 +107,7 @@
       display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
       width: 400px; padding: 40px; border-radius: 20px;
       background: rgba(15, 15, 20, 0.9); border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 40px rgba(168, 85, 247, 0.2), 0 0 40px rgba(251, 191, 36, 0.2); /* Yin & Yang 듀얼 네온 */
+      box-shadow: 0 0 40px rgba(168, 85, 247, 0.2), 0 0 40px rgba(251, 191, 36, 0.2); 
       z-index: 1000; text-align: center;
     }
     #loginModal h2 { margin: 0 0 10px 0; font-weight: 900; letter-spacing: 1px; }
@@ -134,13 +148,18 @@
 </head>
 <body>
 
-  <img id="studioImage" src="https://images.unsplash.com/photo-1598550874175-4d0ef43ee90d?auto=format&fit=crop&w=1920&q=80" alt="방송국 스튜디오">
+  <img id="studioImage" src="studio.jpg" alt="방송국 스튜디오">
 
   <header>
     <div class="logo">APPVERZE<span>.</span></div>
     <div class="nav-buttons">
       <a href="#" class="lounge-btn">LOUNGE HUB</a>
       <button class="login-btn" id="openLoginBtn">LOGIN / JOIN</button>
+      
+      <div class="wallet-display" id="walletDisplay">
+        <span class="coin-icon">💎</span>
+        <span class="coin-amount">1,000 APV</span>
+      </div>
     </div>
   </header>
 
@@ -158,7 +177,7 @@
   <div id="loginModal">
     <span class="close-btn" id="closeLoginBtn">&times;</span>
     <h2>AI GATEWAY</h2>
-    <p>당신의 상상이 현실이 되는 곳, 앱버즈에 오신 것을 환영합니다.</p>
+    <p>미래의 블록체인 생태계, 앱버즈에 오신 것을 환영합니다.</p>
     
     <div class="email-login">
       <input type="email" placeholder="이메일 주소">
@@ -184,17 +203,17 @@
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
 
-    // 모달창 컨트롤
+    // 모달창 및 지갑 컨트롤
     const openLoginBtn = document.getElementById('openLoginBtn');
     const closeLoginBtn = document.getElementById('closeLoginBtn');
     const loginModal = document.getElementById('loginModal');
     const modalOverlay = document.getElementById('modalOverlay');
+    const walletDisplay = document.getElementById('walletDisplay');
 
     openLoginBtn.addEventListener('click', () => {
       loginModal.style.display = 'block';
       modalOverlay.style.display = 'block';
       
-      // 모달창을 열 때 AI가 인사말을 건네는 효과
       chatBox.innerHTML = '';
       setTimeout(() => {
         const yinMessage = document.createElement('div');
@@ -204,25 +223,37 @@
       }, 300);
     });
 
-    closeLoginBtn.addEventListener('click', closeModal);
-    modalOverlay.addEventListener('click', closeModal);
-
     function closeModal() {
       loginModal.style.display = 'none';
       modalOverlay.style.display = 'none';
     }
+    closeLoginBtn.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
 
-    // 가입 버튼을 눌렀을 때 AI가 반응하는 마법!
+    // 가입 버튼을 눌렀을 때 작동하는 '지갑 생성 & 코인 지급' 마법!
     function simulateLogin(method) {
-      closeModal(); // 창 닫기
+      closeModal(); 
       chatBox.innerHTML = ''; 
 
+      // 1. 로그인 버튼을 숨기고, 💎 지갑을 화면에 짠! 하고 나타나게 합니다.
+      openLoginBtn.style.display = 'none';
+      walletDisplay.style.display = 'flex';
+
+      // 2. Yang AI의 지갑 생성 보고
       setTimeout(() => {
         const yangMessage = document.createElement('div');
         yangMessage.className = 'ai-message yang-msg';
-        yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] 안전 인증 완료. 계정이 생성되었습니다. 당신만의 우주(Universe)를 세팅합니다. ⚡`;
+        yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] 인증 완료. 향후 블록체인(Web3) 연동을 위한 보안 지갑(Wallet) 생성을 완료했습니다. ⚡`;
         chatBox.appendChild(yangMessage);
       }, 500);
+
+      // 3. Yin AI의 코인 에어드랍(지급) 안내
+      setTimeout(() => {
+        const yinMessage = document.createElement('div');
+        yinMessage.className = 'ai-message yin-msg';
+        yinMessage.innerHTML = `<strong>Yin (감성):</strong> 첫 입장을 축하드려요! 웰컴 보상으로 <strong>1,000 APV 토큰</strong>을 지갑에 넣어드렸어요. 나중에 진짜 가상화폐로 바꿀 수 있게 잘 보관해 둘게요! 💜`;
+        chatBox.appendChild(yinMessage);
+      }, 2500);
     }
 
     // 기존 방송국 생성 코드
@@ -243,12 +274,12 @@
           setTimeout(() => {
             const yangMessage = document.createElement('div');
             yangMessage.className = 'ai-message yang-msg';
-            yangMessage.innerHTML = `<strong>Yang (실행):</strong> 메인 무대, 관객석 구조 분석 완료. 스튜디오 룸 데이터를 로드합니다! ⚡`;
+            yangMessage.innerHTML = `<strong>Yang (실행):</strong> 메인 무대, 관객석 구조 분석 완료. 3D 스튜디오 룸 데이터를 로드합니다! ⚡`;
             chatBox.appendChild(yangMessage);
 
             setTimeout(() => {
               title.style.opacity = '0'; 
-              studioImage.style.opacity = '0.5'; 
+              studioImage.style.opacity = '1'; /* 사진이 뚜렷하게 보이도록 수정 */
               searchBox.style.transform = 'translateY(150px)'; 
             }, 1000);
           }, 2500);
