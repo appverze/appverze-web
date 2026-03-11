@@ -1,44 +1,56 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080">
-  <!-- Roblox ¤À| ¨1 DÀ -->
-  <g id="studioMaleRoblox" transform="translate(900, 720)">
-    <!-- ø¼ -->
-    <ellipse cx="0" cy="140" rx="90" ry="22" fill="#020617" opacity="0.4" />
+  <defs>
+    <filter id="shadowSoft" x="-50%" y="-50%" width="200%" height="200%">
+      <feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#020617" flood-opacity="0.42" />
+    </filter>
+  </defs>
 
-    <!-- ä¬ -->
-    <rect x="-55" y="40" width="45" height="90" rx="6" fill="#1e293b" />
-    <rect x="10" y="40" width="45" height="90" rx="6" fill="#020617" />
+  <g id="maleWalker" transform="translate(700, 680)" filter="url(#shadowSoft)">
+    <animateTransform attributeName="transform" type="translate" values="520 680; 1400 680" dur="8s" repeatCount="indefinite" />
+    <animateTransform attributeName="transform" type="translate" values="0 0; 0 -4; 0 0; 0 4; 0 0" dur="0.9s" repeatCount="indefinite" additive="sum" />
 
-    <!-- à -->
-    <rect x="-60" y="122" width="55" height="18" rx="5" fill="#0f172a" />
-    <rect x="5" y="122" width="55" height="18" rx="5" fill="#0b1120" />
+    <ellipse cx="0" cy="120" rx="80" ry="16" fill="#020617" opacity="0.28" />
+    <g id="maleHead">
+      <circle cx="0" cy="-110" r="40" fill="#f2c8a8" />
+      <path d="M -42 -118 C -35 -160, 35 -160, 42 -116 C 26 -130, -26 -130, -42 -118 Z" fill="#111827" />
+      <path d="M -44 -113 A 44 44 0 0 1 44 -113" fill="none" stroke="#0f172a" stroke-width="10" />
+      <rect x="-52" y="-120" width="12" height="34" rx="6" fill="#0f172a" />
+      <rect x="40" y="-120" width="12" height="34" rx="6" fill="#0f172a" />
+      <line x1="-20" y1="-116" x2="-8" y2="-118" stroke="#7c3f2a" stroke-width="2.5" stroke-linecap="round" />
+      <line x1="8" y1="-118" x2="20" y2="-116" stroke="#7c3f2a" stroke-width="2.5" stroke-linecap="round" />
+      <ellipse cx="-13" cy="-106" rx="4" ry="4.5" fill="#111827" />
+      <ellipse cx="13" cy="-106" rx="4" ry="4.5" fill="#111827" />
+      <circle cx="-14" cy="-107" r="1.2" fill="#f8fafc" />
+      <circle cx="12" cy="-107" r="1.2" fill="#f8fafc" />
+      <path d="M -1 -100 Q 3 -95 0 -90" fill="none" stroke="#a55f42" stroke-width="2" stroke-linecap="round" />
+      <path d="M -11 -82 Q 0 -76 11 -82" fill="none" stroke="#7c2d12" stroke-width="2.8" stroke-linecap="round" />
+    </g>
 
-    <!-- ¸µ (ü¼ ÄÜð) -->
-    <rect x="-80" y="-40" width="160" height="90" rx="10" fill="#3b82f6" />
-    <!-- ÄÜ H -->
-    <rect x="-10" y="-38" width="4" height="32" rx="2" fill="#e5e7eb" />
-    <rect x="6" y="-38" width="4" height="28" rx="2" fill="#e5e7eb" />
+    <rect x="-26" y="-70" width="52" height="72" rx="16" fill="#1e293b" />
+    <rect x="-8" y="-76" width="16" height="18" rx="6" fill="#f2c8a8" />
 
-    <!--  -->
-    <rect x="-110" y="-40" width="30" height="80" rx="8" fill="#60a5fa" />
-    <rect x="80" y="-40" width="30" height="80" rx="8" fill="#60a5fa" />
+    <g transform="translate(-24,-44)">
+      <rect x="0" y="0" width="12" height="52" rx="6" fill="#334155">
+        <animateTransform attributeName="transform" type="rotate" values="22 6 0; -22 6 0; 22 6 0" dur="0.9s" repeatCount="indefinite" />
+      </rect>
+    </g>
+    <g transform="translate(12,-44)">
+      <rect x="0" y="0" width="12" height="52" rx="6" fill="#334155">
+        <animateTransform attributeName="transform" type="rotate" values="-22 6 0; 22 6 0; -22 6 0" dur="0.9s" repeatCount="indefinite" />
+      </rect>
+    </g>
 
-    <!--  -->
-    <rect x="-112" y="30" width="32" height="22" rx="10" fill="#fed7aa" />
-    <rect x="80" y="30" width="32" height="22" rx="10" fill="#fed7aa" />
-
-    <!-- © -->
-    <rect x="-24" y="-70" width="48" height="20" rx="6" fill="#fed7aa" />
-
-    <!-- 8¬ (]) -->
-    <rect x="-40" y="-130" width="80" height="70" rx="10" fill="#fed7aa" />
-
-    <!-- 8¬t}: ü¼ ç@ ä´ -->
-    <path d="M -40 -130 L 40 -130 L 40 -92 Q 0 -112 -40 -92 Z" fill="#111827" />
-    <path d="M -40 -130 Q -5 -152 30 -140 Q 10 -136 -18 -130 Z" fill="#020617" opacity="0.9" />
-
-    <!-- ¼t -->
-    <circle cx="-15" cy="-100" r="5" fill="#0f172a" />
-    <circle cx="15" cy="-100" r="5" fill="#0f172a" />
-    <path d="M -10 -82 Q 0 -76 10 -82" stroke="#0f172a" stroke-width="3" fill="none" stroke-linecap="round" />
+    <g transform="translate(-16,2)">
+      <rect x="0" y="0" width="14" height="74" rx="7" fill="#0f172a">
+        <animateTransform attributeName="transform" type="rotate" values="-22 7 0; 24 7 0; -22 7 0" dur="0.9s" repeatCount="indefinite" />
+      </rect>
+      <rect x="-4" y="72" width="22" height="10" rx="5" fill="#111827" />
+    </g>
+    <g transform="translate(2,2)">
+      <rect x="0" y="0" width="14" height="74" rx="7" fill="#0f172a">
+        <animateTransform attributeName="transform" type="rotate" values="24 7 0; -22 7 0; 24 7 0" dur="0.9s" repeatCount="indefinite" />
+      </rect>
+      <rect x="-4" y="72" width="22" height="10" rx="5" fill="#111827" />
+    </g>
   </g>
 </svg>
