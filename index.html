@@ -7,6 +7,7 @@
   <link rel="preload" as="image" href="avatar.svg">
   <link rel="preload" as="image" href="lounge-hub.svg">
   <link rel="preload" as="image" href="shopping-mall.svg">
+  <link rel="preload" as="image" href="game-dev.svg">
   <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
     
@@ -25,7 +26,7 @@
     /* =========================================
        진짜 스튜디오 사진을 띄우는 설정!
        ========================================= */
-    #studioImage, #loungeImage, #shoppingImage {
+    #studioImage, #loungeImage, #shoppingImage, #gameDevImage {
       position: fixed;
       top: 0; 
       left: 0; 
@@ -38,7 +39,7 @@
       transition: opacity 1.5s ease-in-out, visibility 1.5s ease-in-out;
       pointer-events: none;
     }
-    #studioImage.show, #loungeImage.show, #shoppingImage.show {
+    #studioImage.show, #loungeImage.show, #shoppingImage.show, #gameDevImage.show {
       opacity: 0.85;
       visibility: visible;
     }
@@ -224,6 +225,7 @@
   <img id="studioImage" src="avatar.svg" alt="AI Avatar">
   <img id="loungeImage" src="lounge-hub.svg" alt="Lounge Hub">
   <img id="shoppingImage" src="shopping-mall.svg" alt="Shopping Mall">
+  <img id="gameDevImage" src="game-dev.svg" alt="Game Dev Studio">
 
   <header>
     <a href="index.html" class="logo">APPVERZE<span>.</span></a>
@@ -235,7 +237,7 @@
     <div class="title" id="mainTitle">CONNECT<span class="dot">.</span></div>
     
     <div class="input-wrapper" id="searchBox">
-      <input type="text" id="chatInput" placeholder="안녕 친구야 방송국 또는 쇼핑몰 제작을 요청해보세요">
+      <input type="text" id="chatInput" placeholder="안녕 친구야 취향에 맞게 방송국, 쇼핑몰, 게임 제작소 제작을 요청해 보세요">
       <button class="submit-btn" id="submitBtn"></button>
     </div>
 
@@ -255,6 +257,7 @@
     const studioImage = document.getElementById('studioImage');
     const loungeImage = document.getElementById('loungeImage');
     const shoppingImage = document.getElementById('shoppingImage');
+    const gameDevImage = document.getElementById('gameDevImage');
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
     const loungeBtn = document.querySelector('.lounge-btn');
@@ -313,6 +316,7 @@
               title.classList.add('hidden');
               loungeImage.classList.remove('show');
               shoppingImage.classList.remove('show');
+              gameDevImage.classList.remove('show');
               studioImage.classList.add('show');
               searchBox.style.transform = 'translateY(150px)';
             }, 1000);
@@ -339,7 +343,35 @@
               title.classList.add('hidden');
               studioImage.classList.remove('show');
               loungeImage.classList.remove('show');
+              gameDevImage.classList.remove('show');
               shoppingImage.classList.add('show');
+              searchBox.style.transform = 'translateY(150px)';
+            }, 1000);
+
+          }, 2500);
+
+        } else if(userText.includes('게임')) {
+          
+          setTimeout(() => {
+            const yinMessage = document.createElement('div');
+            yinMessage.className = 'ai-message yin-msg';
+            yinMessage.innerHTML = yinAvatar + `<div class="msg-content"><strong>Yin (감성):</strong> 우와! 게임 제작이라니 상상만 해도 신나요! 어떤 멋진 세계관을 만들지 기대되네요. 🎮✨</div>`;
+            chatBox.appendChild(yinMessage);
+          }, 500);
+
+          setTimeout(() => {
+            const yangMessage = document.createElement('div');
+            yangMessage.className = 'ai-message yang-msg';
+            yangMessage.innerHTML = yangAvatar + `<div class="msg-content"><strong>Yang (실행):</strong> 게임 엔진 초기화, 에셋 로딩, 물리 엔진 세팅 완료. 개발 스튜디오 환경을 로드합니다. 코딩을 시작합니다! 💻</div>`;
+            chatBox.appendChild(yangMessage);
+
+            // 화면 전환 마법 (게임 제작소 스튜디오 이미지 표시)
+            setTimeout(() => {
+              title.classList.add('hidden');
+              studioImage.classList.remove('show');
+              loungeImage.classList.remove('show');
+              shoppingImage.classList.remove('show');
+              gameDevImage.classList.add('show');
               searchBox.style.transform = 'translateY(150px)';
             }, 1000);
 
@@ -453,6 +485,7 @@
           title.classList.add('hidden');
           studioImage.classList.remove('show');
           shoppingImage.classList.remove('show');
+          gameDevImage.classList.remove('show');
           loungeImage.classList.add('show');
           searchBox.style.transform = 'translateY(150px)';
         }, 1000);
