@@ -5,7 +5,9 @@
     </filter>
   </defs>
 
-  <g id="femaleWalker" transform="translate(1250, 700)" filter="url(#shadowSoft)">
+  <g id="femaleWalker" transform="translate(1050, 700)" filter="url(#shadowSoft)">
+    <animateMotion dur="7s" repeatCount="indefinite" rotate="0"
+      path="M 0 0 L 260 0 L 0 0" />
     <animateTransform attributeName="transform" type="translate" values="0 0; 0 4; 0 0; 0 -4; 0 0" dur="0.9s" repeatCount="indefinite" additive="sum" />
 
     <ellipse cx="0" cy="120" rx="80" ry="16" fill="#020617" opacity="0.28" />
