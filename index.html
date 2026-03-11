@@ -43,6 +43,14 @@
       opacity: 0.85;
       visibility: visible;
     }
+    /* 방송국 아바타 배경: 살짝 움직이는 느낌 */
+    #studioImage.show {
+      animation: studioFloat 6s ease-in-out infinite;
+    }
+    @keyframes studioFloat {
+      0%, 100% { transform: scale(1) translate(0, 0); }
+      50% { transform: scale(1.02) translate(0, -0.5%); }
+    }
 
     /* 화면 위로 올라올 내용물들 */
     header, main {
