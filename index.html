@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>APPVERZE - CONNECT</title>
-  <link rel="preload" as="image" href="avatar.svg">
+  <link rel="preload" as="image" href="studio-bg.svg">
+  <link rel="preload" as="image" href="studio-person.svg">
   <link rel="preload" as="image" href="lounge-hub.svg">
   <link rel="preload" as="image" href="shopping-mall.svg">
   <link rel="preload" as="image" href="game-dev.svg">
@@ -29,7 +30,7 @@
     /* =========================================
        진짜 스튜디오 사진을 띄우는 설정!
        ========================================= */
-    #studioImage, #loungeImage, #shoppingImage, #gameDevImage {
+    #studioBgImage, #studioPersonImage, #loungeImage, #shoppingImage, #gameDevImage {
       position: fixed;
       top: 0; 
       left: 0; 
@@ -42,17 +43,29 @@
       transition: opacity 1.5s ease-in-out, visibility 1.5s ease-in-out;
       pointer-events: none;
     }
-    #studioImage.show, #loungeImage.show, #shoppingImage.show, #gameDevImage.show {
+    #studioBgImage.show, #studioPersonImage.show, #loungeImage.show, #shoppingImage.show, #gameDevImage.show {
       opacity: 0.85;
       visibility: visible;
     }
-    /* 방송국 아바타 배경: 살짝 움직이는 느낌 */
-    #studioImage.show {
+    /* 방송국 배경 */
+    #studioBgImage.show {
       animation: studioFloat 6s ease-in-out infinite;
+    }
+    /* 방송국 사람 레이어: 분리된 인물만 별도 움직임 */
+    #studioPersonImage {
+      z-index: 2;
+    }
+    #studioPersonImage.show {
+      opacity: 1;
+      animation: personLayerFloat 2.8s ease-in-out infinite;
     }
     @keyframes studioFloat {
       0%, 100% { transform: scale(1) translate(0, 0); }
       50% { transform: scale(1.02) translate(0, -0.5%); }
+    }
+    @keyframes personLayerFloat {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-8px) scale(1.01); }
     }
 
     /* 화면 위로 올라올 내용물들 */
@@ -240,7 +253,8 @@
 </head>
 <body>
 
-  <img id="studioImage" src="avatar.svg" alt="AI Avatar">
+  <img id="studioBgImage" src="studio-bg.svg" alt="Studio Background">
+  <img id="studioPersonImage" src="studio-person.svg" alt="Studio Person">
   <img id="loungeImage" src="lounge-hub.svg" alt="Lounge Hub">
   <img id="shoppingImage" src="shopping-mall.svg" alt="Shopping Mall">
   <img id="gameDevImage" src="game-dev.svg" alt="Game Dev Studio">
@@ -272,7 +286,8 @@
     const inputField = document.getElementById('chatInput');
     const chatBox = document.getElementById('chatContainer');
     const submitBtn = document.getElementById('submitBtn');
-    const studioImage = document.getElementById('studioImage');
+    const studioBgImage = document.getElementById('studioBgImage');
+    const studioPersonImage = document.getElementById('studioPersonImage');
     const loungeImage = document.getElementById('loungeImage');
     const shoppingImage = document.getElementById('shoppingImage');
     const gameDevImage = document.getElementById('gameDevImage');
@@ -335,7 +350,8 @@
               loungeImage.classList.remove('show');
               shoppingImage.classList.remove('show');
               gameDevImage.classList.remove('show');
-              studioImage.classList.add('show');
+              studioBgImage.classList.add('show');
+              studioPersonImage.classList.add('show');
               searchBox.style.transform = 'translateY(150px)';
             }, 1000);
 
@@ -359,7 +375,8 @@
             // 화면 전환 마법 (쇼핑몰 스튜디오 이미지 표시)
             setTimeout(() => {
               title.classList.add('hidden');
-              studioImage.classList.remove('show');
+              studioBgImage.classList.remove('show');
+              studioPersonImage.classList.remove('show');
               loungeImage.classList.remove('show');
               gameDevImage.classList.remove('show');
               shoppingImage.classList.add('show');
@@ -386,7 +403,8 @@
             // 화면 전환 마법 (게임 제작소 스튜디오 이미지 표시)
             setTimeout(() => {
               title.classList.add('hidden');
-              studioImage.classList.remove('show');
+              studioBgImage.classList.remove('show');
+              studioPersonImage.classList.remove('show');
               loungeImage.classList.remove('show');
               shoppingImage.classList.remove('show');
               gameDevImage.classList.add('show');
@@ -507,7 +525,8 @@
         // 화면 전환 마법 (라운지 허브 이미지 표시)
         setTimeout(() => {
           title.classList.add('hidden');
-          studioImage.classList.remove('show');
+          studioBgImage.classList.remove('show');
+          studioPersonImage.classList.remove('show');
           shoppingImage.classList.remove('show');
           gameDevImage.classList.remove('show');
           loungeImage.classList.add('show');
