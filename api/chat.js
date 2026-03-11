@@ -9,6 +9,8 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Message is required' });
   }
 
+  // Vercel: Settings → Environment Variables → OPENAI_API_KEY
+  // 로컬: .env.local 에 OPENAI_API_KEY=sk-proj-... 설정
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {
