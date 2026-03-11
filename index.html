@@ -403,7 +403,12 @@
               body: JSON.stringify({ message: userText })
             });
 
-            const data = await response.json();
+            let data;
+            try {
+              data = await response.json();
+            } catch (_) {
+              throw new Error('서버 응답을 읽을 수 없습니다. (JSON 아님)');
+            }
             
             if (!response.ok) {
               throw new Error(data.error || 'API 요청 실패');
@@ -454,7 +459,8 @@
             chatBox.removeChild(loadingMsg);
             const errorMsg = document.createElement('div');
             errorMsg.className = 'ai-message';
-            errorMsg.innerHTML = `<div class="msg-content"><strong>오류:</strong> AI 서버와 연결할 수 없습니다. API 키나 네트워크 상태를 확인해주세요.</div>`;
+            const detail = error.message || 'AI 서버와 연결할 수 없습니다. API 키나 네트워크 상태를 확인해주세요.';
+            errorMsg.innerHTML = `<div class="msg-content"><strong>오류:</strong> ${detail.replace(/</g, '&lt;')}</div>`;
             chatBox.appendChild(errorMsg);
           }
         }
