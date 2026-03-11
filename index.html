@@ -319,7 +319,7 @@
   </header>
 
   <main>
-    <div class="camera-menu">
+    <div class="camera-menu" id="cameraMenu">
       <button class="camera-tab active">돌리캠</button>
       <button class="camera-tab">플레이뷰</button>
       <button class="camera-tab">캠원</button>
@@ -347,6 +347,7 @@
     const inputField = document.getElementById('chatInput');
     const chatBox = document.getElementById('chatContainer');
     const submitBtn = document.getElementById('submitBtn');
+    const cameraMenu = document.getElementById('cameraMenu');
     const studioBgImage = document.getElementById('studioBgImage');
     const studioDeskImage = document.getElementById('studioDeskImage');
     const studioChairLeftImage = document.getElementById('studioChairLeftImage');
@@ -442,6 +443,7 @@
               gameDevImage.classList.remove('show');
               showStudioScene();
               searchBox.style.transform = 'translateY(150px)';
+              if (cameraMenu) cameraMenu.style.display = 'flex';
             }, 1000);
 
           }, 2500);
@@ -470,6 +472,7 @@
               shoppingImage.classList.add('show');
               shoppingCharacterRobloxImage.classList.add('show');
               searchBox.style.transform = 'translateY(150px)';
+              if (cameraMenu) cameraMenu.style.display = 'none';
             }, 1000);
 
           }, 2500);
@@ -498,6 +501,7 @@
               shoppingCharacterRobloxImage.classList.remove('show');
               gameDevImage.classList.add('show');
               searchBox.style.transform = 'translateY(150px)';
+              if (cameraMenu) cameraMenu.style.display = 'none';
             }, 1000);
 
           }, 2500);
@@ -620,6 +624,7 @@
           gameDevImage.classList.remove('show');
           loungeImage.classList.add('show');
           searchBox.style.transform = 'translateY(150px)';
+          if (cameraMenu) cameraMenu.style.display = 'none';
         }, 1000);
 
       }, 2500);
