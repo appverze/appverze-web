@@ -16,26 +16,27 @@
     #studioImage {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: cover; opacity: 0; z-index: 1; transition: opacity 1.5s ease-in-out;
+      pointer-events: none;
     }
 
     header, main { position: relative; z-index: 10; }
     
     header {
       display: flex; justify-content: space-between; align-items: center; padding: 30px 50px;
-      position: relative; z-index: 150;
+      position: relative; z-index: 5000; pointer-events: none;
     }
-    .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
+    .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; pointer-events: auto; }
     .logo span { color: #fbbf24; }
     
-    .nav-buttons { display: flex; gap: 15px; align-items: center; pointer-events: auto; position: relative; z-index: 200; }
+    .nav-buttons { display: flex; gap: 15px; align-items: center; pointer-events: auto; position: relative; z-index: 5000; }
     .lounge-btn {
       padding: 10px 20px; border-radius: 30px; background-color: white; color: black;
-      font-weight: bold; text-decoration: none; font-size: 0.9rem;
+      font-weight: bold; text-decoration: none; font-size: 0.9rem; pointer-events: auto;
     }
     .login-btn {
       padding: 10px 20px; border-radius: 30px; background-color: #a855f7; color: white;
       font-weight: bold; text-decoration: none; font-size: 0.9rem; border: 1px solid #a855f7; cursor: pointer;
-      position: relative; z-index: 200;
+      position: relative; z-index: 5000; pointer-events: auto;
     }
     
     .wallet-display {
@@ -55,7 +56,8 @@
       border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 40px;
       backdrop-filter: blur(15px);
       box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(168, 85, 247, 0.2);
-      display: flex; align-items: center; gap: 25px; z-index: 100; white-space: nowrap;
+      display: flex; align-items: center; gap: 25px; z-index: 1000; white-space: nowrap;
+      pointer-events: none;
     }
     
     .billboard-title {
@@ -89,7 +91,7 @@
     .title { font-size: 6rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; transition: opacity 1.5s ease; }
     .title .dot { color: #fbbf24; }
 
-    .input-wrapper { position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; z-index: 20; }
+    .input-wrapper { position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; z-index: 2000; pointer-events: auto; }
     
     input[type="text"] {
       width: 100%; padding: 20px 30px; border-radius: 40px; border: 1px solid #333;
@@ -100,7 +102,8 @@
     }
 
     #chatContainer {
-      position: absolute; top: 20%; left: 50%; transform: translateX(-50%); width: 80%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; z-index: 100;
+      position: absolute; top: 20%; left: 50%; transform: translateX(-50%); width: 80%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; z-index: 1000;
+      pointer-events: none;
     }
     .ai-message {
       padding: 20px; border-radius: 12px; color: white; font-size: 1.1rem; backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85); animation: fadeUp 0.5s forwards; line-height: 1.6;
@@ -108,8 +111,8 @@
     .yin-msg { border-left: 5px solid #a855f7; }
     .yang-msg { border-left: 5px solid #fbbf24; }
 
-    #modalOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 9999; }
-    #loginModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 40px; border-radius: 20px; background: rgba(15,15,20,0.9); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 0 40px rgba(168,85,247,0.2); z-index: 10000; text-align: center; }
+    #modalOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999999; pointer-events: auto; }
+    #loginModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 40px; border-radius: 20px; background: rgba(15,15,20,0.9); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 0 40px rgba(168,85,247,0.2); z-index: 1000000; text-align: center; pointer-events: auto; }
     #loginModal h2 { margin: 0 0 10px 0; font-weight: 900; }
     #loginModal p { color: #888; font-size: 0.9rem; margin-bottom: 30px; }
     .sns-buttons { display: flex; justify-content: center; gap: 15px; }
@@ -140,11 +143,11 @@
     </div>
   </div>
 
-  <header>
-    <div class="logo">APPVERZE<span>.</span></div>
-    <div class="nav-buttons">
-      <a href="#" class="lounge-btn" style="position:relative; z-index:200;">LOUNGE HUB</a>
-      <button type="button" class="login-btn" id="openLoginBtn">LOGIN / JOIN</button>
+  <header style="position:relative; z-index:5000; pointer-events:none;">
+    <div class="logo" style="pointer-events:auto;">APPVERZE<span>.</span></div>
+    <div class="nav-buttons" style="pointer-events:auto;">
+      <a href="#" class="lounge-btn" style="position:relative; z-index:5000; pointer-events:auto;">LOUNGE HUB</a>
+      <button type="button" class="login-btn" id="openLoginBtn" style="position:relative; z-index:5000; pointer-events:auto; cursor:pointer;" onclick="openLoginModal(); return false;">LOGIN / JOIN</button>
       <div class="wallet-display" id="walletDisplay">
         <span class="coin-icon">💎</span><span class="coin-amount">1,000 APV</span>
       </div>
@@ -183,6 +186,23 @@
     </div>
   </div>
 
+  <script>
+    function openLoginModal() {
+      const modal = document.getElementById('loginModal');
+      const overlay = document.getElementById('modalOverlay');
+      if (modal) modal.style.display = 'block';
+      if (overlay) overlay.style.display = 'block';
+      const errEl = document.getElementById('loginError');
+      if (errEl) errEl.textContent = '';
+    }
+
+    function closeLoginModal() {
+      const modal = document.getElementById('loginModal');
+      const overlay = document.getElementById('modalOverlay');
+      if (modal) modal.style.display = 'none';
+      if (overlay) overlay.style.display = 'none';
+    }
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
     /* 🚀 인간 + AI = 가치 상승의 완벽한 마법 로직 */
@@ -234,14 +254,8 @@
     const modalOverlay = document.getElementById('modalOverlay');
     const walletDisplay = document.getElementById('walletDisplay');
 
-    openLoginBtn.addEventListener('click', () => {
-      loginModal.style.display = 'block';
-      modalOverlay.style.display = 'block';
-      const errEl = document.getElementById('loginError');
-      if (errEl) errEl.textContent = '';
-      chatBox.innerHTML = '';
-    });
-    function closeModal() { loginModal.style.display = 'none'; modalOverlay.style.display = 'none'; }
+    openLoginBtn.addEventListener('click', openLoginModal);
+    function closeModal() { closeLoginModal(); }
     closeLoginBtn.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
 
