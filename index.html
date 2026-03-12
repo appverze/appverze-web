@@ -194,6 +194,31 @@
       border-color: #a855f7;
       background: #a855f7;
     }
+    .oauth-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .oauth-btn {
+      border: 1px solid #3b4258;
+      background: #20263a;
+      color: #fff;
+      padding: 10px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .oauth-btn.kakao {
+      background: #fee500;
+      color: #1f1f1f;
+      border-color: #fee500;
+    }
+    .oauth-btn.naver {
+      background: #03c75a;
+      color: #ffffff;
+      border-color: #03c75a;
+    }
 
     /* 전광판 */
     .billboard {
@@ -437,6 +462,10 @@
         <button class="auth-btn" id="authCancelBtn" type="button">닫기</button>
         <button class="auth-btn primary" id="authSubmitBtn" type="button">EMAIL LOGIN / JOIN</button>
       </div>
+      <div class="oauth-actions">
+        <button class="oauth-btn kakao" id="kakaoLoginBtn" type="button">카카오 로그인</button>
+        <button class="oauth-btn naver" id="naverLoginBtn" type="button">네이버 로그인</button>
+      </div>
     </div>
   </div>
 
@@ -526,8 +555,17 @@
     const authError = document.getElementById('authError');
     const authSubmitBtn = document.getElementById('authSubmitBtn');
     const authCancelBtn = document.getElementById('authCancelBtn');
+    const kakaoLoginBtn = document.getElementById('kakaoLoginBtn');
+    const naverLoginBtn = document.getElementById('naverLoginBtn');
     let supabaseClient = null;
     let currentSession = null;
+
+    function setAuthBusy(isBusy) {
+      authSubmitBtn.disabled = isBusy;
+      authCancelBtn.disabled = isBusy;
+      kakaoLoginBtn.disabled = isBusy;
+      naverLoginBtn.disabled = isBusy;
+    }
 
     function playHolodeckMusic() {
       if (!holodeckMusic) return;
@@ -599,7 +637,7 @@
         return;
       }
 
-      authSubmitBtn.disabled = true;
+      setAuthBusy(true);
       setAuthError('');
 
       try {
@@ -635,7 +673,29 @@
         console.error(err);
         setAuthError(err?.message || '로그인 중 오류가 발생했습니다.');
       } finally {
-        authSubmitBtn.disabled = false;
+        setAuthBusy(false);
+      }
+    }
+
+    async function handleOAuthLogin(provider) {
+      if (!supabaseClient) {
+        setAuthError('로그인 서버 설정을 확인해주세요.');
+        return;
+      }
+      setAuthBusy(true);
+      setAuthError('');
+      try {
+        const { error } = await supabaseClient.auth.signInWithOAuth({
+          provider,
+          options: {
+            redirectTo: `${window.location.origin}${window.location.pathname}`,
+          },
+        });
+        if (error) throw error;
+      } catch (err) {
+        console.error(err);
+        setAuthError(err?.message || '소셜 로그인 중 오류가 발생했습니다.');
+        setAuthBusy(false);
       }
     }
 
@@ -790,6 +850,12 @@
     });
     authCancelBtn.addEventListener('click', closeAuthModal);
     authSubmitBtn.addEventListener('click', handleEmailAuth);
+    kakaoLoginBtn.addEventListener('click', function () {
+      handleOAuthLogin('kakao');
+    });
+    naverLoginBtn.addEventListener('click', function () {
+      handleOAuthLogin('naver');
+    });
     authModal.addEventListener('click', function (e) {
       if (e.target === authModal) closeAuthModal();
     });
