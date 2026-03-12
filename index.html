@@ -51,26 +51,6 @@
     .ai-message { padding: 15px 20px; border-radius: 0 12px 12px 12px; color: white; font-size: 1.1rem; backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85); line-height: 1.6; border: 1px solid rgba(255,255,255,0.1); flex: 1; }
     #loadingText { display: none; position: absolute; top: -30px; left: 0; width: 100%; text-align: center; color: #fbbf24; font-weight: bold; font-size: 1rem; animation: blink 1s infinite; text-shadow: 0 0 10px rgba(251,191,36,0.8); }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    #didAgentPanel {
-      display: none;
-      position: fixed;
-      right: 18px;
-      bottom: 18px;
-      width: 360px;
-      height: 520px;
-      border-radius: 16px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(8, 8, 14, 0.88);
-      box-shadow: 0 12px 36px rgba(0,0,0,0.45);
-      z-index: 120;
-    }
-    #didAgentPanel iframe {
-      width: 100%;
-      height: 100%;
-      border: 0;
-      background: #000;
-    }
 
     /* Mobile optimization */
     @media (max-width: 768px) {
@@ -109,13 +89,6 @@
       .submit-btn { width: 30px; height: 30px; right: 10px; }
 
       #loadingText { top: -24px; font-size: 0.82rem; }
-      #didAgentPanel {
-        left: 10px;
-        right: 10px;
-        bottom: 10px;
-        width: auto;
-        height: 46vh;
-      }
     }
   </style>
 </head>
@@ -145,10 +118,6 @@
       <button class="submit-btn" id="submitBtn"></button>
     </div>
   </main>
-  <div id="didAgentPanel">
-    <iframe id="didAgentFrame" title="D-ID Agent" allow="camera; microphone; autoplay; clipboard-write"></iframe>
-  </div>
-
   <script>
     // 🚨 여기서 API 키는 완전히 사라졌습니다! 해커가 절대 훔쳐갈 수 없습니다. 🚨
     const YIN_IMAGE = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=500&fit=crop";
@@ -169,9 +138,23 @@
     const holodeck = document.getElementById('holodeck');
     const searchBox = document.getElementById('searchBox');
     const submitBtn = document.getElementById('submitBtn');
-    const didAgentPanel = document.getElementById('didAgentPanel');
-    const didAgentFrame = document.getElementById('didAgentFrame');
-    const didAgentUrl = "https://studio.d-id.com/agents/share?id=v2_agt_J-EKRcqE&utm_source=copy&key=WjI5dloyeGxMVzloZFhSb01ud3hNRGs0TURrMk9ETTJNamc0TmprMU9URXhNRGM2TmtaVVNFdGpPVTAwU0dKd1EwTkhWWFpWYnpKVw==";
+    let didAgentLoaded = false;
+    function loadDidAgentWidget() {
+      if (didAgentLoaded || document.querySelector('script[data-name="did-agent"]')) return;
+      const s = document.createElement('script');
+      s.type = 'module';
+      s.src = 'https://agent.d-id.com/v2/index.js';
+      s.setAttribute('data-mode', 'fabio');
+      s.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDk4MDk2ODM2Mjg4Njk1OTExMDc6NkZUSEtjOU00SGJwQ0NHVXZVbzJW');
+      s.setAttribute('data-agent-id', 'v2_agt_J-EKRcqE');
+      s.setAttribute('data-name', 'did-agent');
+      s.setAttribute('data-monitor', 'true');
+      s.setAttribute('data-orientation', 'horizontal');
+      s.setAttribute('data-position', 'right');
+      s.setAttribute('data-open-mode', 'expanded');
+      document.body.appendChild(s);
+      didAgentLoaded = true;
+    }
 
     function appendFallbackMessage(name, imgSrc, boxClass, textToSay, triggerHolodeck) {
       const msgWrapper = document.createElement('div');
@@ -268,8 +251,7 @@
 
         if(userText.includes('방') || userText.includes('룸') || userText.includes('방송국')) {
           appendFallbackMessage('Yang (실행)', YANG_IMAGE, 'yang-video-box', `명령어 확인. 코어 엔진 가동, 3D 룸과 D-ID 캐릭터를 활성화합니다!`, true);
-          if (didAgentFrame && !didAgentFrame.src) didAgentFrame.src = didAgentUrl;
-          if (didAgentPanel) didAgentPanel.style.display = 'block';
+          loadDidAgentWidget();
         } else {
           title.style.opacity = '0'; searchBox.style.transform = 'translateY(150px)';
           addRealVideoMessage('Yin (감성)', YIN_IMAGE, '', `안녕하세요! "${userText}" 라고 말씀하셨군요. 저는 앱버즈의 감성 AI Yin입니다. 제 입모양이 움직이는 게 보이시나요?`, 'ko-KR-SunHiNeural', false);
