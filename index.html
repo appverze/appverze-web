@@ -568,7 +568,7 @@
     let supabaseClient = null;
     let currentSession = null;
     const KAKAO_LOGIN_URL = 'https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26client_id%3Df1e1b1fa718719b137cded2b76431d62%26redirect_uri%3Dhttps%253A%252F%252Fntis.go.kr%252FThLoginKaKao.do%26state%3Dhttps%253A%252F%252Fwww.ntis.go.kr%252FThUserRegister.do%26through_account%3Dtrue%26auth_tran_id%3DS2ECVHkigSf9ee_hPMS9TU1VjDXCFkLE6VA2yz9DChcSLQAAAZzgnTEH#login';
-    const NAVER_LOGIN_URL = 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=N2k6Zh7Q4Lh1_FGPP_ag&redirect_uri=https://ntis.go.kr/ThLoginNaver.do&state=https%3A%2F%2Fwww.ntis.go.kr%2FThMain.do';
+    const NAVER_LOGIN_URL = 'https://nid.naver.com/nidlogin.login?mode=form&url=https://www.naver.com/';
 
     function setAuthBusy(isBusy) {
       authSubmitBtn.disabled = isBusy;
