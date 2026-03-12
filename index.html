@@ -308,6 +308,11 @@
     <div class="grid-floor"></div>
   </div>
 
+  <!-- 3D 룸 배경 음악 -->
+  <audio id="holodeckMusic" loop>
+    <source src="https://cdn.pixabay.com/download/audio/2021/08/08/audio_c318d9b3c3.mp3?filename=cyberpunk-moonlight-sonata-9937.mp3" type="audio/mpeg">
+  </audio>
+
   <div class="billboard" id="supplyBillboard">
     <div class="billboard-title">🌐 APPVERZE <span id="boardEcosystem">ECOSYSTEM</span></div>
     <div class="billboard-data">
@@ -410,6 +415,18 @@
     const holodeck = document.getElementById('holodeck');
     const searchBox = document.getElementById('searchBox');
     const submitBtn = document.getElementById('submitBtn');
+    const holodeckMusic = document.getElementById('holodeckMusic');
+
+    function playHolodeckMusic() {
+      if (!holodeckMusic) return;
+      holodeckMusic.volume = 0.4;
+      const p = holodeckMusic.play();
+      if (p && typeof p.then === 'function') {
+        p.catch(() => {
+          // 브라우저 자동재생 정책으로 막혀도 조용히 무시
+        });
+      }
+    }
 
     // D-ID 실패 시에도 3D 룸을 보여주는 폴백 메시지
     function appendFallbackMessage(name, imgSrc, boxClass, textToSay, triggerHolodeck) {
@@ -427,6 +444,7 @@
         title.style.opacity = '0';
         holodeck.style.opacity = '1';
         searchBox.style.transform = 'translateY(150px)';
+        playHolodeckMusic();
       }
     }
 
@@ -494,6 +512,7 @@
             title.style.opacity = '0';
             holodeck.style.opacity = '1';
             searchBox.style.transform = 'translateY(150px)';
+            playHolodeckMusic();
           }
         }
       } catch (error) {
