@@ -16,28 +16,41 @@
     #studioImage { display: none; }
 
     /* =========================================
-       무적의 3D 액자(Iframe) 컨테이너 세팅!
+       🚀 무적의 자체 3D 홀로그램 엔진 (Holodeck)
+       외부 사진/서버 없이 순수 수학 코드로 만들어 절대 안 막힘!
        ========================================= */
-    #splineContainer {
+    #holodeck {
       position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      z-index: 1; opacity: 0; transition: opacity 2s ease-in-out;
-      pointer-events: none; 
-      display: flex; justify-content: center; align-items: center;
+      background: #050508;
+      perspective: 1000px; /* 3D 원근감 부여 */
+      opacity: 0; z-index: 1; transition: opacity 1.5s ease-in-out;
+      pointer-events: none; overflow: hidden;
+    }
+    
+    /* 3D로 움직이는 보라색 네온 바닥 */
+    .grid-floor {
+      position: absolute; bottom: -80%; left: -50%; width: 200%; height: 200%;
+      background-image: 
+        linear-gradient(rgba(168, 85, 247, 0.7) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(168, 85, 247, 0.7) 2px, transparent 2px);
+      background-size: 80px 80px;
+      transform: rotateX(80deg); /* 바닥을 평평하게 눕힘 */
+      animation: gridMove 2s linear infinite; /* 앞으로 달려가는 애니메이션 */
+    }
+    
+    /* 멀어질수록 어두워지는 원근감 효과 */
+    .fade-cover {
+      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(to bottom, #050508 30%, transparent 100%);
+      z-index: 2;
     }
 
-    /* 3D 파일이 무거울 때 나타나는 로딩 글씨 */
-    .loading-text {
-      position: absolute;
-      color: #fbbf24; font-size: 1.5rem; font-weight: bold; letter-spacing: 2px;
-      text-shadow: 0 0 15px rgba(251, 191, 36, 0.5);
-      animation: blink 1.5s infinite; z-index: 1;
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 80px; }
     }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    /* 본사 서버 화면을 그대로 비춰주는 액자 */
-    #splineContainer iframe {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; z-index: 2;
-    }
+    /* ----------------------------------------- */
 
     header, main { position: relative; z-index: 10; pointer-events: auto; }
     
@@ -62,13 +75,7 @@
     .coin-amount { font-weight: bold; color: #fbbf24; font-size: 1rem; }
 
     .billboard {
-      position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
-      padding: 10px 30px; background: rgba(10, 10, 15, 0.85);
-      border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 40px;
-      backdrop-filter: blur(15px);
-      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(168, 85, 247, 0.2);
-      display: flex; align-items: center; gap: 25px; z-index: 100; white-space: nowrap;
-      pointer-events: none;
+      position: fixed; top: 25px; left: 50%; transform: translateX(-50%); padding: 10px 30px; background: rgba(10, 10, 15, 0.85); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 40px; backdrop-filter: blur(15px); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(168, 85, 247, 0.2); display: flex; align-items: center; gap: 25px; z-index: 100; white-space: nowrap;
     }
     .billboard-title { font-size: 0.8rem; color: #ccc; letter-spacing: 1px; font-weight: bold; margin: 0; }
     .billboard-title span { color: #a855f7; }
@@ -89,7 +96,7 @@
     .title { font-size: 6rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; transition: opacity 1.5s ease; pointer-events: none; }
     .title .dot { color: #fbbf24; }
 
-    .input-wrapper { position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; z-index: 2000; pointer-events: auto; }
+    .input-wrapper { position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; z-index: 20; }
     
     input[type="text"] { width: 100%; padding: 20px 30px; border-radius: 40px; border: 1px solid #333; background-color: rgba(255, 255, 255, 0.05); color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; backdrop-filter: blur(10px); }
     .submit-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer; }
@@ -111,9 +118,9 @@
 </head>
 <body>
 
-  <div id="splineContainer">
-    <div class="loading-text">🚀 3D 엔진 데이터 로딩 중... (최대 10초)</div>
-    <iframe src="https://my.spline.design/miniroomartcopy-c8d19d7e5d59f77f985ddcfd9e80e227/" frameborder="0" width="100%" height="100%"></iframe>
+  <div id="holodeck">
+    <div class="fade-cover"></div>
+    <div class="grid-floor"></div>
   </div>
 
   <div class="billboard" id="supplyBillboard">
@@ -129,7 +136,7 @@
     <div class="logo">APPVERZE<span>.</span></div>
     <div class="nav-buttons">
       <a href="#" class="lounge-btn">LOUNGE HUB</a>
-      <button type="button" class="login-btn" id="openLoginBtn">LOGIN / JOIN</button>
+      <button class="login-btn" id="openLoginBtn">LOGIN / JOIN</button>
       <div class="wallet-display" id="walletDisplay"><span class="coin-icon">💎</span><span class="coin-amount">1,000 APV</span></div>
     </div>
   </header>
@@ -177,7 +184,7 @@
     const submitBtn = document.getElementById('submitBtn');
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
-    const splineContainer = document.getElementById('splineContainer');
+    const holodeck = document.getElementById('holodeck');
 
     const openLoginBtn = document.getElementById('openLoginBtn');
     const closeLoginBtn = document.getElementById('closeLoginBtn');
@@ -261,15 +268,14 @@
         if(userText.includes('방송국') || userText.includes('3d') || userText.includes('3D') || userText.includes('방')) {
           setTimeout(() => {
             const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg';
-            yangMessage.innerHTML = `<strong>Yang (실행):</strong> 외부 3D 엔진(Spline) Iframe 연동 확인. 실시간 3D 공간을 비춥니다! ⚡`;
+            yangMessage.innerHTML = `<strong>Yang (실행):</strong> 앱버즈 코어 엔진 가동. 자체 3D 가상현실 룸(Holodeck)을 즉시 생성합니다! ⚡`;
             chatBox.appendChild(yangMessage);
 
             setTimeout(() => {
               title.style.opacity = '0'; 
               
-              /* 마법의 스위치 켜기 */
-              splineContainer.style.opacity = '1'; 
-              splineContainer.style.pointerEvents = 'auto'; /* 마우스 조작 가능! */
+              /* 앱버즈 자체 3D 홀로그램 스위치 ON! */
+              holodeck.style.opacity = '1'; 
 
               searchBox.style.transform = 'translateY(150px)'; 
             }, 1000);
