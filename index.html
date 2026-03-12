@@ -51,6 +51,45 @@
     .ai-message { padding: 15px 20px; border-radius: 0 12px 12px 12px; color: white; font-size: 1.1rem; backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85); line-height: 1.6; border: 1px solid rgba(255,255,255,0.1); flex: 1; }
     #loadingText { display: none; position: absolute; top: -30px; left: 0; width: 100%; text-align: center; color: #fbbf24; font-weight: bold; font-size: 1rem; animation: blink 1s infinite; text-shadow: 0 0 10px rgba(251,191,36,0.8); }
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+    /* Mobile optimization */
+    @media (max-width: 768px) {
+      header { padding: 16px 14px; }
+      .logo { font-size: 1.1rem; }
+      .login-btn { padding: 8px 12px; font-size: 0.75rem; }
+
+      .billboard {
+        top: 10px;
+        width: calc(100% - 16px);
+        padding: 8px 10px;
+        gap: 10px;
+      }
+      .billboard-title { font-size: 0.64rem; }
+      .billboard-data { gap: 10px; }
+      .data-label { font-size: 0.58rem; }
+      .data-value { font-size: 0.8rem; }
+
+      .title {
+        font-size: 2.25rem;
+        margin-top: 24px;
+        margin-bottom: 14px;
+      }
+
+      #chatContainer {
+        top: 14%;
+        width: 94%;
+        gap: 12px;
+      }
+      .msg-wrapper { gap: 10px; }
+      .ai-video-box { width: 84px; height: 84px; border-width: 2px; }
+      .ai-message { font-size: 0.92rem; padding: 12px; }
+
+      .input-wrapper { width: 94%; }
+      input[type="text"] { padding: 14px 16px; font-size: 0.95rem; }
+      .submit-btn { width: 30px; height: 30px; right: 10px; }
+
+      #loadingText { top: -24px; font-size: 0.82rem; }
+    }
   </style>
 </head>
 <body>
