@@ -161,9 +161,10 @@
     <p>당신의 상상이 현실이 되는 곳, 앱버즈에 오신 것을 환영합니다.</p>
     
     <div class="email-login">
-      <input type="email" placeholder="이메일 주소">
-      <input type="password" placeholder="비밀번호 설정">
-      <button onclick="simulateLogin('이메일')">APPVERZE 시작하기</button>
+      <input type="email" id="loginEmail" placeholder="이메일 주소" autocomplete="email">
+      <input type="password" id="loginPassword" placeholder="비밀번호 설정" autocomplete="current-password">
+      <p id="loginError" style="color:#ef4444;font-size:0.85rem;margin:-5px 0 10px 0;min-height:20px;"></p>
+      <button id="emailAuthBtn" onclick="handleEmailAuth()">APPVERZE 시작하기</button>
     </div>
 
     <div class="divider">또는 빠른 연계 가입</div>
@@ -176,6 +177,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
     const inputField = document.getElementById('chatInput');
     const chatBox = document.getElementById('chatContainer');
@@ -184,7 +186,20 @@
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
 
-    // 모달창 컨트롤
+    let supabase = null;
+
+    // Supabase 설정 로드 및 초기화
+    (async function initSupabase() {
+      try {
+        const res = await fetch('/api/supabase-config');
+        if (!res.ok) throw new Error('Supabase 설정을 불러올 수 없습니다.');
+        const { supabaseUrl, supabaseAnonKey } = await res.json();
+        supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+      } catch (e) {
+        console.warn('Supabase init:', e.message);
+      }
+    })();
+
     const openLoginBtn = document.getElementById('openLoginBtn');
     const closeLoginBtn = document.getElementById('closeLoginBtn');
     const loginModal = document.getElementById('loginModal');
@@ -193,8 +208,7 @@
     openLoginBtn.addEventListener('click', () => {
       loginModal.style.display = 'block';
       modalOverlay.style.display = 'block';
-      
-      // 모달창을 열 때 AI가 인사말을 건네는 효과
+      document.getElementById('loginError').textContent = '';
       chatBox.innerHTML = '';
       setTimeout(() => {
         const yinMessage = document.createElement('div');
@@ -212,17 +226,69 @@
       modalOverlay.style.display = 'none';
     }
 
-    // 가입 버튼을 눌렀을 때 AI가 반응하는 마법!
-    function simulateLogin(method) {
-      closeModal(); // 창 닫기
-      chatBox.innerHTML = ''; 
-
+    function showAuthSuccess(method, isSignUp) {
+      closeModal();
+      chatBox.innerHTML = '';
+      const msg = isSignUp ? '계정이 생성되었습니다' : '로그인되었습니다';
       setTimeout(() => {
-        const yangMessage = document.createElement('div');
-        yangMessage.className = 'ai-message yang-msg';
-        yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] 안전 인증 완료. 계정이 생성되었습니다. 당신만의 우주(Universe)를 세팅합니다. ⚡`;
-        chatBox.appendChild(yangMessage);
+        const m = document.createElement('div');
+        m.className = 'ai-message yang-msg';
+        m.innerHTML = `<strong>Yang (실행):</strong> [${method}] ${msg}. 당신만의 우주(Universe)를 세팅합니다. ⚡`;
+        chatBox.appendChild(m);
       }, 500);
+    }
+
+    async function handleEmailAuth() {
+      const emailEl = document.getElementById('loginEmail');
+      const pwEl = document.getElementById('loginPassword');
+      const errEl = document.getElementById('loginError');
+      const btn = document.getElementById('emailAuthBtn');
+      const email = (emailEl.value || '').trim();
+      const password = pwEl.value || '';
+
+      errEl.textContent = '';
+      if (!email) { errEl.textContent = '이메일을 입력해 주세요.'; return; }
+      if (password.length < 6) { errEl.textContent = '비밀번호는 6자 이상이어야 합니다.'; return; }
+
+      if (!supabase) {
+        errEl.textContent = '인증 서비스 설정 중입니다. 잠시 후 다시 시도해 주세요.';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = '처리 중...';
+
+      try {
+        const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({ email, password });
+        if (signUpErr) {
+          if (signUpErr.message && signUpErr.message.includes('already registered')) {
+            const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
+            if (signInErr) throw signInErr;
+            showAuthSuccess('이메일', false);
+            return;
+          }
+          throw signUpErr;
+        }
+        showAuthSuccess('이메일', true);
+      } catch (e) {
+        errEl.textContent = e.message || '오류가 발생했습니다. 다시 시도해 주세요.';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'APPVERZE 시작하기';
+      }
+    }
+
+    function simulateLogin(method) {
+      if (method !== '이메일') {
+        closeModal();
+        chatBox.innerHTML = '';
+        setTimeout(() => {
+          const m = document.createElement('div');
+          m.className = 'ai-message yang-msg';
+          m.innerHTML = `<strong>Yang (실행):</strong> [${method}] 준비 중입니다. 이메일 로그인을 이용해 주세요. ⚡`;
+          chatBox.appendChild(m);
+        }, 500);
+      }
     }
 
     // 기존 방송국 생성 코드
