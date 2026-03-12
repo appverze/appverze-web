@@ -95,7 +95,6 @@
       width: 58px;
       height: 58px;
       flex: 0 0 58px;
-      animation: globeOrbit 4.8s ease-in-out infinite;
       transform-origin: center center;
     }
     .logo-globe-shadow {
@@ -156,7 +155,7 @@
       overflow: hidden;
       transform-style: preserve-3d;
       z-index: 2;
-      animation: logoGlow 3s ease-in-out infinite alternate;
+      animation: logoGlow 3s ease-in-out infinite alternate, globeTurn 6s linear infinite;
     }
     .logo-globe::before {
       content: "";
@@ -224,12 +223,10 @@
       0% { filter: drop-shadow(0 6px 18px rgba(34, 211, 238, 0.18)); }
       100% { filter: drop-shadow(0 8px 24px rgba(34, 211, 238, 0.38)); }
     }
-    @keyframes globeOrbit {
-      0% { transform: perspective(600px) rotateY(0deg) rotate(-1.2deg) scale(1); }
-      25% { transform: perspective(600px) rotateY(10deg) rotate(-0.4deg) scale(0.985); }
-      50% { transform: perspective(600px) rotateY(18deg) rotate(0.8deg) scale(0.97); }
-      75% { transform: perspective(600px) rotateY(10deg) rotate(0.2deg) scale(0.985); }
-      100% { transform: perspective(600px) rotateY(0deg) rotate(-1.2deg) scale(1); }
+    @keyframes globeTurn {
+      0% { transform: perspective(500px) rotateY(0deg); }
+      50% { transform: perspective(500px) rotateY(180deg); }
+      100% { transform: perspective(500px) rotateY(360deg); }
     }
     @keyframes globeSurfaceSpin {
       0% { transform: translateX(0) rotate(0deg); }
