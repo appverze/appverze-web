@@ -16,7 +16,7 @@
 
     header, main { position: relative; z-index: 10; pointer-events: auto; }
     header { display: flex; justify-content: space-between; align-items: center; padding: 30px 50px; }
-    .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; } .logo span { color: #fbbf24; }
+    .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; color: white; text-decoration: none; cursor: pointer; } .logo span { color: #fbbf24; }
     .nav-buttons { display: flex; gap: 15px; align-items: center; }
     .lounge-btn, .login-btn { padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 0.9rem; cursor: pointer; }
     .lounge-btn { background-color: white; color: black; text-decoration: none; }
@@ -66,7 +66,7 @@
   </div>
 
   <header>
-    <div class="logo">APPVERZE<span>.</span></div>
+    <a href="/" class="logo">APPVERZE<span>.</span></a>
     <div class="nav-buttons"><button class="login-btn">LOGIN</button></div>
   </header>
 
@@ -156,7 +156,7 @@
           if (checkData.status === 'done') {
             videoUrl = checkData.result_url; 
           } else if (checkData.status === 'error') {
-            alert("영상 렌더링 에러 발생!"); break;
+            throw new Error('D-ID rendering failed');
           }
         }
 
