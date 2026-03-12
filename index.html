@@ -87,7 +87,7 @@
       display: block;
       overflow: visible;
       perspective: 600px;
-      animation: logoFloat 4s ease-in-out infinite, logoSway 4.2s ease-in-out infinite;
+      animation: logoFloat 4s ease-in-out infinite, logoTurnAll 4.8s ease-in-out infinite;
       transform-origin: center center;
     }
     .logo-mark::before {
@@ -116,10 +116,8 @@
     }
     .logo-globe {
       clip-path: inset(0 62% 0 0);
-      animation:
-        logoGlow 3s ease-in-out infinite alternate,
-        globeTurn 3.2s ease-in-out infinite;
-      transform-origin: 24% 50%;
+      animation: logoGlow 3s ease-in-out infinite alternate;
+      transform-origin: center center;
       backface-visibility: hidden;
     }
     .logo-wordmark {
@@ -140,16 +138,12 @@
       0% { filter: drop-shadow(0 6px 18px rgba(34, 211, 238, 0.18)); }
       100% { filter: drop-shadow(0 8px 24px rgba(34, 211, 238, 0.38)); }
     }
-    @keyframes logoSway {
-      0%, 100% { transform: rotate(-1.5deg) scale(1); }
-      50% { transform: rotate(1.5deg) scale(1.01); }
-    }
-    @keyframes globeTurn {
-      0% { transform: perspective(600px) rotateY(0deg) rotate(-3deg) scaleX(1) scaleY(1); }
-      25% { transform: perspective(600px) rotateY(28deg) rotate(0deg) scaleX(0.88) scaleY(1.02); }
-      50% { transform: perspective(600px) rotateY(0deg) rotate(3deg) scaleX(0.72) scaleY(1.05); }
-      75% { transform: perspective(600px) rotateY(-28deg) rotate(0deg) scaleX(0.88) scaleY(1.02); }
-      100% { transform: perspective(600px) rotateY(0deg) rotate(-3deg) scaleX(1) scaleY(1); }
+    @keyframes logoTurnAll {
+      0% { transform: perspective(600px) rotateY(0deg) rotate(-1.2deg) scale(1); }
+      25% { transform: perspective(600px) rotateY(10deg) rotate(-0.4deg) scale(0.985); }
+      50% { transform: perspective(600px) rotateY(18deg) rotate(0.8deg) scale(0.97); }
+      75% { transform: perspective(600px) rotateY(10deg) rotate(0.2deg) scale(0.985); }
+      100% { transform: perspective(600px) rotateY(0deg) rotate(-1.2deg) scale(1); }
     }
     @keyframes globeShine {
       0% { transform: translateX(-18px) rotate(-10deg); opacity: 0.18; }
