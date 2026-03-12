@@ -87,7 +87,7 @@
       gap: 12px;
       height: 58px;
       perspective: 700px;
-      animation: logoFloat 4s ease-in-out infinite, logoTurnAll 4.8s ease-in-out infinite;
+      animation: logoFloat 4s ease-in-out infinite;
       transform-origin: center center;
     }
     .logo-globe-wrap {
@@ -95,6 +95,8 @@
       width: 58px;
       height: 58px;
       flex: 0 0 58px;
+      animation: globeOrbit 4.8s ease-in-out infinite;
+      transform-origin: center center;
     }
     .logo-globe-shadow {
       position: absolute;
@@ -200,6 +202,11 @@
       animation-play-state: paused;
       transform: scale(1.04);
     }
+    .logo:hover .logo-globe-wrap,
+    .logo:hover .logo-globe,
+    .logo:hover .logo-globe::before {
+      animation-play-state: paused;
+    }
     @keyframes logoFloat {
       0%, 100% { transform: translateY(0px); }
       50% { transform: translateY(-4px); }
@@ -208,7 +215,7 @@
       0% { filter: drop-shadow(0 6px 18px rgba(34, 211, 238, 0.18)); }
       100% { filter: drop-shadow(0 8px 24px rgba(34, 211, 238, 0.38)); }
     }
-    @keyframes logoTurnAll {
+    @keyframes globeOrbit {
       0% { transform: perspective(600px) rotateY(0deg) rotate(-1.2deg) scale(1); }
       25% { transform: perspective(600px) rotateY(10deg) rotate(-0.4deg) scale(0.985); }
       50% { transform: perspective(600px) rotateY(18deg) rotate(0.8deg) scale(0.97); }
