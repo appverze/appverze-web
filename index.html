@@ -155,7 +155,7 @@
       overflow: hidden;
       transform-style: preserve-3d;
       z-index: 2;
-      animation: logoGlow 3s ease-in-out infinite alternate, globeTurn 6s linear infinite;
+      animation: logoGlow 3s ease-in-out infinite alternate, globeSpin 6s linear infinite;
     }
     .logo-globe::before {
       content: "";
@@ -223,10 +223,9 @@
       0% { filter: drop-shadow(0 6px 18px rgba(34, 211, 238, 0.18)); }
       100% { filter: drop-shadow(0 8px 24px rgba(34, 211, 238, 0.38)); }
     }
-    @keyframes globeTurn {
-      0% { transform: perspective(500px) rotateY(0deg); }
-      50% { transform: perspective(500px) rotateY(180deg); }
-      100% { transform: perspective(500px) rotateY(360deg); }
+    @keyframes globeSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
     @keyframes globeSurfaceSpin {
       0% { transform: translateX(0) rotate(0deg); }
