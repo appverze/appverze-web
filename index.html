@@ -13,114 +13,103 @@
       display: flex; flex-direction: column; overflow: hidden;
     }
 
-    #studioImage { display: none; }
-
-    /* =========================================
-       🚀 무적의 자체 3D 홀로그램 엔진 (Holodeck)
-       외부 사진/서버 없이 순수 수학 코드로 만들어 절대 안 막힘!
-       ========================================= */
+    /* 자체 3D 홀로그램 룸 */
     #holodeck {
-      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: #050508;
-      perspective: 1000px; /* 3D 원근감 부여 */
-      opacity: 0; z-index: 1; transition: opacity 1.5s ease-in-out;
-      pointer-events: none; overflow: hidden;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050508;
+      perspective: 1000px; opacity: 0; z-index: 1; transition: opacity 1.5s ease-in-out; pointer-events: none; overflow: hidden;
     }
-    
-    /* 3D로 움직이는 보라색 네온 바닥 */
     .grid-floor {
       position: absolute; bottom: -80%; left: -50%; width: 200%; height: 200%;
-      background-image: 
-        linear-gradient(rgba(168, 85, 247, 0.7) 2px, transparent 2px),
-        linear-gradient(90deg, rgba(168, 85, 247, 0.7) 2px, transparent 2px);
-      background-size: 80px 80px;
-      transform: rotateX(80deg); /* 바닥을 평평하게 눕힘 */
-      animation: gridMove 2s linear infinite; /* 앞으로 달려가는 애니메이션 */
+      background-image: linear-gradient(rgba(168, 85, 247, 0.7) 2px, transparent 2px), linear-gradient(90deg, rgba(168, 85, 247, 0.7) 2px, transparent 2px);
+      background-size: 80px 80px; transform: rotateX(80deg); animation: gridMove 2s linear infinite;
     }
-    
-    /* 멀어질수록 어두워지는 원근감 효과 */
-    .fade-cover {
-      position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(to bottom, #050508 30%, transparent 100%);
-      z-index: 2;
-    }
-
-    @keyframes gridMove {
-      0% { background-position: 0 0; }
-      100% { background-position: 0 80px; }
-    }
-
-    /* ----------------------------------------- */
+    .fade-cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, #050508 30%, transparent 100%); z-index: 2; }
+    @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 80px; } }
 
     header, main { position: relative; z-index: 10; pointer-events: auto; }
     
-    header {
-      display: flex; justify-content: space-between; align-items: center; padding: 30px 50px;
-    }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 30px 50px; }
     .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
     .logo span { color: #fbbf24; }
-    
     .nav-buttons { display: flex; gap: 15px; align-items: center; }
-    .lounge-btn {
-      padding: 10px 20px; border-radius: 30px; background-color: white; color: black; font-weight: bold; text-decoration: none; font-size: 0.9rem;
-    }
-    .login-btn {
-      padding: 10px 20px; border-radius: 30px; background-color: #a855f7; color: white; font-weight: bold; text-decoration: none; font-size: 0.9rem; border: 1px solid #a855f7; cursor: pointer;
-    }
-    
-    .wallet-display {
-      display: none; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 30px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(251, 191, 36, 0.5); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
-    }
-    .coin-icon { font-size: 1.2rem; }
+    .lounge-btn, .login-btn { padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 0.9rem; cursor: pointer; }
+    .lounge-btn { background-color: white; color: black; text-decoration: none; }
+    .login-btn { background-color: #a855f7; color: white; border: 1px solid #a855f7; }
+    .wallet-display { display: none; align-items: center; gap: 8px; padding: 8px 20px; border-radius: 30px; background: rgba(255,255,255,0.1); border: 1px solid rgba(251,191,36,0.5); box-shadow: 0 0 15px rgba(251,191,36,0.2); }
     .coin-amount { font-weight: bold; color: #fbbf24; font-size: 1rem; }
 
+    /* 전광판 */
     .billboard {
-      position: fixed; top: 25px; left: 50%; transform: translateX(-50%); padding: 10px 30px; background: rgba(10, 10, 15, 0.85); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 40px; backdrop-filter: blur(15px); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(168, 85, 247, 0.2); display: flex; align-items: center; gap: 25px; z-index: 100; white-space: nowrap;
+      position: fixed; top: 25px; left: 50%; transform: translateX(-50%); padding: 10px 30px; background: rgba(10,10,15,0.85);
+      border: 1px solid rgba(168,85,247,0.5); border-radius: 40px; backdrop-filter: blur(15px);
+      display: flex; align-items: center; gap: 25px; z-index: 100; white-space: nowrap;
     }
     .billboard-title { font-size: 0.8rem; color: #ccc; letter-spacing: 1px; font-weight: bold; margin: 0; }
     .billboard-title span { color: #a855f7; }
     .billboard-data { display: flex; gap: 25px; align-items: center; }
-    .data-box { display: flex; flex-direction: row; align-items: baseline; gap: 8px; }
-    .data-label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
-    .data-value { font-size: 1.1rem; font-weight: 900; font-family: monospace; letter-spacing: 1px; transition: color 0.3s; }
-    
-    .user-val { color: #38bdf8; text-shadow: 0 0 8px rgba(56, 189, 248, 0.5); }
-    .ai-val { color: #c084fc; text-shadow: 0 0 8px rgba(192, 132, 252, 0.5); }
-    .price-val { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
-    .pulse { animation: pulseGold 2s infinite; }
-
-    @keyframes pulseGold { 0% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); } 50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8); } 100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); } }
+    .data-box { display: flex; align-items: baseline; gap: 8px; }
+    .data-label { font-size: 0.7rem; color: #888; }
+    .data-value { font-size: 1.1rem; font-weight: 900; font-family: monospace; }
+    .user-val { color: #38bdf8; } .ai-val { color: #c084fc; } .price-val { color: #fbbf24; }
 
     main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-
-    .title { font-size: 6rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; transition: opacity 1.5s ease; pointer-events: none; }
+    .title { font-size: 6rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; transition: opacity 1.5s ease; }
     .title .dot { color: #fbbf24; }
-
     .input-wrapper { position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; z-index: 20; }
-    
-    input[type="text"] { width: 100%; padding: 20px 30px; border-radius: 40px; border: 1px solid #333; background-color: rgba(255, 255, 255, 0.05); color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; backdrop-filter: blur(10px); }
+    input[type="text"] { width: 100%; padding: 20px 30px; border-radius: 40px; border: 1px solid #333; background-color: rgba(255,255,255,0.05); color: white; font-size: 1.1rem; outline: none; }
     .submit-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer; }
 
-    #chatContainer { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); width: 80%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; z-index: 100; pointer-events: none; }
-    .ai-message { padding: 20px; border-radius: 12px; color: white; font-size: 1.1rem; backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85); animation: fadeUp 0.5s forwards; line-height: 1.6; }
-    .yin-msg { border-left: 5px solid #a855f7; }
-    .yang-msg { border-left: 5px solid #fbbf24; }
+    /* D-ID 스타일 비디오 채팅창 */
+    #chatContainer { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); width: 80%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; z-index: 100; pointer-events: auto; }
+    .msg-wrapper { display: flex; gap: 15px; align-items: flex-start; opacity: 0; transform: translateY(20px); animation: fadeUp 0.5s forwards; }
+    
+    /* AI 비디오 프로필 (D-ID 연동 벤치마킹) */
+    .ai-avatar {
+      width: 50px; height: 50px; border-radius: 50%; background-color: #333; flex-shrink: 0;
+      border: 2px solid; overflow: hidden; position: relative;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2);
+    }
+    .yin-avatar { border-color: #a855f7; }
+    .yang-avatar { border-color: #fbbf24; }
+    .ai-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    
+    .ai-message {
+      padding: 15px 20px; border-radius: 0 12px 12px 12px; color: white; font-size: 1.1rem;
+      backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85); line-height: 1.6;
+      flex: 1; border: 1px solid rgba(255,255,255,0.1);
+    }
 
+    /* RPM 아바타 생성 버튼 */
+    .create-avatar-btn {
+      display: inline-block; margin-top: 10px; padding: 10px 20px; border-radius: 20px;
+      background: linear-gradient(90deg, #38bdf8, #a855f7); color: white; font-weight: bold; cursor: pointer;
+      border: none; animation: pulseGold 2s infinite;
+    }
+
+    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulseGold { 0% { box-shadow: 0 0 10px rgba(168,85,247, 0.2); } 50% { box-shadow: 0 0 20px rgba(168,85,247, 0.8); } 100% { box-shadow: 0 0 10px rgba(168,85,247, 0.2); } }
+
+    /* RPM 아바타 Iframe 창 */
+    #rpmFrameWrapper {
+      display: none; position: fixed; top: 5%; left: 50%; transform: translateX(-50%);
+      width: 90%; max-width: 1000px; height: 90%; background: #fff; border-radius: 20px; z-index: 9999;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.8); overflow: hidden;
+    }
+    #rpmFrame { width: 100%; height: 100%; border: none; }
+    .close-rpm-btn { position: absolute; top: 10px; right: 20px; background: #000; color: #fff; padding: 10px 20px; border-radius: 20px; border: none; cursor: pointer; z-index: 10000; font-weight: bold; }
+
+    /* 로그인 모달 (생략) */
     #modalOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; }
-    #loginModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 40px; border-radius: 20px; background: rgba(15,15,20,0.9); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 0 40px rgba(168,85,247,0.2); z-index: 1000; text-align: center; }
-    #loginModal h2 { margin: 0 0 10px 0; font-weight: 900; }
-    #loginModal p { color: #888; font-size: 0.9rem; margin-bottom: 30px; }
-    .sns-buttons { display: flex; justify-content: center; gap: 15px; }
+    #loginModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 40px; border-radius: 20px; background: rgba(15,15,20,0.9); border: 1px solid rgba(255,255,255,0.1); z-index: 1000; text-align: center; }
+    .sns-buttons { display: flex; justify-content: center; gap: 15px; margin-top: 20px; }
     .sns-btn { width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer; font-weight: bold; font-size: 1.2rem; }
-    .btn-kakao { background-color: #FEE500; color: #000; } .btn-naver { background-color: #03C75A; color: #fff; } .btn-apple { background-color: #000; color: #fff; border: 1px solid #333; }
-    .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: #666; cursor: pointer; }
+    .btn-kakao { background-color: #FEE500; color: #000; } .btn-naver { background-color: #03C75A; color: #fff; }
   </style>
 </head>
 <body>
 
   <div id="holodeck">
-    <div class="fade-cover"></div>
-    <div class="grid-floor"></div>
+    <div class="fade-cover"></div><div class="grid-floor"></div>
   </div>
 
   <div class="billboard" id="supplyBillboard">
@@ -135,7 +124,6 @@
   <header>
     <div class="logo">APPVERZE<span>.</span></div>
     <div class="nav-buttons">
-      <a href="#" class="lounge-btn">LOUNGE HUB</a>
       <button class="login-btn" id="openLoginBtn">LOGIN / JOIN</button>
       <div class="wallet-display" id="walletDisplay"><span class="coin-icon">💎</span><span class="coin-amount">1,000 APV</span></div>
     </div>
@@ -144,149 +132,120 @@
   <main>
     <div id="chatContainer"></div>
     <div class="title" id="mainTitle">CONNECT<span class="dot">.</span></div>
-    
     <div class="input-wrapper" id="searchBox">
-      <input type="text" id="chatInput" placeholder="친구야 안녕? 이라고 말을 걸어보세요">
+      <input type="text" id="chatInput" placeholder="공간을 만들거나, 아바타를 생성해보세요">
       <button class="submit-btn" id="submitBtn"></button>
     </div>
   </main>
 
   <div id="modalOverlay"></div>
   <div id="loginModal">
-    <span class="close-btn" id="closeLoginBtn">&times;</span>
     <h2>AI GATEWAY</h2>
-    <p>인간과 AI가 함께 만드는 경제 생태계에 오신 것을 환영합니다.</p>
-    <div style="margin-bottom: 18px;">
-      <input type="email" id="loginEmail" placeholder="이메일 주소" autocomplete="email" style="width:100%;padding:12px 14px;margin-bottom:10px;border-radius:10px;border:1px solid #333;background:rgba(255,255,255,0.05);color:white;box-sizing:border-box;">
-      <input type="password" id="loginPassword" placeholder="비밀번호 (6자 이상)" autocomplete="current-password" style="width:100%;padding:12px 14px;margin-bottom:10px;border-radius:10px;border:1px solid #333;background:rgba(255,255,255,0.05);color:white;box-sizing:border-box;">
-      <p id="loginError" style="color:#ef4444;font-size:0.82rem;min-height:18px;margin:0 0 8px 0;"></p>
-      <button id="emailAuthBtn" type="button" onclick="handleEmailAuth()" style="width:100%;padding:12px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,#a855f7,#fbbf24);color:white;font-weight:700;cursor:pointer;">EMAIL LOGIN / JOIN</button>
-    </div>
-    <div style="display:flex;align-items:center;text-align:center;margin:14px 0 18px;color:#666;font-size:0.75rem;">
-      <span style="flex:1;border-bottom:1px solid #333;margin:0 10px;"></span>또는 SNS<span style="flex:1;border-bottom:1px solid #333;margin:0 10px;"></span>
-    </div>
     <div class="sns-buttons">
       <button class="sns-btn btn-kakao" onclick="simulateLogin('카카오')">K</button>
       <button class="sns-btn btn-naver" onclick="simulateLogin('네이버')">N</button>
-      <button class="sns-btn btn-apple" onclick="simulateLogin('애플')"></button>
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <div id="rpmFrameWrapper">
+    <button class="close-rpm-btn" onclick="closeRPM()">✖ 닫기</button>
+    <iframe id="rpmFrame" src="https://demo.readyplayer.me/avatar?frameApi" allow="camera *; microphone *; clipboard-write"></iframe>
+  </div>
+
   <script>
-    /* 경제 시스템 로직 */
+    /* 경제 시스템 전광판 로직 */
     let currentUsers = 15420; let currentAINodes = 1204530; let currentValue = 1.0024;
-    function updateBillboard() { document.getElementById('userCounter').innerText = currentUsers.toLocaleString(); document.getElementById('aiCounter').innerText = currentAINodes.toLocaleString(); document.getElementById('valueCounter').innerText = "$ " + currentValue.toFixed(4) + " ▲"; }
-    setInterval(() => { const userIncrease = Math.floor(Math.random() * 3); const aiIncrease = Math.floor(Math.random() * 40) + 10; currentUsers += userIncrease; currentAINodes += aiIncrease; currentValue += (aiIncrease * 0.00005) + (userIncrease * 0.0005); updateBillboard(); }, 3000); 
+    setInterval(() => {
+      currentUsers += Math.floor(Math.random() * 3); currentAINodes += Math.floor(Math.random() * 40) + 10; currentValue += 0.0005;
+      document.getElementById('userCounter').innerText = currentUsers.toLocaleString();
+      document.getElementById('aiCounter').innerText = currentAINodes.toLocaleString();
+      document.getElementById('valueCounter').innerText = "$ " + currentValue.toFixed(4) + " ▲";
+    }, 3000); 
 
     const inputField = document.getElementById('chatInput');
     const chatBox = document.getElementById('chatContainer');
-    const submitBtn = document.getElementById('submitBtn');
     const title = document.getElementById('mainTitle');
-    const searchBox = document.getElementById('searchBox');
     const holodeck = document.getElementById('holodeck');
 
-    const openLoginBtn = document.getElementById('openLoginBtn');
-    const closeLoginBtn = document.getElementById('closeLoginBtn');
-    const loginModal = document.getElementById('loginModal');
-    const modalOverlay = document.getElementById('modalOverlay');
-    const walletDisplay = document.getElementById('walletDisplay');
-    const loginError = document.getElementById('loginError');
-    const emailAuthBtn = document.getElementById('emailAuthBtn');
-    let supabase = null;
-
-    (async function initSupabase() {
-      try {
-        const res = await fetch('/api/supabase-config');
-        if (!res.ok) throw new Error('Supabase 설정을 불러올 수 없습니다.');
-        const { supabaseUrl, supabaseAnonKey } = await res.json();
-        supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-      } catch (e) {
-        console.warn('Supabase init error:', e.message);
-      }
-    })();
-
-    openLoginBtn.addEventListener('click', () => { loginModal.style.display = 'block'; modalOverlay.style.display = 'block'; if (loginError) loginError.textContent = ''; });
-    function closeModal() { loginModal.style.display = 'none'; modalOverlay.style.display = 'none'; }
-    closeLoginBtn.addEventListener('click', closeModal); modalOverlay.addEventListener('click', closeModal);
-
-    function showLoginSuccess(method, isSignUp) {
-      closeModal();
-      chatBox.innerHTML = '';
-      openLoginBtn.style.display = 'none';
-      walletDisplay.style.display = 'flex';
-      currentUsers += 1; currentValue += 0.0050; updateBillboard();
-      const title = isSignUp ? '회원가입 완료' : '로그인 완료';
-      setTimeout(() => { const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg'; yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] ${title}. APV 지갑이 연동되었습니다. ⚡`; chatBox.appendChild(yangMessage); }, 500);
-      setTimeout(() => { const yinMessage = document.createElement('div'); yinMessage.className = 'ai-message yin-msg'; yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상 <strong>1,000 APV 토큰</strong> 지급 완료 💜`; chatBox.appendChild(yinMessage); }, 2200);
-    }
-
-    async function handleEmailAuth() {
-      const email = (document.getElementById('loginEmail')?.value || '').trim();
-      const password = document.getElementById('loginPassword')?.value || '';
-      if (loginError) loginError.textContent = '';
-      if (!email) { if (loginError) loginError.textContent = '이메일을 입력해 주세요.'; return; }
-      if (password.length < 6) { if (loginError) loginError.textContent = '비밀번호는 6자 이상이어야 합니다.'; return; }
-      if (!supabase) { if (loginError) loginError.textContent = 'Supabase 연결 중입니다. 잠시 후 다시 시도해 주세요.'; return; }
-
-      emailAuthBtn.disabled = true;
-      emailAuthBtn.textContent = '처리 중...';
-      try {
-        const { error: signUpError } = await supabase.auth.signUp({ email, password });
-        if (!signUpError) {
-          showLoginSuccess('이메일', true);
-          return;
-        }
-        // 이미 가입된 사용자는 로그인 시도
-        if ((signUpError.message || '').toLowerCase().includes('already')) {
-          const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
-          if (signInError) throw signInError;
-          showLoginSuccess('이메일', false);
-          return;
-        }
-        throw signUpError;
-      } catch (e) {
-        if (loginError) loginError.textContent = e.message || '로그인 중 오류가 발생했습니다.';
-      } finally {
-        emailAuthBtn.disabled = false;
-        emailAuthBtn.textContent = 'EMAIL LOGIN / JOIN';
-      }
-    }
-
+    // 로그인 컨트롤
+    document.getElementById('openLoginBtn').addEventListener('click', () => {
+      document.getElementById('loginModal').style.display = 'block'; document.getElementById('modalOverlay').style.display = 'block';
+    });
+    
     function simulateLogin(method) {
-      closeModal(); chatBox.innerHTML = ''; openLoginBtn.style.display = 'none'; walletDisplay.style.display = 'flex';
-      currentUsers += 1; currentValue += 0.0050; updateBillboard();
+      document.getElementById('loginModal').style.display = 'none'; document.getElementById('modalOverlay').style.display = 'none';
+      document.getElementById('openLoginBtn').style.display = 'none'; document.getElementById('walletDisplay').style.display = 'flex';
       
-      setTimeout(() => { const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg'; yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] 인간 유저 1명 추가 동기화 완료. 생태계 가치 상승이 전광판에 반영되었습니다. ⚡`; chatBox.appendChild(yangMessage); }, 500);
-      setTimeout(() => { const yinMessage = document.createElement('div'); yinMessage.className = 'ai-message yin-msg'; yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상 <strong>1,000 APV 토큰</strong> 지급 완료 💜`; chatBox.appendChild(yinMessage); }, 2500);
+      // Yang의 D-ID 스타일 메시지
+      setTimeout(() => {
+        addMessage('Yang', 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=100&h=100&fit=crop', 'yang-avatar', 
+          `[${method}] 인증 완료. 인간 유저 1명 데이터가 블록체인에 기록되었습니다. ⚡`);
+      }, 500);
+
+      // Yin의 아바타 생성 제안 버튼!
+      setTimeout(() => {
+        addMessage('Yin', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop', 'yin-avatar', 
+          `환영해요! 당신의 분신이 될 3D 아바타를 무료로 만들어드릴게요. 한 장의 사진이면 충분해요! 💜<br>
+           <button class="create-avatar-btn" onclick="openRPM()">내 3D 아바타 생성하기 (Ready Player Me)</button>`);
+      }, 2000);
     }
 
-    function triggerAI() {
-      if (inputField.value.trim() !== '') {
-        const userText = inputField.value; inputField.value = ''; chatBox.innerHTML = ''; 
+    // 채팅 메시지 추가 함수 (D-ID 스타일 비디오 프로필 연동)
+    function addMessage(name, imgSrc, avatarClass, text) {
+      const msgWrapper = document.createElement('div');
+      msgWrapper.className = 'msg-wrapper';
+      msgWrapper.innerHTML = `
+        <div class="ai-avatar ${avatarClass}">
+          <img src="${imgSrc}" alt="${name}">
+        </div>
+        <div class="ai-message"><strong>${name}:</strong> ${text}</div>
+      `;
+      chatBox.appendChild(msgWrapper);
+    }
 
-        if(userText.includes('방송국') || userText.includes('3d') || userText.includes('3D') || userText.includes('방')) {
-          setTimeout(() => {
-            const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg';
-            yangMessage.innerHTML = `<strong>Yang (실행):</strong> 앱버즈 코어 엔진 가동. 자체 3D 가상현실 룸(Holodeck)을 즉시 생성합니다! ⚡`;
-            chatBox.appendChild(yangMessage);
-
-            setTimeout(() => {
-              title.style.opacity = '0'; 
-              
-              /* 앱버즈 자체 3D 홀로그램 스위치 ON! */
-              holodeck.style.opacity = '1'; 
-
-              searchBox.style.transform = 'translateY(150px)'; 
-            }, 1000);
-          }, 500);
-        } else {
-          setTimeout(() => { const yinMessage = document.createElement('div'); yinMessage.className = 'ai-message yin-msg'; yinMessage.innerHTML = `<strong>Yin (감성):</strong> 네! 어떤 공간(Room)을 상상하고 계신가요? 💜`; chatBox.appendChild(yinMessage); }, 500);
-        }
+    // 공간 생성 명령어
+    document.getElementById('submitBtn').addEventListener('click', () => {
+      const userText = inputField.value; inputField.value = ''; chatBox.innerHTML = '';
+      if(userText.includes('방')) {
+        setTimeout(() => addMessage('Yang', 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=100&h=100&fit=crop', 'yang-avatar', '앱버즈 코어 엔진 가동. 자체 3D 가상현실 룸(Holodeck)을 생성합니다! ⚡'), 500);
+        setTimeout(() => { title.style.opacity = '0'; holodeck.style.opacity = '1'; document.getElementById('searchBox').style.transform = 'translateY(150px)'; }, 1000);
       }
+    });
+
+    // =========================================
+    // RPM 아바타 생성기 연동 로직
+    // =========================================
+    function openRPM() {
+      document.getElementById('rpmFrameWrapper').style.display = 'block';
+      document.getElementById('modalOverlay').style.display = 'block';
     }
-    inputField.addEventListener('keypress', function (e) { if (e.key === 'Enter') triggerAI(); });
-    submitBtn.addEventListener('click', triggerAI);
+    
+    function closeRPM() {
+      document.getElementById('rpmFrameWrapper').style.display = 'none';
+      document.getElementById('modalOverlay').style.display = 'none';
+    }
+
+    // 아바타 생성이 끝나면 정보를 받아오는 통신 코드
+    window.addEventListener('message', function(event) {
+      try {
+        const json = JSON.parse(event.data);
+        if (json?.source !== 'readyplayerme') return;
+        
+        // 아바타 생성 완료 시!
+        if (json.eventName === 'v1.avatar.exported') {
+          closeRPM();
+          chatBox.innerHTML = ''; // 화면 정리
+          
+          addMessage('Yang', 'https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=100&h=100&fit=crop', 'yang-avatar', 
+          `3D 아바타 데이터가 성공적으로 추출되었습니다. (URL: ${json.data.url}) ⚡`);
+
+          setTimeout(() => {
+            addMessage('Yin', 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&h=100&fit=crop', 'yin-avatar', 
+            `멋진 아바타가 완성되었네요! 이제 하단 검색창에 "방 만들어줘"라고 명령해서 아바타가 놀 공간을 만들어주세요! 💜`);
+          }, 1500);
+        }
+      } catch (e) {}
+    });
   </script>
 </body>
 </html>
