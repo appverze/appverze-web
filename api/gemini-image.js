@@ -4,7 +4,11 @@ export default async function handler(req, res) {
   }
 
   const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
-  const model = process.env.GEMINI_IMAGE_MODEL || 'gemini-2.5-flash-image-preview';
+  const modelCandidates = [
+    process.env.GEMINI_IMAGE_MODEL,
+    'gemini-2.5-flash-image',
+    'gemini-3.1-flash-image-preview',
+  ].filter(Boolean);
 
   if (!apiKey) {
     return res.status(500).json({
@@ -18,38 +22,62 @@ export default async function handler(req, res) {
   }
 
   try {
-    const response = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          contents: [
-            {
-              parts: [
-                {
-                  text:
-                    `Create one cinematic concept image for this APPVERZE room.\n` +
-                    `Title: ${title || 'APPVERZE Room'}\n` +
-                    `Style: futuristic 3D environment concept art, immersive lighting, premium, highly detailed, no text in image.\n` +
-                    `Prompt: ${prompt}`,
-                },
-              ],
-            },
-          ],
-          generationConfig: {
-            responseModalities: ['TEXT', 'IMAGE'],
+    let response = null;
+    let data = null;
+    let lastErrorStatus = 500;
+
+    for (const model of modelCandidates) {
+      response = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
           },
-        }),
+          body: JSON.stringify({
+            contents: [
+              {
+                parts: [
+                  {
+                    text:
+                      `Create one cinematic concept image for this APPVERZE room.\n` +
+                      `Title: ${title || 'APPVERZE Room'}\n` +
+                      `Style: futuristic 3D environment concept art, immersive lighting, premium, highly detailed, no text in image.\n` +
+                      `Prompt: ${prompt}`,
+                  },
+                ],
+              },
+            ],
+            generationConfig: {
+              responseModalities: ['TEXT', 'IMAGE'],
+            },
+          }),
+        }
+      );
+
+      data = await response.json();
+
+      if (response.ok) {
+        break;
       }
-    );
 
-    const data = await response.json();
+      lastErrorStatus = response.status;
 
-    if (!response.ok) {
-      return res.status(response.status).json({
+      const message = data?.error?.message || '';
+      const missingModel =
+        response.status === 404 ||
+        /not found|not supported/i.test(message);
+
+      if (!missingModel) {
+        return res.status(response.status).json({
+          error: message || 'Gemini image generation failed',
+          details: data,
+        });
+      }
+    }
+
+    if (!response?.ok) {
+      return res.status(lastErrorStatus).json({
         error: data?.error?.message || 'Gemini image generation failed',
         details: data,
       });
