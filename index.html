@@ -115,6 +115,84 @@
       color: white;
       border: 1px solid #a855f7;
     }
+    .auth-status {
+      font-size: 0.75rem;
+      color: #d1d5db;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .auth-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+    }
+    .auth-modal.open {
+      display: flex;
+    }
+    .auth-modal-panel {
+      width: 92%;
+      max-width: 420px;
+      background: #0f1118;
+      border: 1px solid rgba(168, 85, 247, 0.45);
+      border-radius: 16px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+      padding: 20px;
+    }
+    .auth-modal-title {
+      margin: 0 0 14px 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+    .auth-input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      border: 1px solid #30364a;
+      background: #171b26;
+      color: #fff;
+      outline: none;
+    }
+    .auth-input:focus {
+      border-color: #a855f7;
+    }
+    .auth-help {
+      color: #9ca3af;
+      font-size: 0.78rem;
+      margin-bottom: 12px;
+    }
+    .auth-error {
+      color: #fca5a5;
+      font-size: 0.82rem;
+      min-height: 1.1em;
+      margin-bottom: 10px;
+    }
+    .auth-actions {
+      display: flex;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+    .auth-btn {
+      border: 1px solid #3b4258;
+      background: #222838;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .auth-btn.primary {
+      border-color: #a855f7;
+      background: #a855f7;
+    }
 
     /* 전광판 */
     .billboard {
@@ -340,10 +418,25 @@
       <img src="/appverze.png" alt="APPVERZE">
     </a>
     <div class="nav-buttons">
+      <span class="auth-status" id="authStatus"></span>
       <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">🌐 KO</button>
-      <button class="login-btn">LOGIN</button>
+      <button class="login-btn" id="loginBtn">LOGIN</button>
     </div>
   </header>
+
+  <div class="auth-modal" id="authModal">
+    <div class="auth-modal-panel">
+      <h3 class="auth-modal-title">APPVERZE 로그인</h3>
+      <input id="authEmail" class="auth-input" type="email" placeholder="이메일" autocomplete="email">
+      <input id="authPassword" class="auth-input" type="password" placeholder="비밀번호" autocomplete="current-password">
+      <div class="auth-help">EMAIL LOGIN / JOIN 버튼 하나로 가입 또는 로그인을 진행합니다.</div>
+      <div class="auth-error" id="authError"></div>
+      <div class="auth-actions">
+        <button class="auth-btn" id="authCancelBtn" type="button">닫기</button>
+        <button class="auth-btn primary" id="authSubmitBtn" type="button">EMAIL LOGIN / JOIN</button>
+      </div>
+    </div>
+  </div>
 
   <main>
     <div id="chatContainer"></div>
@@ -355,6 +448,7 @@
     </div>
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
   <script>
     const YIN_IMAGE = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=500&fit=crop";
     const YANG_IMAGE = "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=500&h=500&fit=crop";
@@ -422,6 +516,16 @@
     const searchBox = document.getElementById('searchBox');
     const submitBtn = document.getElementById('submitBtn');
     const holodeckMusic = document.getElementById('holodeckMusic');
+    const loginBtn = document.getElementById('loginBtn');
+    const authStatus = document.getElementById('authStatus');
+    const authModal = document.getElementById('authModal');
+    const authEmail = document.getElementById('authEmail');
+    const authPassword = document.getElementById('authPassword');
+    const authError = document.getElementById('authError');
+    const authSubmitBtn = document.getElementById('authSubmitBtn');
+    const authCancelBtn = document.getElementById('authCancelBtn');
+    let supabaseClient = null;
+    let currentSession = null;
 
     function playHolodeckMusic() {
       if (!holodeckMusic) return;
@@ -431,6 +535,103 @@
         p.catch(() => {
           // 브라우저 자동재생 정책으로 막혀도 조용히 무시
         });
+      }
+    }
+
+    function setAuthError(message) {
+      authError.textContent = message || '';
+    }
+
+    function openAuthModal() {
+      setAuthError('');
+      authModal.classList.add('open');
+      setTimeout(() => authEmail.focus(), 0);
+    }
+
+    function closeAuthModal() {
+      authModal.classList.remove('open');
+      setAuthError('');
+    }
+
+    function updateAuthUI(session) {
+      currentSession = session;
+      const user = session?.user;
+      if (user) {
+        loginBtn.textContent = 'LOGOUT';
+        authStatus.textContent = user.email || '';
+      } else {
+        loginBtn.textContent = 'LOGIN';
+        authStatus.textContent = '';
+      }
+    }
+
+    async function initSupabaseAuth() {
+      try {
+        const cfgRes = await fetch('/api/supabase-config');
+        if (!cfgRes.ok) throw new Error('supabase-config endpoint unavailable');
+        const cfg = await cfgRes.json();
+        if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) throw new Error('Supabase config missing');
+        supabaseClient = window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey);
+
+        const { data } = await supabaseClient.auth.getSession();
+        updateAuthUI(data?.session || null);
+
+        supabaseClient.auth.onAuthStateChange((_event, session) => {
+          updateAuthUI(session || null);
+        });
+      } catch (e) {
+        console.error('Supabase init failed:', e);
+      }
+    }
+
+    async function handleEmailAuth() {
+      if (!supabaseClient) {
+        setAuthError('로그인 서버 설정을 확인해주세요.');
+        return;
+      }
+
+      const email = authEmail.value.trim();
+      const password = authPassword.value;
+      if (!email || !password) {
+        setAuthError('이메일과 비밀번호를 입력해주세요.');
+        return;
+      }
+
+      authSubmitBtn.disabled = true;
+      setAuthError('');
+
+      try {
+        const signUpRes = await supabaseClient.auth.signUp({
+          email,
+          password,
+        });
+
+        if (signUpRes.error) {
+          const msg = (signUpRes.error.message || '').toLowerCase();
+          const alreadyUser = msg.includes('already') || msg.includes('registered') || msg.includes('exists');
+          if (!alreadyUser) throw signUpRes.error;
+
+          const signInRes = await supabaseClient.auth.signInWithPassword({
+            email,
+            password,
+          });
+          if (signInRes.error) throw signInRes.error;
+          closeAuthModal();
+          return;
+        }
+
+        // 이메일 인증이 켜져 있으면 세션이 없을 수 있음
+        if (!signUpRes.data?.session) {
+          setAuthError('가입 완료! 이메일 인증 후 다시 로그인해주세요.');
+          return;
+        }
+
+        closeAuthModal();
+      } catch (err) {
+        console.error(err);
+        setAuthError(err?.message || '로그인 중 오류가 발생했습니다.');
+      } finally {
+        authSubmitBtn.disabled = false;
       }
     }
 
@@ -575,6 +776,24 @@
       if (e.key === 'Enter') triggerChat();
     });
     submitBtn.addEventListener('click', triggerChat);
+
+    loginBtn.addEventListener('click', async function () {
+      if (currentSession && supabaseClient) {
+        await supabaseClient.auth.signOut();
+        return;
+      }
+      openAuthModal();
+    });
+    authCancelBtn.addEventListener('click', closeAuthModal);
+    authSubmitBtn.addEventListener('click', handleEmailAuth);
+    authModal.addEventListener('click', function (e) {
+      if (e.target === authModal) closeAuthModal();
+    });
+    authPassword.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') handleEmailAuth();
+    });
+
+    initSupabaseAuth();
   </script>
 </body>
 </html>
