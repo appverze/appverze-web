@@ -101,6 +101,24 @@
     const searchBox = document.getElementById('searchBox');
     const submitBtn = document.getElementById('submitBtn');
 
+    function appendFallbackMessage(name, imgSrc, boxClass, textToSay, triggerHolodeck) {
+      const msgWrapper = document.createElement('div');
+      msgWrapper.className = 'msg-wrapper';
+      msgWrapper.innerHTML = `
+        <div class="ai-video-box ${boxClass}">
+          <img src="${imgSrc}" alt="${name}">
+        </div>
+        <div class="ai-message"><strong>${name}:</strong> ${textToSay}</div>
+      `;
+      chatBox.appendChild(msgWrapper);
+
+      if (triggerHolodeck) {
+        title.style.opacity = '0';
+        holodeck.style.opacity = '1';
+        searchBox.style.transform = 'translateY(150px)';
+      }
+    }
+
     // 🚀 해킹 방지! Vercel 전용 백엔드 서버(/api/did)와 통신하는 함수
     async function addRealVideoMessage(name, imgSrc, boxClass, textToSay, voiceId, triggerHolodeck) {
       loadingText.style.display = 'block';
@@ -117,12 +135,15 @@
           })
         });
 
+        if (!createRes.ok) {
+          throw new Error('D-ID API endpoint unavailable');
+        }
+
         const createData = await createRes.json();
         const talkId = createData.id;
 
         if(!talkId) {
-          alert("서버 오류! Vercel 환경변수 세팅이나 D-ID 요금을 확인해주세요.");
-          loadingText.style.display = 'none'; inputField.disabled = false; return;
+          throw new Error('D-ID response missing id');
         }
 
         // 2. Vercel 서버를 통해 영상 완료 여부 확인
@@ -161,8 +182,11 @@
 
       } catch (error) {
         console.error(error);
-        alert("통신 에러! 인터넷 연결을 확인해주세요.");
-        loadingText.style.display = 'none'; inputField.disabled = false;
+        // D-ID API가 없어도 UX가 멈추지 않도록 즉시 폴백 렌더링
+        appendFallbackMessage(name, imgSrc, boxClass, textToSay, triggerHolodeck);
+        loadingText.style.display = 'none';
+        inputField.disabled = false;
+        inputField.focus();
       }
     }
 
