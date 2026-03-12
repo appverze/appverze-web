@@ -149,6 +149,15 @@
     <span class="close-btn" id="closeLoginBtn">&times;</span>
     <h2>AI GATEWAY</h2>
     <p>인간과 AI가 함께 만드는 경제 생태계에 오신 것을 환영합니다.</p>
+    <div style="margin-bottom: 18px;">
+      <input type="email" id="loginEmail" placeholder="이메일 주소" autocomplete="email" style="width:100%;padding:12px 14px;margin-bottom:10px;border-radius:10px;border:1px solid #333;background:rgba(255,255,255,0.05);color:white;box-sizing:border-box;">
+      <input type="password" id="loginPassword" placeholder="비밀번호 (6자 이상)" autocomplete="current-password" style="width:100%;padding:12px 14px;margin-bottom:10px;border-radius:10px;border:1px solid #333;background:rgba(255,255,255,0.05);color:white;box-sizing:border-box;">
+      <p id="loginError" style="color:#ef4444;font-size:0.82rem;min-height:18px;margin:0 0 8px 0;"></p>
+      <button id="emailAuthBtn" type="button" onclick="handleEmailAuth()" style="width:100%;padding:12px 14px;border-radius:10px;border:none;background:linear-gradient(90deg,#a855f7,#fbbf24);color:white;font-weight:700;cursor:pointer;">EMAIL LOGIN / JOIN</button>
+    </div>
+    <div style="display:flex;align-items:center;text-align:center;margin:14px 0 18px;color:#666;font-size:0.75rem;">
+      <span style="flex:1;border-bottom:1px solid #333;margin:0 10px;"></span>또는 SNS<span style="flex:1;border-bottom:1px solid #333;margin:0 10px;"></span>
+    </div>
     <div class="sns-buttons">
       <button class="sns-btn btn-kakao" onclick="simulateLogin('카카오')">K</button>
       <button class="sns-btn btn-naver" onclick="simulateLogin('네이버')">N</button>
@@ -156,6 +165,7 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
     /* 경제 시스템 로직 */
     let currentUsers = 15420; let currentAINodes = 1204530; let currentValue = 1.0024;
@@ -174,10 +184,67 @@
     const loginModal = document.getElementById('loginModal');
     const modalOverlay = document.getElementById('modalOverlay');
     const walletDisplay = document.getElementById('walletDisplay');
+    const loginError = document.getElementById('loginError');
+    const emailAuthBtn = document.getElementById('emailAuthBtn');
+    let supabase = null;
 
-    openLoginBtn.addEventListener('click', () => { loginModal.style.display = 'block'; modalOverlay.style.display = 'block'; });
+    (async function initSupabase() {
+      try {
+        const res = await fetch('/api/supabase-config');
+        if (!res.ok) throw new Error('Supabase 설정을 불러올 수 없습니다.');
+        const { supabaseUrl, supabaseAnonKey } = await res.json();
+        supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
+      } catch (e) {
+        console.warn('Supabase init error:', e.message);
+      }
+    })();
+
+    openLoginBtn.addEventListener('click', () => { loginModal.style.display = 'block'; modalOverlay.style.display = 'block'; if (loginError) loginError.textContent = ''; });
     function closeModal() { loginModal.style.display = 'none'; modalOverlay.style.display = 'none'; }
     closeLoginBtn.addEventListener('click', closeModal); modalOverlay.addEventListener('click', closeModal);
+
+    function showLoginSuccess(method, isSignUp) {
+      closeModal();
+      chatBox.innerHTML = '';
+      openLoginBtn.style.display = 'none';
+      walletDisplay.style.display = 'flex';
+      currentUsers += 1; currentValue += 0.0050; updateBillboard();
+      const title = isSignUp ? '회원가입 완료' : '로그인 완료';
+      setTimeout(() => { const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg'; yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] ${title}. APV 지갑이 연동되었습니다. ⚡`; chatBox.appendChild(yangMessage); }, 500);
+      setTimeout(() => { const yinMessage = document.createElement('div'); yinMessage.className = 'ai-message yin-msg'; yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상 <strong>1,000 APV 토큰</strong> 지급 완료 💜`; chatBox.appendChild(yinMessage); }, 2200);
+    }
+
+    async function handleEmailAuth() {
+      const email = (document.getElementById('loginEmail')?.value || '').trim();
+      const password = document.getElementById('loginPassword')?.value || '';
+      if (loginError) loginError.textContent = '';
+      if (!email) { if (loginError) loginError.textContent = '이메일을 입력해 주세요.'; return; }
+      if (password.length < 6) { if (loginError) loginError.textContent = '비밀번호는 6자 이상이어야 합니다.'; return; }
+      if (!supabase) { if (loginError) loginError.textContent = 'Supabase 연결 중입니다. 잠시 후 다시 시도해 주세요.'; return; }
+
+      emailAuthBtn.disabled = true;
+      emailAuthBtn.textContent = '처리 중...';
+      try {
+        const { error: signUpError } = await supabase.auth.signUp({ email, password });
+        if (!signUpError) {
+          showLoginSuccess('이메일', true);
+          return;
+        }
+        // 이미 가입된 사용자는 로그인 시도
+        if ((signUpError.message || '').toLowerCase().includes('already')) {
+          const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+          if (signInError) throw signInError;
+          showLoginSuccess('이메일', false);
+          return;
+        }
+        throw signUpError;
+      } catch (e) {
+        if (loginError) loginError.textContent = e.message || '로그인 중 오류가 발생했습니다.';
+      } finally {
+        emailAuthBtn.disabled = false;
+        emailAuthBtn.textContent = 'EMAIL LOGIN / JOIN';
+      }
+    }
 
     function simulateLogin(method) {
       closeModal(); chatBox.innerHTML = ''; openLoginBtn.style.display = 'none'; walletDisplay.style.display = 'flex';
