@@ -85,6 +85,25 @@
       width: 161px;
       height: 58px;
       display: block;
+      overflow: visible;
+      perspective: 600px;
+      animation: logoFloat 4s ease-in-out infinite, logoSway 4.2s ease-in-out infinite;
+      transform-origin: center center;
+    }
+    .logo-mark::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 4px;
+      width: 62px;
+      height: 50px;
+      border-radius: 50%;
+      background: linear-gradient(115deg, transparent 18%, rgba(255,255,255,0.28) 42%, transparent 68%);
+      mix-blend-mode: screen;
+      opacity: 0.7;
+      pointer-events: none;
+      animation: globeShine 3.2s ease-in-out infinite;
+      z-index: 3;
     }
     .logo img {
       position: absolute;
@@ -98,15 +117,16 @@
     .logo-globe {
       clip-path: inset(0 62% 0 0);
       animation:
-        logoFloat 4s ease-in-out infinite,
         logoGlow 3s ease-in-out infinite alternate,
-        globeTurn 6s linear infinite;
+        globeTurn 3.2s ease-in-out infinite;
       transform-origin: 24% 50%;
+      backface-visibility: hidden;
     }
     .logo-wordmark {
       clip-path: inset(0 0 0 34%);
-      animation: logoFloat 4s ease-in-out infinite, logoGlow 3s ease-in-out infinite alternate;
+      animation: logoGlow 3s ease-in-out infinite alternate;
     }
+    .logo:hover .logo-mark,
     .logo:hover .logo-globe,
     .logo:hover .logo-wordmark {
       animation-play-state: paused;
@@ -120,10 +140,23 @@
       0% { filter: drop-shadow(0 6px 18px rgba(34, 211, 238, 0.18)); }
       100% { filter: drop-shadow(0 8px 24px rgba(34, 211, 238, 0.38)); }
     }
+    @keyframes logoSway {
+      0%, 100% { transform: rotate(-1.5deg) scale(1); }
+      50% { transform: rotate(1.5deg) scale(1.01); }
+    }
     @keyframes globeTurn {
-      0% { transform: perspective(500px) rotateY(0deg); }
-      50% { transform: perspective(500px) rotateY(180deg); }
-      100% { transform: perspective(500px) rotateY(360deg); }
+      0% { transform: perspective(600px) rotateY(0deg) rotate(-3deg) scaleX(1) scaleY(1); }
+      25% { transform: perspective(600px) rotateY(28deg) rotate(0deg) scaleX(0.88) scaleY(1.02); }
+      50% { transform: perspective(600px) rotateY(0deg) rotate(3deg) scaleX(0.72) scaleY(1.05); }
+      75% { transform: perspective(600px) rotateY(-28deg) rotate(0deg) scaleX(0.88) scaleY(1.02); }
+      100% { transform: perspective(600px) rotateY(0deg) rotate(-3deg) scaleX(1) scaleY(1); }
+    }
+    @keyframes globeShine {
+      0% { transform: translateX(-18px) rotate(-10deg); opacity: 0.18; }
+      20% { opacity: 0.5; }
+      50% { transform: translateX(12px) rotate(-2deg); opacity: 0.78; }
+      80% { opacity: 0.38; }
+      100% { transform: translateX(26px) rotate(10deg); opacity: 0.14; }
     }
     .nav-buttons {
       display: flex;
