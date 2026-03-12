@@ -82,51 +82,121 @@
     }
     .logo-mark {
       position: relative;
-      width: 161px;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
       height: 58px;
-      display: block;
-      overflow: visible;
-      perspective: 600px;
+      perspective: 700px;
       animation: logoFloat 4s ease-in-out infinite, logoTurnAll 4.8s ease-in-out infinite;
       transform-origin: center center;
     }
-    .logo-mark::before {
-      content: "";
-      position: absolute;
-      left: 0;
-      top: 4px;
-      width: 62px;
-      height: 50px;
-      border-radius: 50%;
-      background: linear-gradient(115deg, transparent 18%, rgba(255,255,255,0.28) 42%, transparent 68%);
-      mix-blend-mode: screen;
-      opacity: 0.7;
-      pointer-events: none;
-      animation: globeShine 3.2s ease-in-out infinite;
-      z-index: 3;
-    }
-    .logo img {
-      position: absolute;
-      inset: 0;
+    .logo-globe-wrap {
+      position: relative;
+      width: 58px;
       height: 58px;
-      width: auto;
-      display: block;
-      filter: drop-shadow(0 6px 18px rgba(34, 211, 238, 0.22));
-      transform-origin: center center;
+      flex: 0 0 58px;
+    }
+    .logo-globe-shadow {
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 2px;
+      height: 9px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.15) 72%, transparent 100%);
+      filter: blur(2px);
+      opacity: 0.9;
+      pointer-events: none;
     }
     .logo-globe {
-      clip-path: inset(0 62% 0 0);
-      animation: logoGlow 3s ease-in-out infinite alternate;
-      transform-origin: center center;
-      backface-visibility: hidden;
+      position: absolute;
+      inset: 2px 4px 6px 4px;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at 35% 28%, rgba(166, 250, 255, 0.98) 0%, rgba(97, 221, 234, 0.92) 18%, rgba(21, 128, 150, 0.95) 46%, rgba(5, 52, 70, 0.98) 76%, rgba(1, 18, 30, 1) 100%);
+      box-shadow:
+        inset -12px -14px 22px rgba(0, 0, 0, 0.38),
+        inset 10px 8px 18px rgba(255, 255, 255, 0.16),
+        0 6px 18px rgba(34, 211, 238, 0.24);
+      overflow: hidden;
+      transform-style: preserve-3d;
+    }
+    .logo-globe::before {
+      content: "";
+      position: absolute;
+      inset: -10% -30%;
+      background:
+        repeating-linear-gradient(
+          90deg,
+          rgba(186, 250, 255, 0.0) 0 6px,
+          rgba(154, 241, 255, 0.5) 6px 7px,
+          rgba(186, 250, 255, 0.0) 7px 16px
+        ),
+        repeating-linear-gradient(
+          0deg,
+          rgba(186, 250, 255, 0.0) 0 8px,
+          rgba(154, 241, 255, 0.18) 8px 9px,
+          rgba(186, 250, 255, 0.0) 9px 18px
+        );
+      opacity: 0.65;
+      animation: globeSurfaceSpin 3.2s linear infinite;
+    }
+    .logo-globe::after {
+      content: "";
+      position: absolute;
+      inset: 5px 8px 20px 10px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 25% 25%, rgba(255,255,255,0.72), rgba(255,255,255,0.08) 42%, transparent 58%);
+      transform: rotate(-16deg);
+      pointer-events: none;
+    }
+    .logo-ring {
+      position: absolute;
+      left: -6px;
+      top: 17px;
+      width: 68px;
+      height: 22px;
+      border-radius: 50%;
+      border: 4px solid rgba(210, 223, 230, 0.95);
+      box-shadow:
+        inset 0 0 0 1px rgba(69, 85, 94, 0.55),
+        0 2px 10px rgba(0, 0, 0, 0.22);
+      transform: rotate(-22deg);
+      z-index: 2;
+    }
+    .logo-ring::before {
+      content: "";
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border-top: 4px solid rgba(255, 255, 255, 0.95);
+      border-right: 4px solid transparent;
+      border-bottom: 4px solid rgba(48, 68, 78, 0.9);
+      border-left: 4px solid transparent;
+      transform: rotate(10deg);
+      opacity: 0.9;
     }
     .logo-wordmark {
-      clip-path: inset(0 0 0 34%);
+      display: inline-flex;
+      align-items: center;
+      font-size: 2.25rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      line-height: 1;
+      background: linear-gradient(180deg, #7ef9ff 0%, #39d0e0 18%, #12839f 58%, #0a4d62 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
       animation: logoGlow 3s ease-in-out infinite alternate;
+      text-shadow:
+        0 2px 0 rgba(16, 52, 66, 0.85),
+        0 8px 18px rgba(0, 0, 0, 0.32);
     }
-    .logo:hover .logo-mark,
-    .logo:hover .logo-globe,
-    .logo:hover .logo-wordmark {
+    .logo-wordmark .accent {
+      color: #8ef7ff;
+      -webkit-text-stroke: 1px rgba(4, 33, 43, 0.55);
+    }
+    .logo:hover .logo-mark {
       animation-play-state: paused;
       transform: scale(1.04);
     }
@@ -145,12 +215,9 @@
       75% { transform: perspective(600px) rotateY(10deg) rotate(0.2deg) scale(0.985); }
       100% { transform: perspective(600px) rotateY(0deg) rotate(-1.2deg) scale(1); }
     }
-    @keyframes globeShine {
-      0% { transform: translateX(-18px) rotate(-10deg); opacity: 0.18; }
-      20% { opacity: 0.5; }
-      50% { transform: translateX(12px) rotate(-2deg); opacity: 0.78; }
-      80% { opacity: 0.38; }
-      100% { transform: translateX(26px) rotate(10deg); opacity: 0.14; }
+    @keyframes globeSurfaceSpin {
+      0% { transform: translateX(0) rotate(0deg); }
+      100% { transform: translateX(22px) rotate(0deg); }
     }
     .nav-buttons {
       display: flex;
@@ -518,8 +585,12 @@
   <header>
     <a href="index.html" class="logo" id="appverze">
       <span class="logo-mark">
-        <img src="/appverze.png" alt="APPVERZE" id="logoGlobeImage" class="logo-globe logo-cleanup">
-        <img src="/appverze.png" alt="APPVERZE" id="logoWordmarkImage" class="logo-wordmark logo-cleanup">
+        <span class="logo-globe-wrap" aria-hidden="true">
+          <span class="logo-globe-shadow"></span>
+          <span class="logo-globe"></span>
+          <span class="logo-ring"></span>
+        </span>
+        <span class="logo-wordmark">APPVERZ<span class="accent">E</span></span>
       </span>
     </a>
     <div class="nav-buttons">
@@ -625,7 +696,6 @@
     const searchBox = document.getElementById('searchBox');
     const submitBtn = document.getElementById('submitBtn');
     const holodeckMusic = document.getElementById('holodeckMusic');
-    const logoImages = document.querySelectorAll('.logo-cleanup');
     const loginBtn = document.getElementById('loginBtn');
     const authStatus = document.getElementById('authStatus');
     const authModal = document.getElementById('authModal');
@@ -655,117 +725,6 @@
         p.catch(() => {
           // 브라우저 자동재생 정책으로 막혀도 조용히 무시
         });
-      }
-    }
-
-    function removeLogoWhiteBackground(logoImage) {
-      if (!logoImage || !logoImage.complete || !logoImage.naturalWidth) return;
-      try {
-        const canvas = document.createElement('canvas');
-        canvas.width = logoImage.naturalWidth;
-        canvas.height = logoImage.naturalHeight;
-        const ctx = canvas.getContext('2d', { willReadFrequently: true });
-        if (!ctx) return;
-
-        ctx.drawImage(logoImage, 0, 0);
-        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        const data = imageData.data;
-        const width = canvas.width;
-        const height = canvas.height;
-        const visited = new Uint8Array(width * height);
-        const queue = [];
-
-        function pixelIndex(x, y) {
-          return (y * width + x) * 4;
-        }
-
-        function isBackgroundPixel(x, y) {
-          const i = pixelIndex(x, y);
-          const r = data[i];
-          const g = data[i + 1];
-          const b = data[i + 2];
-          const max = Math.max(r, g, b);
-          const min = Math.min(r, g, b);
-          const brightness = (r + g + b) / 3;
-          const lowSaturation = max - min < 28;
-          return brightness > 190 && lowSaturation;
-        }
-
-        function enqueue(x, y) {
-          if (x < 0 || y < 0 || x >= width || y >= height) return;
-          const pos = y * width + x;
-          if (visited[pos]) return;
-          if (!isBackgroundPixel(x, y)) return;
-          visited[pos] = 1;
-          queue.push([x, y]);
-        }
-
-        for (let x = 0; x < width; x++) {
-          enqueue(x, 0);
-          enqueue(x, height - 1);
-        }
-        for (let y = 0; y < height; y++) {
-          enqueue(0, y);
-          enqueue(width - 1, y);
-        }
-
-        while (queue.length) {
-          const [x, y] = queue.shift();
-          const i = pixelIndex(x, y);
-          data[i + 3] = 0;
-
-          enqueue(x + 1, y);
-          enqueue(x - 1, y);
-          enqueue(x, y + 1);
-          enqueue(x, y - 1);
-          enqueue(x + 1, y + 1);
-          enqueue(x - 1, y - 1);
-          enqueue(x + 1, y - 1);
-          enqueue(x - 1, y + 1);
-        }
-
-        for (let i = 0; i < data.length; i += 4) {
-          const r = data[i];
-          const g = data[i + 1];
-          const b = data[i + 2];
-          const brightness = (r + g + b) / 3;
-          const max = Math.max(r, g, b);
-          const min = Math.min(r, g, b);
-          if (brightness > 235 && max - min < 18) {
-            data[i + 3] = 0;
-          }
-        }
-
-        // 지구본 아래 남는 옅은 그림자를 검정 그림자로 보정
-        for (let y = Math.floor(height * 0.72); y < Math.floor(height * 0.96); y++) {
-          for (let x = Math.floor(width * 0.08); x < Math.floor(width * 0.36); x++) {
-            const i = pixelIndex(x, y);
-            const alpha = data[i + 3];
-            if (alpha === 0) continue;
-
-            const r = data[i];
-            const g = data[i + 1];
-            const b = data[i + 2];
-            const brightness = (r + g + b) / 3;
-            const max = Math.max(r, g, b);
-            const min = Math.min(r, g, b);
-            const dx = (x - width * 0.22) / (width * 0.12);
-            const dy = (y - height * 0.87) / (height * 0.08);
-            const insideShadowEllipse = dx * dx + dy * dy < 1.0;
-
-            if (insideShadowEllipse && brightness > 40 && brightness < 210 && max - min < 55) {
-              data[i] = 0;
-              data[i + 1] = 0;
-              data[i + 2] = 0;
-              data[i + 3] = Math.max(alpha, 170);
-            }
-          }
-        }
-
-        ctx.putImageData(imageData, 0, 0);
-        logoImage.src = canvas.toDataURL('image/png');
-      } catch (e) {
-        console.error('Logo cleanup failed:', e);
       }
     }
 
@@ -1039,16 +998,6 @@
     });
     authPassword.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') handleEmailAuth();
-    });
-
-    logoImages.forEach(function (img) {
-      if (img.complete) {
-        removeLogoWhiteBackground(img);
-      } else {
-        img.addEventListener('load', function () {
-          removeLogoWhiteBackground(img);
-        }, { once: true });
-      }
     });
 
     initSupabaseAuth();
