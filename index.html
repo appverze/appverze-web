@@ -138,23 +138,6 @@
     const holodeck = document.getElementById('holodeck');
     const searchBox = document.getElementById('searchBox');
     const submitBtn = document.getElementById('submitBtn');
-    let didAgentLoaded = false;
-    function loadDidAgentWidget() {
-      if (didAgentLoaded || document.querySelector('script[data-name="did-agent"]')) return;
-      const s = document.createElement('script');
-      s.type = 'module';
-      s.src = 'https://agent.d-id.com/v2/index.js';
-      s.setAttribute('data-mode', 'fabio');
-      s.setAttribute('data-client-key', 'Z29vZ2xlLW9hdXRoMnwxMDk4MDk2ODM2Mjg4Njk1OTExMDc6NkZUSEtjOU00SGJwQ0NHVXZVbzJW');
-      s.setAttribute('data-agent-id', 'v2_agt_J-EKRcqE');
-      s.setAttribute('data-name', 'did-agent');
-      s.setAttribute('data-monitor', 'true');
-      s.setAttribute('data-orientation', 'horizontal');
-      s.setAttribute('data-position', 'right');
-      s.setAttribute('data-open-mode', 'expanded');
-      document.body.appendChild(s);
-      didAgentLoaded = true;
-    }
 
     function appendFallbackMessage(name, imgSrc, boxClass, textToSay, triggerHolodeck) {
       const msgWrapper = document.createElement('div');
@@ -251,7 +234,6 @@
 
         if(userText.includes('방') || userText.includes('룸') || userText.includes('방송국')) {
           appendFallbackMessage('Yang (실행)', YANG_IMAGE, 'yang-video-box', `명령어 확인. 코어 엔진 가동, 3D 룸과 D-ID 캐릭터를 활성화합니다!`, true);
-          loadDidAgentWidget();
         } else {
           title.style.opacity = '0'; searchBox.style.transform = 'translateY(150px)';
           addRealVideoMessage('Yin (감성)', YIN_IMAGE, '', `안녕하세요! "${userText}" 라고 말씀하셨군요. 저는 앱버즈의 감성 AI Yin입니다. 제 입모양이 움직이는 게 보이시나요?`, 'ko-KR-SunHiNeural', false);
@@ -261,6 +243,17 @@
 
     inputField.addEventListener('keypress', function (e) { if (e.key === 'Enter') triggerChat(); });
     submitBtn.addEventListener('click', triggerChat);
+  </script>
+  <script type="module"
+    src="https://agent.d-id.com/v2/index.js"
+    data-mode="fabio"
+    data-client-key="Z29vZ2xlLW9hdXRoMnwxMDk4MDk2ODM2Mjg4Njk1OTExMDc6NkZUSEtjOU00SGJwQ0NHVXZVbzJW"
+    data-agent-id="v2_agt_J-EKRcqE"
+    data-name="did-agent"
+    data-monitor="true"
+    data-orientation="horizontal"
+    data-position="right"
+    data-open-mode="expanded">
   </script>
 </body>
 </html>
