@@ -112,16 +112,30 @@
     }
     .logo-ring {
       position: absolute;
-      inset: 0;
+      left: -4px;
+      top: 18px;
+      width: 66px;
+      height: 18px;
       border-radius: 50%;
-      border: 2px solid rgba(182, 238, 248, 0.7);
+      border: 3px solid rgba(214, 227, 236, 0.92);
       box-shadow:
-        0 0 0 2px rgba(34, 211, 238, 0.08),
-        0 0 16px rgba(34, 211, 238, 0.18),
-        inset 0 0 10px rgba(255, 255, 255, 0.1);
-      opacity: 0.9;
+        inset 0 0 0 1px rgba(66, 82, 92, 0.35),
+        0 2px 8px rgba(0, 0, 0, 0.18);
+      transform: rotate(-22deg);
+      opacity: 0.95;
       pointer-events: none;
       z-index: 1;
+    }
+    .logo-ring::before {
+      content: "";
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      border-top: 3px solid rgba(255, 255, 255, 0.78);
+      border-right: 3px solid transparent;
+      border-bottom: 3px solid rgba(76, 94, 105, 0.62);
+      border-left: 3px solid transparent;
+      opacity: 0.9;
     }
     .logo-globe {
       position: absolute;
