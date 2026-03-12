@@ -145,6 +145,8 @@
       border-radius: 16px;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
       padding: 20px;
+      max-height: 86vh;
+      overflow-y: auto;
     }
     .auth-modal-title {
       margin: 0 0 14px 0;
@@ -218,6 +220,14 @@
       background: #03c75a;
       color: #ffffff;
       border-color: #03c75a;
+    }
+    @media (max-width: 560px) {
+      .auth-actions {
+        flex-direction: column;
+      }
+      .oauth-actions {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* 전광판 */
@@ -562,7 +572,6 @@
 
     function setAuthBusy(isBusy) {
       authSubmitBtn.disabled = isBusy;
-      authCancelBtn.disabled = isBusy;
       kakaoLoginBtn.disabled = isBusy;
       naverLoginBtn.disabled = isBusy;
     }
@@ -583,12 +592,14 @@
     }
 
     function openAuthModal() {
+      setAuthBusy(false);
       setAuthError('');
       authModal.classList.add('open');
       setTimeout(() => authEmail.focus(), 0);
     }
 
     function closeAuthModal() {
+      setAuthBusy(false);
       authModal.classList.remove('open');
       setAuthError('');
     }
@@ -694,6 +705,7 @@
         });
         if (error) throw error;
         if (data?.url) {
+          closeAuthModal();
           window.location.assign(data.url);
           return;
         }
@@ -864,6 +876,11 @@
     });
     authModal.addEventListener('click', function (e) {
       if (e.target === authModal) closeAuthModal();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && authModal.classList.contains('open')) {
+        closeAuthModal();
+      }
     });
     authPassword.addEventListener('keypress', function (e) {
       if (e.key === 'Enter') handleEmailAuth();
