@@ -110,6 +110,19 @@
       opacity: 0.9;
       pointer-events: none;
     }
+    .logo-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 2px solid rgba(182, 238, 248, 0.7);
+      box-shadow:
+        0 0 0 2px rgba(34, 211, 238, 0.08),
+        0 0 16px rgba(34, 211, 238, 0.18),
+        inset 0 0 10px rgba(255, 255, 255, 0.1);
+      opacity: 0.9;
+      pointer-events: none;
+      z-index: 1;
+    }
     .logo-globe {
       position: absolute;
       inset: 2px 4px 6px 4px;
@@ -122,6 +135,7 @@
         0 6px 18px rgba(34, 211, 238, 0.24);
       overflow: hidden;
       transform-style: preserve-3d;
+      z-index: 2;
     }
     .logo-globe::before {
       content: "";
@@ -662,6 +676,7 @@
       <span class="logo-mark">
         <span class="logo-globe-wrap" aria-hidden="true">
           <span class="logo-globe-shadow"></span>
+          <span class="logo-ring"></span>
           <span class="logo-globe"></span>
         </span>
         <span class="logo-wordmark">APPVERZ<span class="accent">E</span></span>
