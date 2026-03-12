@@ -45,24 +45,15 @@
     .coin-amount { font-weight: bold; color: #fbbf24; font-size: 1rem; }
 
     /* =========================================
-       수정된 전광판: 화면 맨 위 중앙, 세로 50% 슬림 캡슐형!
+       맨 위 중앙 슬림 전광판 (황금빛 코인 가치)
        ========================================= */
     .billboard {
-      position: fixed; /* 스크롤해도 항상 맨 위에 고정 */
-      top: 25px; /* 화면 맨 위에서 살짝만 띄움 */
-      left: 50%;
-      transform: translateX(-50%); /* 정확히 정중앙 정렬 */
-      padding: 10px 30px; /* 세로 크기를 절반으로 확 줄임 */
-      background: rgba(10, 10, 15, 0.85);
-      border: 1px solid rgba(168, 85, 247, 0.5);
-      border-radius: 40px; /* 슬림한 캡슐(알약) 모양 */
+      position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
+      padding: 10px 30px; background: rgba(10, 10, 15, 0.85);
+      border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 40px;
       backdrop-filter: blur(15px);
       box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(168, 85, 247, 0.2);
-      display: flex; /* 요소들을 가로 한 줄로 나열 */
-      align-items: center;
-      gap: 20px; /* 항목 사이 간격 */
-      z-index: 100; /* 제일 앞에 보이도록 */
-      white-space: nowrap; /* 글씨가 밑으로 안 떨어지게 */
+      display: flex; align-items: center; gap: 20px; z-index: 100; white-space: nowrap;
     }
     
     .billboard-title {
@@ -70,22 +61,26 @@
     }
     .billboard-title span { color: #a855f7; }
     
-    .billboard-data {
-      display: flex; gap: 20px; align-items: center;
-    }
-    /* 상/하 두 줄이던 글씨를 좌/우 한 줄로 펴서 세로 공간 대폭 절약 */
+    .billboard-data { display: flex; gap: 20px; align-items: center; }
     .data-box { display: flex; flex-direction: row; align-items: baseline; gap: 8px; }
     .data-label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
     .data-value { font-size: 1.1rem; font-weight: 900; font-family: monospace; letter-spacing: 1px; }
     
     .supply-val { color: #fff; }
-    .price-val { color: #10b981; text-shadow: 0 0 10px rgba(16, 185, 129, 0.5); }
-    .pulse { animation: pulseGreen 2s infinite; }
+    
+    /* =========================================
+       수정됨: 화폐 가치 글자를 찬란한 황금칼라로!
+       ========================================= */
+    .price-val { 
+      color: #fbbf24; /* 로고와 동일한 고급스러운 금색 */
+      text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); /* 금색 네온 효과 */
+    }
+    .pulse { animation: pulseGold 2s infinite; } /* 애니메이션 이름 변경 */
 
-    @keyframes pulseGreen {
-      0% { text-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
-      50% { text-shadow: 0 0 20px rgba(16, 185, 129, 0.8); }
-      100% { text-shadow: 0 0 10px rgba(16, 185, 129, 0.2); }
+    @keyframes pulseGold {
+      0% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
+      50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8); }
+      100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
     }
 
     main {
