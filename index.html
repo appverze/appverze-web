@@ -411,6 +411,25 @@
     const searchBox = document.getElementById('searchBox');
     const submitBtn = document.getElementById('submitBtn');
 
+    // D-ID 실패 시에도 3D 룸을 보여주는 폴백 메시지
+    function appendFallbackMessage(name, imgSrc, boxClass, textToSay, triggerHolodeck) {
+      const msgWrapper = document.createElement('div');
+      msgWrapper.className = 'msg-wrapper';
+      msgWrapper.innerHTML = `
+        <div class="ai-video-box ${boxClass}">
+          <img src="${imgSrc}" alt="${name}">
+        </div>
+        <div class="ai-message"><strong>${name}:</strong> ${textToSay}</div>
+      `;
+      chatBox.appendChild(msgWrapper);
+
+      if (triggerHolodeck) {
+        title.style.opacity = '0';
+        holodeck.style.opacity = '1';
+        searchBox.style.transform = 'translateY(150px)';
+      }
+    }
+
     // Vercel 보안 백엔드 통신 함수
     async function addRealVideoMessage(name, imgSrc, boxClass, textToSay, voiceId, triggerHolodeck) {
       const langData = i18n[currentLang];
@@ -431,14 +450,16 @@
           })
         });
 
+        if (!createRes.ok) {
+          // 서버 쪽 문제면 바로 폴백
+          throw new Error('D-ID create failed');
+        }
+
         const createData = await createRes.json();
         const talkId = createData.id;
 
         if (!talkId) {
-          alert("서버 오류! Vercel 환경변수 세팅이나 D-ID 요금을 확인해주세요.");
-          loadingText.style.display = 'none';
-          inputField.disabled = false;
-          return;
+          throw new Error('Missing talk id');
         }
 
         let videoUrl = null;
@@ -450,8 +471,7 @@
           if (checkData.status === 'done') {
             videoUrl = checkData.result_url;
           } else if (checkData.status === 'error') {
-            alert("영상 렌더링 에러!");
-            break;
+            throw new Error('Render failed');
           }
         }
 
@@ -478,7 +498,15 @@
         }
       } catch (error) {
         console.error(error);
-        alert("통신 에러!");
+        // 어떤 에러가 나도 알림 대신 폴백 렌더링
+        const langData = i18n[currentLang];
+        const fallbackText = triggerHolodeck
+          ? langData.replyYang
+          : langData.replyYin;
+        const img = triggerHolodeck ? YANG_IMAGE : YIN_IMAGE;
+        const boxClass = triggerHolodeck ? 'yang-video-box' : '';
+        appendFallbackMessage(name, img, boxClass, fallbackText, triggerHolodeck);
+      } finally {
         loadingText.style.display = 'none';
         inputField.disabled = false;
       }
