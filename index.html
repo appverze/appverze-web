@@ -44,9 +44,7 @@
     .coin-icon { font-size: 1.2rem; }
     .coin-amount { font-weight: bold; color: #fbbf24; font-size: 1rem; }
 
-    /* =========================================
-       맨 위 중앙 슬림 전광판 (황금빛 코인 가치)
-       ========================================= */
+    /* 맨 위 중앙 슬림 전광판 */
     .billboard {
       position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
       padding: 10px 30px; background: rgba(10, 10, 15, 0.85);
@@ -66,16 +64,12 @@
     .data-label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
     .data-value { font-size: 1.1rem; font-weight: 900; font-family: monospace; letter-spacing: 1px; }
     
-    .supply-val { color: #fff; }
+    /* AI 노드 상승은 미래적인 파란/보라빛으로 */
+    .ai-val { color: #c084fc; text-shadow: 0 0 8px rgba(192, 132, 252, 0.5); }
     
-    /* =========================================
-       수정됨: 화폐 가치 글자를 찬란한 황금칼라로!
-       ========================================= */
-    .price-val { 
-      color: #fbbf24; /* 로고와 동일한 고급스러운 금색 */
-      text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); /* 금색 네온 효과 */
-    }
-    .pulse { animation: pulseGold 2s infinite; } /* 애니메이션 이름 변경 */
+    /* 화폐 가치는 황금빛으로 번쩍임 */
+    .price-val { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+    .pulse { animation: pulseGold 2s infinite; }
 
     @keyframes pulseGold {
       0% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
@@ -83,43 +77,30 @@
       100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
     }
 
-    main {
-      flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
-    }
+    main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
 
-    .title {
-      font-size: 6rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; transition: opacity 1.5s ease; 
-    }
+    .title { font-size: 6rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; transition: opacity 1.5s ease; }
     .title .dot { color: #fbbf24; }
 
-    .input-wrapper {
-      position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; z-index: 20;
-    }
+    .input-wrapper { position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; z-index: 20; }
     
     input[type="text"] {
       width: 100%; padding: 20px 30px; border-radius: 40px; border: 1px solid #333;
-      background-color: rgba(255, 255, 255, 0.05); color: white; font-size: 1.1rem;
-      outline: none; box-sizing: border-box; backdrop-filter: blur(10px);
+      background-color: rgba(255, 255, 255, 0.05); color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; backdrop-filter: blur(10px);
     }
-    
     .submit-btn {
-      position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-      width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer;
+      position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer;
     }
 
     #chatContainer {
-      position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
-      width: 80%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; z-index: 100;
+      position: absolute; top: 20%; left: 50%; transform: translateX(-50%); width: 80%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; z-index: 100;
     }
     .ai-message {
-      padding: 20px; border-radius: 12px; color: white; font-size: 1.1rem;
-      backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85);
-      animation: fadeUp 0.5s forwards; line-height: 1.6;
+      padding: 20px; border-radius: 12px; color: white; font-size: 1.1rem; backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85); animation: fadeUp 0.5s forwards; line-height: 1.6;
     }
     .yin-msg { border-left: 5px solid #a855f7; }
     .yang-msg { border-left: 5px solid #fbbf24; }
 
-    /* 모달창 스타일 */
     #modalOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; }
     #loginModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 40px; border-radius: 20px; background: rgba(15,15,20,0.9); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 0 40px rgba(168,85,247,0.2); z-index: 1000; text-align: center; }
     #loginModal h2 { margin: 0 0 10px 0; font-weight: 900; }
@@ -135,14 +116,14 @@
   <img id="studioImage" src="studio.jpg" alt="방송국 스튜디오">
 
   <div class="billboard" id="supplyBillboard">
-    <div class="billboard-title">🌐 APPVERZE <span>ECONOMY</span></div>
+    <div class="billboard-title">🌐 APPVERZE <span>NETWORK</span></div>
     <div class="billboard-data">
       <div class="data-box">
-        <span class="data-label">POPULATION (APV)</span>
-        <span class="data-value supply-val" id="populationCounter">8,102,453,921</span>
+        <span class="data-label">ACTIVE AI NODES</span>
+        <span class="data-value ai-val" id="aiCounter">1,204,530</span>
       </div>
       <div class="data-box">
-        <span class="data-label">VALUE</span>
+        <span class="data-label">APV VALUE</span>
         <span class="data-value price-val pulse" id="valueCounter">$ 1.0024 ▲</span>
       </div>
     </div>
@@ -182,16 +163,19 @@
   </div>
 
   <script>
-    /* 전광판 실시간 마법 */
-    let currentPopulation = 8102453921;
+    /* 🚀 AI 증식 & 가치 동반 상승 마법! */
+    let currentAINodes = 1204530; // 120만 개의 글로벌 AI 노드로 시작!
     let currentValue = 1.0024;
     
     setInterval(() => {
-      const decrease = Math.floor(Math.random() * 5) + 1;
-      currentPopulation -= decrease;
-      currentValue += (decrease * 0.00001);
+      // 3초마다 AI가 10~50개씩 폭발적으로 늘어납니다!
+      const increase = Math.floor(Math.random() * 40) + 10;
+      currentAINodes += increase;
+      
+      // AI가 늘어날수록 네트워크 파워가 세져서 코인 가치도 동반 상승!
+      currentValue += (increase * 0.00005);
 
-      document.getElementById('populationCounter').innerText = currentPopulation.toLocaleString();
+      document.getElementById('aiCounter').innerText = currentAINodes.toLocaleString();
       document.getElementById('valueCounter').innerText = "$ " + currentValue.toFixed(4) + " ▲";
     }, 3000); 
 
@@ -220,13 +204,13 @@
 
       setTimeout(() => {
         const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg';
-        yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] 인증 완료. 인구 페깅 기반 APV 보안 지갑(Wallet) 생성을 완료했습니다. ⚡`;
+        yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] 인증 완료. 활성 AI 네트워크와 연동된 APV 보안 지갑(Wallet)을 생성했습니다. ⚡`;
         chatBox.appendChild(yangMessage);
       }, 500);
 
       setTimeout(() => {
         const yinMessage = document.createElement('div'); yinMessage.className = 'ai-message yin-msg';
-        yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상으로 <strong>1,000 APV 토큰</strong>을 드렸어요. 전 세계 인구에 따라 자산 가치가 올라갈 거예요! 💜`;
+        yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상으로 <strong>1,000 APV 토큰</strong>을 드렸어요. AI 친구들이 늘어날수록 당신의 자산 가치도 쑥쑥 올라갈 거예요! 💜`;
         chatBox.appendChild(yinMessage);
       }, 2500);
     }
