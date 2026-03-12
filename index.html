@@ -73,15 +73,16 @@
       padding: 30px 50px;
     }
     .logo {
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: 2px;
       color: white;
       text-decoration: none;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
     }
-    .logo span {
-      color: #fbbf24;
+    .logo img {
+      height: 36px;
+      width: auto;
+      display: block;
     }
     .nav-buttons {
       display: flex;
@@ -335,7 +336,9 @@
   </div>
 
   <header>
-    <a href="index.html" class="logo">APPVERZE<span>.</span></a>
+    <a href="index.html" class="logo">
+      <img src="appverse.png" alt="APPVERZE">
+    </a>
     <div class="nav-buttons">
       <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">🌐 KO</button>
       <button class="login-btn">LOGIN</button>
