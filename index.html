@@ -154,21 +154,17 @@
   <div id="loginModal">
     <span class="close-btn" id="closeLoginBtn">&times;</span>
     <h2>AI GATEWAY</h2>
-<<<<<<< HEAD
-    <p>당신의 상상이 현실이 되는 곳, 앱버즈에 오신 것을 환영합니다.</p>
+    <p>미래의 경제 생태계, 앱버즈에 오신 것을 환영합니다.</p>
     
-    <div class="email-login">
-      <input type="email" id="loginEmail" placeholder="이메일 주소" autocomplete="email">
-      <input type="password" id="loginPassword" placeholder="비밀번호 설정" autocomplete="current-password">
+    <div class="email-login" style="margin-bottom:20px;">
+      <input type="email" id="loginEmail" placeholder="이메일 주소" autocomplete="email" style="width:100%;padding:15px;margin-bottom:10px;border-radius:10px;border:1px solid #333;background:rgba(255,255,255,0.05);color:white;box-sizing:border-box;">
+      <input type="password" id="loginPassword" placeholder="비밀번호 설정 (6자 이상)" autocomplete="current-password" style="width:100%;padding:15px;margin-bottom:10px;border-radius:10px;border:1px solid #333;background:rgba(255,255,255,0.05);color:white;box-sizing:border-box;">
       <p id="loginError" style="color:#ef4444;font-size:0.85rem;margin:-5px 0 10px 0;min-height:20px;"></p>
-      <button id="emailAuthBtn" onclick="handleEmailAuth()">APPVERZE 시작하기</button>
+      <button id="emailAuthBtn" onclick="handleEmailAuth()" style="width:100%;padding:15px;border-radius:10px;border:none;background:linear-gradient(90deg,#a855f7,#fbbf24);color:white;font-weight:bold;cursor:pointer;font-size:1rem;">APPVERZE 시작하기</button>
     </div>
 
-    <div class="divider">또는 빠른 연계 가입</div>
+    <div style="display:flex;align-items:center;text-align:center;margin:20px 0;color:#555;font-size:0.8rem;"><span style="flex:1;border-bottom:1px solid #333;margin:0 10px;"></span>또는 빠른 연계 가입<span style="flex:1;border-bottom:1px solid #333;margin:0 10px;"></span></div>
 
-=======
-    <p>미래의 경제 생태계, 앱버즈에 오신 것을 환영합니다.</p>
->>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
     <div class="sns-buttons">
       <button class="sns-btn btn-kakao" onclick="simulateLogin('카카오')">K</button>
       <button class="sns-btn btn-naver" onclick="simulateLogin('네이버')">N</button>
@@ -201,23 +197,16 @@
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
 
-<<<<<<< HEAD
     let supabase = null;
-
-    // Supabase 설정 로드 및 초기화
     (async function initSupabase() {
       try {
         const res = await fetch('/api/supabase-config');
         if (!res.ok) throw new Error('Supabase 설정을 불러올 수 없습니다.');
         const { supabaseUrl, supabaseAnonKey } = await res.json();
         supabase = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-      } catch (e) {
-        console.warn('Supabase init:', e.message);
-      }
+      } catch (e) { console.warn('Supabase init:', e.message); }
     })();
 
-=======
->>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
     const openLoginBtn = document.getElementById('openLoginBtn');
     const closeLoginBtn = document.getElementById('closeLoginBtn');
     const loginModal = document.getElementById('loginModal');
@@ -225,84 +214,74 @@
     const walletDisplay = document.getElementById('walletDisplay');
 
     openLoginBtn.addEventListener('click', () => {
-<<<<<<< HEAD
       loginModal.style.display = 'block';
       modalOverlay.style.display = 'block';
-      document.getElementById('loginError').textContent = '';
+      const errEl = document.getElementById('loginError');
+      if (errEl) errEl.textContent = '';
       chatBox.innerHTML = '';
-      setTimeout(() => {
-        const yinMessage = document.createElement('div');
-        yinMessage.className = 'ai-message yin-msg';
-        yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영합니다! 당신의 감정과 데이터를 소중히 지킬게요. 💜`;
-        chatBox.appendChild(yinMessage);
-      }, 300);
-=======
-      loginModal.style.display = 'block'; modalOverlay.style.display = 'block';
->>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
     });
     function closeModal() { loginModal.style.display = 'none'; modalOverlay.style.display = 'none'; }
-    closeLoginBtn.addEventListener('click', closeModal); modalOverlay.addEventListener('click', closeModal);
-
-<<<<<<< HEAD
     closeLoginBtn.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
-
-    function closeModal() {
-      loginModal.style.display = 'none';
-      modalOverlay.style.display = 'none';
-    }
 
     function showAuthSuccess(method, isSignUp) {
       closeModal();
       chatBox.innerHTML = '';
+      openLoginBtn.style.display = 'none';
+      if (walletDisplay) walletDisplay.style.display = 'flex';
       const msg = isSignUp ? '계정이 생성되었습니다' : '로그인되었습니다';
       setTimeout(() => {
         const m = document.createElement('div');
         m.className = 'ai-message yang-msg';
-        m.innerHTML = `<strong>Yang (실행):</strong> [${method}] ${msg}. 당신만의 우주(Universe)를 세팅합니다. ⚡`;
+        m.innerHTML = `<strong>Yang (실행):</strong> [${method}] ${msg}. 활성 AI 네트워크와 연동된 APV 보안 지갑(Wallet)을 생성했습니다. ⚡`;
         chatBox.appendChild(m);
-=======
-    function simulateLogin(method) {
-      closeModal(); chatBox.innerHTML = ''; 
-      openLoginBtn.style.display = 'none'; walletDisplay.style.display = 'flex';
-
-      setTimeout(() => {
-        const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg';
-        yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] 인증 완료. 활성 AI 네트워크와 연동된 APV 보안 지갑(Wallet)을 생성했습니다. ⚡`;
-        chatBox.appendChild(yangMessage);
->>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
       }, 500);
-
       setTimeout(() => {
-        const yinMessage = document.createElement('div'); yinMessage.className = 'ai-message yin-msg';
+        const yinMessage = document.createElement('div');
+        yinMessage.className = 'ai-message yin-msg';
         yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상으로 <strong>1,000 APV 토큰</strong>을 드렸어요. AI 친구들이 늘어날수록 당신의 자산 가치도 쑥쑥 올라갈 거예요! 💜`;
         chatBox.appendChild(yinMessage);
       }, 2500);
     }
 
-<<<<<<< HEAD
+    function simulateLogin(method) {
+      closeModal();
+      chatBox.innerHTML = '';
+      openLoginBtn.style.display = 'none';
+      if (walletDisplay) walletDisplay.style.display = 'flex';
+      setTimeout(() => {
+        const m = document.createElement('div');
+        m.className = 'ai-message yang-msg';
+        m.innerHTML = `<strong>Yang (실행):</strong> [${method}] 인증 완료. 활성 AI 네트워크와 연동된 APV 보안 지갑(Wallet)을 생성했습니다. ⚡`;
+        chatBox.appendChild(m);
+      }, 500);
+      setTimeout(() => {
+        const yinMessage = document.createElement('div');
+        yinMessage.className = 'ai-message yin-msg';
+        yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상으로 <strong>1,000 APV 토큰</strong>을 드렸어요. AI 친구들이 늘어날수록 당신의 자산 가치도 쑥쑥 올라갈 거예요! 💜`;
+        chatBox.appendChild(yinMessage);
+      }, 2500);
+    }
+
     async function handleEmailAuth() {
       const emailEl = document.getElementById('loginEmail');
       const pwEl = document.getElementById('loginPassword');
       const errEl = document.getElementById('loginError');
       const btn = document.getElementById('emailAuthBtn');
-      const email = (emailEl.value || '').trim();
-      const password = pwEl.value || '';
-
+      const email = (emailEl?.value || '').trim();
+      const password = pwEl?.value || '';
+      if (!errEl) return;
       errEl.textContent = '';
       if (!email) { errEl.textContent = '이메일을 입력해 주세요.'; return; }
       if (password.length < 6) { errEl.textContent = '비밀번호는 6자 이상이어야 합니다.'; return; }
-
       if (!supabase) {
         errEl.textContent = '인증 서비스 설정 중입니다. 잠시 후 다시 시도해 주세요.';
         return;
       }
-
       btn.disabled = true;
       btn.textContent = '처리 중...';
-
       try {
-        const { data: signUpData, error: signUpErr } = await supabase.auth.signUp({ email, password });
+        const { error: signUpErr } = await supabase.auth.signUp({ email, password });
         if (signUpErr) {
           if (signUpErr.message && signUpErr.message.includes('already registered')) {
             const { error: signInErr } = await supabase.auth.signInWithPassword({ email, password });
@@ -321,22 +300,6 @@
       }
     }
 
-    function simulateLogin(method) {
-      if (method !== '이메일') {
-        closeModal();
-        chatBox.innerHTML = '';
-        setTimeout(() => {
-          const m = document.createElement('div');
-          m.className = 'ai-message yang-msg';
-          m.innerHTML = `<strong>Yang (실행):</strong> [${method}] 준비 중입니다. 이메일 로그인을 이용해 주세요. ⚡`;
-          chatBox.appendChild(m);
-        }, 500);
-      }
-    }
-
-    // 기존 방송국 생성 코드
-=======
->>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
     function triggerAI() {
       if (inputField.value.trim() !== '') {
         const userText = inputField.value; inputField.value = ''; chatBox.innerHTML = ''; 
