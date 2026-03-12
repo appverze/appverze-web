@@ -44,14 +44,16 @@
     .coin-icon { font-size: 1.2rem; }
     .coin-amount { font-weight: bold; color: #fbbf24; font-size: 1rem; }
 
-    /* 맨 위 중앙 슬림 전광판 */
+    /* =========================================
+       유저 + AI + 코인 가치 (3단 콤보 전광판)
+       ========================================= */
     .billboard {
       position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
       padding: 10px 30px; background: rgba(10, 10, 15, 0.85);
       border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 40px;
       backdrop-filter: blur(15px);
       box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(168, 85, 247, 0.2);
-      display: flex; align-items: center; gap: 20px; z-index: 100; white-space: nowrap;
+      display: flex; align-items: center; gap: 25px; z-index: 100; white-space: nowrap;
     }
     
     .billboard-title {
@@ -59,15 +61,18 @@
     }
     .billboard-title span { color: #a855f7; }
     
-    .billboard-data { display: flex; gap: 20px; align-items: center; }
+    .billboard-data { display: flex; gap: 25px; align-items: center; }
     .data-box { display: flex; flex-direction: row; align-items: baseline; gap: 8px; }
     .data-label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
-    .data-value { font-size: 1.1rem; font-weight: 900; font-family: monospace; letter-spacing: 1px; }
+    .data-value { font-size: 1.1rem; font-weight: 900; font-family: monospace; letter-spacing: 1px; transition: color 0.3s; }
     
-    /* AI 노드 상승은 미래적인 파란/보라빛으로 */
+    /* 인간 유저는 생동감 있는 스카이블루 색상! */
+    .user-val { color: #38bdf8; text-shadow: 0 0 8px rgba(56, 189, 248, 0.5); }
+    
+    /* AI 노드는 신비로운 보랏빛 */
     .ai-val { color: #c084fc; text-shadow: 0 0 8px rgba(192, 132, 252, 0.5); }
     
-    /* 화폐 가치는 황금빛으로 번쩍임 */
+    /* 화폐 가치는 찬란한 황금빛 */
     .price-val { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
     .pulse { animation: pulseGold 2s infinite; }
 
@@ -116,10 +121,14 @@
   <img id="studioImage" src="studio.jpg" alt="방송국 스튜디오">
 
   <div class="billboard" id="supplyBillboard">
-    <div class="billboard-title">🌐 APPVERZE <span>NETWORK</span></div>
+    <div class="billboard-title">🌐 APPVERZE <span>ECOSYSTEM</span></div>
     <div class="billboard-data">
       <div class="data-box">
-        <span class="data-label">ACTIVE AI NODES</span>
+        <span class="data-label">HUMAN USERS</span>
+        <span class="data-value user-val" id="userCounter">15,420</span>
+      </div>
+      <div class="data-box">
+        <span class="data-label">AI NODES</span>
         <span class="data-value ai-val" id="aiCounter">1,204,530</span>
       </div>
       <div class="data-box">
@@ -154,6 +163,7 @@
   <div id="loginModal">
     <span class="close-btn" id="closeLoginBtn">&times;</span>
     <h2>AI GATEWAY</h2>
+<<<<<<< HEAD
     <p>미래의 경제 생태계, 앱버즈에 오신 것을 환영합니다.</p>
     
     <div class="email-login" style="margin-bottom:20px;">
@@ -165,6 +175,9 @@
 
     <div style="display:flex;align-items:center;text-align:center;margin:20px 0;color:#555;font-size:0.8rem;"><span style="flex:1;border-bottom:1px solid #333;margin:0 10px;"></span>또는 빠른 연계 가입<span style="flex:1;border-bottom:1px solid #333;margin:0 10px;"></span></div>
 
+=======
+    <p>인간과 AI가 함께 만드는 경제 생태계에 오신 것을 환영합니다.</p>
+>>>>>>> 198040a184ee94018d866b38c6ab5f7c25b278d2
     <div class="sns-buttons">
       <button class="sns-btn btn-kakao" onclick="simulateLogin('카카오')">K</button>
       <button class="sns-btn btn-naver" onclick="simulateLogin('네이버')">N</button>
@@ -172,22 +185,31 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
-    /* 🚀 AI 증식 & 가치 동반 상승 마법! */
-    let currentAINodes = 1204530; // 120만 개의 글로벌 AI 노드로 시작!
-    let currentValue = 1.0024;
+    /* 🚀 인간 + AI = 가치 상승의 완벽한 마법 로직 */
+    let currentUsers = 15420;     // 사람 방문자 시작 숫자
+    let currentAINodes = 1204530; // AI 노드 시작 숫자
+    let currentValue = 1.0024;    // 코인 가치 시작 숫자
     
-    setInterval(() => {
-      // 3초마다 AI가 10~50개씩 폭발적으로 늘어납니다!
-      const increase = Math.floor(Math.random() * 40) + 10;
-      currentAINodes += increase;
-      
-      // AI가 늘어날수록 네트워크 파워가 세져서 코인 가치도 동반 상승!
-      currentValue += (increase * 0.00005);
-
+    // 화면을 업데이트 하는 함수
+    function updateBillboard() {
+      document.getElementById('userCounter').innerText = currentUsers.toLocaleString();
       document.getElementById('aiCounter').innerText = currentAINodes.toLocaleString();
       document.getElementById('valueCounter').innerText = "$ " + currentValue.toFixed(4) + " ▲";
+    }
+
+    // 3초마다 전 세계 누군가 방문하고, AI가 늘어나는 시뮬레이션
+    setInterval(() => {
+      const userIncrease = Math.floor(Math.random() * 3); // 0~2명의 진짜 유저가 가입
+      const aiIncrease = Math.floor(Math.random() * 40) + 10; // AI 노드는 10~50개씩 팍팍 증식
+      
+      currentUsers += userIncrease;
+      currentAINodes += aiIncrease;
+      
+      // 💡 [핵심] 사람 1명의 가치가 AI 1개보다 10배 더 높게 설정하여 코인 가치 펌핑!
+      currentValue += (aiIncrease * 0.00005) + (userIncrease * 0.0005);
+      
+      updateBillboard();
     }, 3000); 
 
     const inputField = document.getElementById('chatInput');
@@ -197,6 +219,7 @@
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
 
+<<<<<<< HEAD
     let supabase = null;
     (async function initSupabase() {
       try {
@@ -207,6 +230,8 @@
       } catch (e) { console.warn('Supabase init:', e.message); }
     })();
 
+=======
+>>>>>>> 198040a184ee94018d866b38c6ab5f7c25b278d2
     const openLoginBtn = document.getElementById('openLoginBtn');
     const closeLoginBtn = document.getElementById('closeLoginBtn');
     const loginModal = document.getElementById('loginModal');
@@ -214,6 +239,7 @@
     const walletDisplay = document.getElementById('walletDisplay');
 
     openLoginBtn.addEventListener('click', () => {
+<<<<<<< HEAD
       loginModal.style.display = 'block';
       modalOverlay.style.display = 'block';
       const errEl = document.getElementById('loginError');
@@ -235,8 +261,33 @@
         m.className = 'ai-message yang-msg';
         m.innerHTML = `<strong>Yang (실행):</strong> [${method}] ${msg}. 활성 AI 네트워크와 연동된 APV 보안 지갑(Wallet)을 생성했습니다. ⚡`;
         chatBox.appendChild(m);
+=======
+      loginModal.style.display = 'block'; modalOverlay.style.display = 'block';
+    });
+    function closeModal() { loginModal.style.display = 'none'; modalOverlay.style.display = 'none'; }
+    closeLoginBtn.addEventListener('click', closeModal); modalOverlay.addEventListener('click', closeModal);
+
+    function simulateLogin(method) {
+      closeModal(); chatBox.innerHTML = ''; 
+      openLoginBtn.style.display = 'none'; walletDisplay.style.display = 'flex';
+
+      // 💡 [이스터에그] 사장님이 직접 가입 버튼을 누르면, 실시간으로 내 가입이 전광판에 즉시 반영!!
+      currentUsers += 1; 
+      currentValue += 0.0050; // 직접 가입하면 가치가 훅 뜁니다!
+      updateBillboard();
+      
+      // 시각적 효과를 위해 유저 숫자 잠깐 하얗게 빛나게 하기
+      document.getElementById('userCounter').style.color = "white";
+      setTimeout(() => { document.getElementById('userCounter').style.color = "#38bdf8"; }, 1000);
+
+      setTimeout(() => {
+        const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg';
+        yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] 인간 유저 1명 추가 동기화 완료. 생태계 가치 상승이 전광판에 반영되었습니다. ⚡`;
+        chatBox.appendChild(yangMessage);
+>>>>>>> 198040a184ee94018d866b38c6ab5f7c25b278d2
       }, 500);
       setTimeout(() => {
+<<<<<<< HEAD
         const yinMessage = document.createElement('div');
         yinMessage.className = 'ai-message yin-msg';
         yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상으로 <strong>1,000 APV 토큰</strong>을 드렸어요. AI 친구들이 늘어날수록 당신의 자산 가치도 쑥쑥 올라갈 거예요! 💜`;
@@ -259,10 +310,15 @@
         const yinMessage = document.createElement('div');
         yinMessage.className = 'ai-message yin-msg';
         yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상으로 <strong>1,000 APV 토큰</strong>을 드렸어요. AI 친구들이 늘어날수록 당신의 자산 가치도 쑥쑥 올라갈 거예요! 💜`;
+=======
+        const yinMessage = document.createElement('div'); yinMessage.className = 'ai-message yin-msg';
+        yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 당신이 가입해주신 덕분에 우리 모두의 자산 가치가 더 올랐어요! 첫 보상 <strong>1,000 APV 토큰</strong> 지급 완료 💜`;
+>>>>>>> 198040a184ee94018d866b38c6ab5f7c25b278d2
         chatBox.appendChild(yinMessage);
       }, 2500);
     }
 
+<<<<<<< HEAD
     async function handleEmailAuth() {
       const emailEl = document.getElementById('loginEmail');
       const pwEl = document.getElementById('loginPassword');
@@ -300,6 +356,8 @@
       }
     }
 
+=======
+>>>>>>> 198040a184ee94018d866b38c6ab5f7c25b278d2
     function triggerAI() {
       if (inputField.value.trim() !== '') {
         const userText = inputField.value; inputField.value = ''; chatBox.innerHTML = ''; 
