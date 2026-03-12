@@ -7,67 +7,331 @@
   <style>
     @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
-    body { margin: 0; padding: 0; background-color: #0b0b0f; color: white; font-family: 'Pretendard', sans-serif; height: 100vh; display: flex; flex-direction: column; overflow: hidden; }
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #0b0b0f;
+      color: white;
+      font-family: 'Pretendard', sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
 
-    #holodeck { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #050508; perspective: 1000px; opacity: 0; z-index: 1; transition: opacity 1.5s ease-in-out; pointer-events: none; overflow: hidden; }
-    .grid-floor { position: absolute; bottom: -80%; left: -50%; width: 200%; height: 200%; background-image: linear-gradient(rgba(168, 85, 247, 0.7) 2px, transparent 2px), linear-gradient(90deg, rgba(168, 85, 247, 0.7) 2px, transparent 2px); background-size: 80px 80px; transform: rotateX(80deg); animation: gridMove 2s linear infinite; }
-    .fade-cover { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, #050508 30%, transparent 100%); z-index: 2; }
-    @keyframes gridMove { 0% { background-position: 0 0; } 100% { background-position: 0 80px; } }
+    /* 🚀 홀로그램 룸 */
+    #holodeck {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #050508;
+      perspective: 1000px;
+      opacity: 0;
+      z-index: 1;
+      transition: opacity 1.5s ease-in-out;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .grid-floor {
+      position: absolute;
+      bottom: -80%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background-image:
+        linear-gradient(rgba(168, 85, 247, 0.7) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(168, 85, 247, 0.7) 2px, transparent 2px);
+      background-size: 80px 80px;
+      transform: rotateX(80deg);
+      animation: gridMove 2s linear infinite;
+    }
+    .fade-cover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, #050508 30%, transparent 100%);
+      z-index: 2;
+    }
+    @keyframes gridMove {
+      0% { background-position: 0 0; }
+      100% { background-position: 0 80px; }
+    }
 
-    header, main { position: relative; z-index: 10; pointer-events: auto; }
-    header { display: flex; justify-content: space-between; align-items: center; padding: 30px 50px; }
-    .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; color: white; text-decoration: none; cursor: pointer; }
-    .logo span { color: #fbbf24; }
-    .nav-buttons { display: flex; gap: 15px; align-items: center; }
-    .lang-btn { padding: 10px 15px; border-radius: 30px; background-color: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.3); font-weight: bold; cursor: pointer; transition: 0.3s; }
-    .lang-btn:hover { background-color: rgba(255,255,255,0.2); }
-    .login-btn { padding: 10px 20px; border-radius: 30px; font-weight: bold; font-size: 0.9rem; cursor: pointer; background-color: #a855f7; color: white; border: 1px solid #a855f7; }
+    header, main {
+      position: relative;
+      z-index: 10;
+      pointer-events: auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 30px 50px;
+    }
+    .logo {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+    }
+    .logo span {
+      color: #fbbf24;
+    }
+    .nav-buttons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+    }
 
-    .billboard { position: fixed; top: 25px; left: 50%; transform: translateX(-50%); padding: 10px 30px; background: rgba(10, 10, 15, 0.85); border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 40px; backdrop-filter: blur(15px); box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5); display: flex; align-items: center; gap: 25px; z-index: 100; white-space: nowrap; }
-    .billboard-title { font-size: 0.8rem; color: #ccc; letter-spacing: 1px; font-weight: bold; margin: 0; }
-    .billboard-title span { color: #a855f7; }
-    .billboard-data { display: flex; gap: 25px; align-items: center; }
-    .data-box { display: flex; flex-direction: row; align-items: baseline; gap: 8px; }
-    .data-label { font-size: 0.7rem; color: #888; }
-    .data-value { font-size: 1.1rem; font-weight: 900; font-family: monospace; }
-    .user-val { color: #38bdf8; } .ai-val { color: #c084fc; } .price-val { color: #fbbf24; }
-    .pulse { animation: pulseGold 2s infinite; }
-    @keyframes pulseGold { 0% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); } 50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8); } 100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); } }
+    /* 글로벌 언어 스위치 버튼 */
+    .lang-btn {
+      padding: 10px 15px;
+      border-radius: 30px;
+      background-color: rgba(255,255,255,0.1);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.3);
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .lang-btn:hover {
+      background-color: rgba(255,255,255,0.2);
+    }
 
-    main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
-    .title { font-size: 6rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; transition: opacity 1.5s ease; pointer-events: none; }
-    .title .dot { color: #fbbf24; }
+    .login-btn {
+      padding: 10px 20px;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 0.9rem;
+      cursor: pointer;
+      background-color: #a855f7;
+      color: white;
+      border: 1px solid #a855f7;
+    }
 
-    .input-wrapper { position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; z-index: 20; }
-    input[type="text"] { width: 100%; padding: 20px 30px; border-radius: 40px; border: 1px solid #333; background-color: rgba(255, 255, 255, 0.05); color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; backdrop-filter: blur(10px); }
-    .submit-btn { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer; }
+    /* 전광판 */
+    .billboard {
+      position: fixed;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 10px 30px;
+      background: rgba(10, 10, 15, 0.85);
+      border: 1px solid rgba(168, 85, 247, 0.5);
+      border-radius: 40px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 25px;
+      z-index: 100;
+      white-space: nowrap;
+    }
+    .billboard-title {
+      font-size: 0.8rem;
+      color: #ccc;
+      letter-spacing: 1px;
+      font-weight: bold;
+      margin: 0;
+    }
+    .billboard-title span {
+      color: #a855f7;
+    }
+    .billboard-data {
+      display: flex;
+      gap: 25px;
+      align-items: center;
+    }
+    .data-box {
+      display: flex;
+      flex-direction: row;
+      align-items: baseline;
+      gap: 8px;
+    }
+    .data-label {
+      font-size: 0.7rem;
+      color: #888;
+    }
+    .data-value {
+      font-size: 1.1rem;
+      font-weight: 900;
+      font-family: monospace;
+    }
+    .user-val { color: #38bdf8; }
+    .ai-val { color: #c084fc; }
+    .price-val { color: #fbbf24; }
+    .pulse {
+      animation: pulseGold 2s infinite;
+    }
+    @keyframes pulseGold {
+      0% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
+      50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8); }
+      100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
+    }
 
-    #chatContainer { position: absolute; top: 15%; left: 50%; transform: translateX(-50%); width: 80%; max-width: 700px; display: flex; flex-direction: column; gap: 20px; z-index: 100; }
-    .msg-wrapper { display: flex; gap: 15px; align-items: flex-start; opacity: 0; transform: translateY(20px); animation: fadeUp 0.5s forwards; }
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-    .ai-video-box { width: 130px; height: 130px; border-radius: 50%; background-color: #111; flex-shrink: 0; border: 3px solid #a855f7; overflow: hidden; position: relative; box-shadow: 0 0 20px rgba(168,85,247,0.4); }
-    .ai-video-box video, .ai-video-box img { width: 100%; height: 100%; object-fit: cover; }
-    .yang-video-box { border-color: #fbbf24; box-shadow: 0 0 20px rgba(251,191,36,0.4); }
-    .ai-message { padding: 15px 20px; border-radius: 0 12px 12px 12px; color: white; font-size: 1.1rem; backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85); line-height: 1.6; border: 1px solid rgba(255,255,255,0.1); flex: 1; }
-    #loadingText { display: none; position: absolute; top: -30px; left: 0; width: 100%; text-align: center; color: #fbbf24; font-weight: bold; font-size: 0.9rem; animation: blink 1s infinite; text-shadow: 0 0 10px rgba(251,191,36,0.8); }
-    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .title {
+      font-size: 6rem;
+      font-weight: 900;
+      letter-spacing: -2px;
+      margin-bottom: 20px;
+      transition: opacity 1.5s ease;
+      pointer-events: none;
+    }
+    .title .dot {
+      color: #fbbf24;
+    }
+
+    .input-wrapper {
+      position: relative;
+      width: 500px;
+      max-width: 90%;
+      transition: transform 1.5s ease;
+      z-index: 20;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 20px 30px;
+      border-radius: 40px;
+      border: 1px solid #333;
+      background-color: rgba(255, 255, 255, 0.05);
+      color: white;
+      font-size: 1.1rem;
+      outline: none;
+      box-sizing: border-box;
+      backdrop-filter: blur(10px);
+    }
+    .submit-btn {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 35px;
+      height: 35px;
+      background-color: #fbbf24;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    #chatContainer {
+      position: absolute;
+      top: 15%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      max-width: 700px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      z-index: 100;
+    }
+    .msg-wrapper {
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeUp 0.5s forwards;
+    }
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .ai-video-box {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      background-color: #111;
+      flex-shrink: 0;
+      border: 3px solid #a855f7;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 0 20px rgba(168,85,247,0.4);
+    }
+    .ai-video-box video,
+    .ai-video-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .yang-video-box {
+      border-color: #fbbf24;
+      box-shadow: 0 0 20px rgba(251,191,36,0.4);
+    }
+
+    .ai-message {
+      padding: 15px 20px;
+      border-radius: 0 12px 12px 12px;
+      color: white;
+      font-size: 1.1rem;
+      backdrop-filter: blur(15px);
+      background: rgba(20, 20, 25, 0.85);
+      line-height: 1.6;
+      border: 1px solid rgba(255,255,255,0.1);
+      flex: 1;
+    }
+    #loadingText {
+      display: none;
+      position: absolute;
+      top: -30px;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      color: #fbbf24;
+      font-weight: bold;
+      font-size: 0.9rem;
+      animation: blink 1s infinite;
+      text-shadow: 0 0 10px rgba(251,191,36,0.8);
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
   </style>
 </head>
 <body>
-  <div id="holodeck"><div class="fade-cover"></div><div class="grid-floor"></div></div>
+  <div id="holodeck">
+    <div class="fade-cover"></div>
+    <div class="grid-floor"></div>
+  </div>
 
   <div class="billboard" id="supplyBillboard">
     <div class="billboard-title">🌐 APPVERZE <span id="boardEcosystem">ECOSYSTEM</span></div>
     <div class="billboard-data">
-      <div class="data-box"><span class="data-label" id="labelHuman">HUMAN USERS</span><span class="data-value user-val" id="userCounter">15,420</span></div>
-      <div class="data-box"><span class="data-label" id="labelNodes">AI NODES</span><span class="data-value ai-val" id="aiCounter">1,204,530</span></div>
-      <div class="data-box"><span class="data-label" id="labelValue">APV VALUE</span><span class="data-value price-val pulse" id="valueCounter">$ 1.0024</span></div>
+      <div class="data-box">
+        <span class="data-label" id="labelHuman">HUMAN USERS</span>
+        <span class="data-value user-val" id="userCounter">15,420</span>
+      </div>
+      <div class="data-box">
+        <span class="data-label" id="labelNodes">AI NODES</span>
+        <span class="data-value ai-val" id="aiCounter">1,204,530</span>
+      </div>
+      <div class="data-box">
+        <span class="data-label" id="labelValue">APV VALUE</span>
+        <span class="data-value price-val pulse" id="valueCounter">$ 1.0024</span>
+      </div>
     </div>
   </div>
 
   <header>
-    <a href="/" class="logo">APPVERZE<span>.</span></a>
-    <div class="nav-buttons"><button class="login-btn">LOGIN</button></div>
+    <div class="logo">APPVERZE<span>.</span></div>
+    <div class="nav-buttons">
+      <button class="lang-btn" id="langToggleBtn" onclick="toggleLanguage()">🌐 KO</button>
+      <button class="login-btn">LOGIN</button>
+    </div>
   </header>
 
   <main>
@@ -84,9 +348,56 @@
     const YIN_IMAGE = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&h=500&fit=crop";
     const YANG_IMAGE = "https://images.unsplash.com/photo-1620641788421-7a1c342ea42e?w=500&h=500&fit=crop";
 
-    let currentUsers = 15420; let currentAINodes = 1204530; let currentValue = 1.0024;
+    // 🌐 자체 다국어 사전 (UI & AI 원어민 보이스)
+    const i18n = {
+      KO: {
+        btnText: "🌐 KO",
+        placeholder: "방을 만들거나, Yin에게 아무 말이나 걸어보세요!",
+        loading: "🚀 자체 보안 서버를 통해 영상을 렌더링 중입니다... (약 10초)",
+        human: "HUMAN USERS",
+        nodes: "AI NODES",
+        value: "APV VALUE",
+        yinVoice: "ko-KR-SunHiNeural",
+        yangVoice: "ko-KR-InJoonNeural",
+        replyYin: "안녕하세요! 저는 앱버즈의 감성 AI Yin입니다. 당신의 상상을 현실로 만들어드릴게요! 💜",
+        replyYang: "명령어 확인. 코어 엔진 가동, 자체 3D 가상현실 룸을 생성합니다! ⚡"
+      },
+      EN: {
+        btnText: "🌐 EN",
+        placeholder: "Create a room or talk to Yin!",
+        loading: "🚀 Rendering video via secure server... (approx. 10 sec)",
+        human: "GLOBAL USERS",
+        nodes: "ACTIVE AI",
+        value: "TOKEN VALUE",
+        yinVoice: "en-US-JennyNeural",
+        yangVoice: "en-US-GuyNeural",
+        replyYin: "Hello there! I am Yin, the emotional AI of AppVerze. I'll turn your imagination into reality! 💜",
+        replyYang: "Command confirmed. Core engine activated, generating 3D Holodeck! ⚡"
+      }
+    };
+
+    let currentLang = 'KO'; // 기본 한국어
+
+    function toggleLanguage() {
+      currentLang = currentLang === 'KO' ? 'EN' : 'KO';
+      const langData = i18n[currentLang];
+
+      document.getElementById('langToggleBtn').innerText = langData.btnText;
+      document.getElementById('chatInput').placeholder = langData.placeholder;
+      document.getElementById('loadingText').innerText = langData.loading;
+      document.getElementById('labelHuman').innerText = langData.human;
+      document.getElementById('labelNodes').innerText = langData.nodes;
+      document.getElementById('labelValue').innerText = langData.value;
+    }
+
+    // 경제 전광판 로직
+    let currentUsers = 15420;
+    let currentAINodes = 1204530;
+    let currentValue = 1.0024;
     setInterval(() => {
-      currentUsers += Math.floor(Math.random() * 3); currentAINodes += Math.floor(Math.random() * 40) + 10; currentValue += 0.0005;
+      currentUsers += Math.floor(Math.random() * 3);
+      currentAINodes += Math.floor(Math.random() * 40) + 10;
+      currentValue += 0.0005;
       document.getElementById('userCounter').innerText = currentUsers.toLocaleString();
       document.getElementById('aiCounter').innerText = currentAINodes.toLocaleString();
       document.getElementById('valueCounter').innerText = "$ " + currentValue.toFixed(4);
@@ -100,25 +411,9 @@
     const searchBox = document.getElementById('searchBox');
     const submitBtn = document.getElementById('submitBtn');
 
-    function appendFallbackMessage(name, imgSrc, boxClass, textToSay, triggerHolodeck) {
-      const msgWrapper = document.createElement('div');
-      msgWrapper.className = 'msg-wrapper';
-      msgWrapper.innerHTML = `
-        <div class="ai-video-box ${boxClass}">
-          <img src="${imgSrc}" alt="${name}">
-        </div>
-        <div class="ai-message"><strong>${name}:</strong> ${textToSay}</div>
-      `;
-      chatBox.appendChild(msgWrapper);
-
-      if (triggerHolodeck) {
-        title.style.opacity = '0';
-        holodeck.style.opacity = '1';
-        searchBox.style.transform = 'translateY(150px)';
-      }
-    }
-
+    // Vercel 보안 백엔드 통신 함수
     async function addRealVideoMessage(name, imgSrc, boxClass, textToSay, voiceId, triggerHolodeck) {
+      const langData = i18n[currentLang];
       loadingText.style.display = 'block';
       inputField.disabled = true;
 
@@ -127,25 +422,42 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            script: { type: 'text', input: textToSay, provider: { type: 'microsoft', voice_id: voiceId } },
+            script: {
+              type: 'text',
+              input: textToSay,
+              provider: { type: 'microsoft', voice_id: voiceId }
+            },
             source_url: imgSrc
           })
         });
 
-        if (!createRes.ok) throw new Error('D-ID API endpoint unavailable');
-
         const createData = await createRes.json();
         const talkId = createData.id;
-        if (!talkId) throw new Error('D-ID response missing id');
+
+        if (!talkId) {
+          alert("서버 오류! Vercel 환경변수 세팅이나 D-ID 요금을 확인해주세요.");
+          loadingText.style.display = 'none';
+          inputField.disabled = false;
+          return;
+        }
 
         let videoUrl = null;
         while (!videoUrl) {
           await new Promise(resolve => setTimeout(resolve, 2000));
           const checkRes = await fetch(`/api/did?id=${talkId}`);
           const checkData = await checkRes.json();
-          if (checkData.status === 'done') videoUrl = checkData.result_url;
-          else if (checkData.status === 'error') throw new Error('D-ID rendering failed');
+
+          if (checkData.status === 'done') {
+            videoUrl = checkData.result_url;
+          } else if (checkData.status === 'error') {
+            alert("영상 렌더링 에러!");
+            break;
+          }
         }
+
+        loadingText.style.display = 'none';
+        inputField.disabled = false;
+        inputField.focus();
 
         if (videoUrl) {
           const msgWrapper = document.createElement('div');
@@ -157,6 +469,7 @@
             <div class="ai-message"><strong>${name}:</strong> ${textToSay}</div>
           `;
           chatBox.appendChild(msgWrapper);
+
           if (triggerHolodeck) {
             title.style.opacity = '0';
             holodeck.style.opacity = '1';
@@ -165,30 +478,47 @@
         }
       } catch (error) {
         console.error(error);
-        appendFallbackMessage(name, imgSrc, boxClass, textToSay, triggerHolodeck);
-      } finally {
+        alert("통신 에러!");
         loadingText.style.display = 'none';
         inputField.disabled = false;
-        inputField.focus();
       }
     }
 
     function triggerChat() {
       if (inputField.value.trim() === '') return;
+
       const userText = inputField.value;
       inputField.value = '';
       chatBox.innerHTML = '';
 
+      const langData = i18n[currentLang];
+
       if (userText.includes('방') || userText.includes('룸') || userText.toLowerCase().includes('room')) {
-        appendFallbackMessage('Yang (실행)', YANG_IMAGE, 'yang-video-box', '명령어 확인. 코어 엔진 가동, 3D 룸과 D-ID 캐릭터를 활성화합니다!', true);
+        addRealVideoMessage(
+          'Yang (Execute)',
+          YANG_IMAGE,
+          'yang-video-box',
+          langData.replyYang,
+          langData.yangVoice,
+          true
+        );
       } else {
         title.style.opacity = '0';
         searchBox.style.transform = 'translateY(150px)';
-        addRealVideoMessage('Yin (감성)', YIN_IMAGE, '', `안녕하세요! "${userText}" 라고 말씀하셨군요.`, 'ko-KR-SunHiNeural', false);
+        addRealVideoMessage(
+          'Yin (Emotion)',
+          YIN_IMAGE,
+          '',
+          langData.replyYin,
+          langData.yinVoice,
+          false
+        );
       }
     }
 
-    inputField.addEventListener('keypress', function (e) { if (e.key === 'Enter') triggerChat(); });
+    inputField.addEventListener('keypress', function (e) {
+      if (e.key === 'Enter') triggerChat();
+    });
     submitBtn.addEventListener('click', triggerChat);
   </script>
 </body>
