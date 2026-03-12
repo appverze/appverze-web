@@ -685,13 +685,19 @@
       setAuthBusy(true);
       setAuthError('');
       try {
-        const { error } = await supabaseClient.auth.signInWithOAuth({
+        const { data, error } = await supabaseClient.auth.signInWithOAuth({
           provider,
           options: {
             redirectTo: `${window.location.origin}${window.location.pathname}`,
+            skipBrowserRedirect: true,
           },
         });
         if (error) throw error;
+        if (data?.url) {
+          window.location.assign(data.url);
+          return;
+        }
+        throw new Error('OAuth redirect URL 생성에 실패했습니다.');
       } catch (err) {
         console.error(err);
         setAuthError(err?.message || '소셜 로그인 중 오류가 발생했습니다.');
