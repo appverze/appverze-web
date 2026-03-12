@@ -71,6 +71,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 30px 50px;
+      z-index: 220; /* 전광판보다 위에서 클릭되도록 */
     }
     .logo {
       color: white;
@@ -211,6 +212,7 @@
       gap: 25px;
       z-index: 100;
       white-space: nowrap;
+      pointer-events: none; /* 헤더 버튼 클릭 가로채기 방지 */
     }
     .billboard-title {
       font-size: 0.8rem;
@@ -601,26 +603,28 @@
       setAuthError('');
 
       try {
+        // 1) 먼저 로그인 시도
+        const signInRes = await supabaseClient.auth.signInWithPassword({
+          email,
+          password,
+        });
+
+        if (!signInRes.error && signInRes.data?.session) {
+          closeAuthModal();
+          return;
+        }
+
+        // 2) 로그인 실패 시 가입 시도
         const signUpRes = await supabaseClient.auth.signUp({
           email,
           password,
         });
 
         if (signUpRes.error) {
-          const msg = (signUpRes.error.message || '').toLowerCase();
-          const alreadyUser = msg.includes('already') || msg.includes('registered') || msg.includes('exists');
-          if (!alreadyUser) throw signUpRes.error;
-
-          const signInRes = await supabaseClient.auth.signInWithPassword({
-            email,
-            password,
-          });
-          if (signInRes.error) throw signInRes.error;
-          closeAuthModal();
-          return;
+          throw signUpRes.error;
         }
 
-        // 이메일 인증이 켜져 있으면 세션이 없을 수 있음
+        // 이메일 인증이 켜져 있으면 세션이 없을 수 있음 (정상)
         if (!signUpRes.data?.session) {
           setAuthError('가입 완료! 이메일 인증 후 다시 로그인해주세요.');
           return;
