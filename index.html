@@ -13,7 +13,6 @@
       display: flex; flex-direction: column; overflow: hidden;
     }
 
-    /* 방송국 스튜디오 사진 */
     #studioImage {
       position: absolute; top: 0; left: 0; width: 100%; height: 100%;
       object-fit: cover; opacity: 0; z-index: 1; transition: opacity 1.5s ease-in-out;
@@ -27,120 +26,117 @@
     .logo { font-size: 1.5rem; font-weight: 900; letter-spacing: 2px; }
     .logo span { color: #fbbf24; }
     
-    .nav-buttons { display: flex; gap: 15px; }
+    .nav-buttons { display: flex; gap: 15px; align-items: center; }
     .lounge-btn {
       padding: 10px 20px; border-radius: 30px; background-color: white; color: black;
       font-weight: bold; text-decoration: none; font-size: 0.9rem;
     }
-    
-    /* 새로 추가된 로그인/가입 버튼 */
     .login-btn {
       padding: 10px 20px; border-radius: 30px; background-color: #a855f7; color: white;
-      font-weight: bold; text-decoration: none; font-size: 0.9rem;
-      transition: all 0.3s ease; border: 1px solid #a855f7; cursor: pointer;
+      font-weight: bold; text-decoration: none; font-size: 0.9rem; border: 1px solid #a855f7; cursor: pointer;
     }
-    .login-btn:hover { box-shadow: 0 0 15px rgba(168, 85, 247, 0.6); }
+    
+    .wallet-display {
+      display: none; align-items: center; gap: 8px; padding: 8px 20px;
+      border-radius: 30px; background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(251, 191, 36, 0.5); box-shadow: 0 0 15px rgba(251, 191, 36, 0.2);
+    }
+    .coin-icon { font-size: 1.2rem; }
+    .coin-amount { font-weight: bold; color: #fbbf24; font-size: 1rem; }
 
-    main {
-      flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;
+    /* 맨 위 중앙 슬림 전광판 */
+    .billboard {
+      position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
+      padding: 10px 30px; background: rgba(10, 10, 15, 0.85);
+      border: 1px solid rgba(168, 85, 247, 0.5); border-radius: 40px;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5), inset 0 0 10px rgba(168, 85, 247, 0.2);
+      display: flex; align-items: center; gap: 20px; z-index: 100; white-space: nowrap;
+    }
+    
+    .billboard-title {
+      font-size: 0.8rem; color: #ccc; letter-spacing: 1px; font-weight: bold; margin: 0;
+    }
+    .billboard-title span { color: #a855f7; }
+    
+    .billboard-data { display: flex; gap: 20px; align-items: center; }
+    .data-box { display: flex; flex-direction: row; align-items: baseline; gap: 8px; }
+    .data-label { font-size: 0.7rem; color: #888; text-transform: uppercase; }
+    .data-value { font-size: 1.1rem; font-weight: 900; font-family: monospace; letter-spacing: 1px; }
+    
+    /* AI 노드 상승은 미래적인 파란/보라빛으로 */
+    .ai-val { color: #c084fc; text-shadow: 0 0 8px rgba(192, 132, 252, 0.5); }
+    
+    /* 화폐 가치는 황금빛으로 번쩍임 */
+    .price-val { color: #fbbf24; text-shadow: 0 0 10px rgba(251, 191, 36, 0.5); }
+    .pulse { animation: pulseGold 2s infinite; }
+
+    @keyframes pulseGold {
+      0% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
+      50% { text-shadow: 0 0 20px rgba(251, 191, 36, 0.8); }
+      100% { text-shadow: 0 0 10px rgba(251, 191, 36, 0.2); }
     }
 
-    .title {
-      font-size: 6rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 40px; transition: opacity 1.5s ease; 
-    }
+    main { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+
+    .title { font-size: 6rem; font-weight: 900; letter-spacing: -2px; margin-bottom: 20px; transition: opacity 1.5s ease; }
     .title .dot { color: #fbbf24; }
 
-    .input-wrapper {
-      position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; 
-    }
+    .input-wrapper { position: relative; width: 500px; max-width: 90%; transition: transform 1.5s ease; z-index: 20; }
     
     input[type="text"] {
       width: 100%; padding: 20px 30px; border-radius: 40px; border: 1px solid #333;
-      background-color: rgba(255, 255, 255, 0.05); color: white; font-size: 1.1rem;
-      outline: none; box-sizing: border-box; backdrop-filter: blur(10px); transition: all 0.3s ease;
+      background-color: rgba(255, 255, 255, 0.05); color: white; font-size: 1.1rem; outline: none; box-sizing: border-box; backdrop-filter: blur(10px);
     }
-    input[type="text"]:focus { border-color: #555; background-color: rgba(255, 255, 255, 0.1); }
-    
     .submit-btn {
-      position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-      width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer;
+      position: absolute; right: 15px; top: 50%; transform: translateY(-50%); width: 35px; height: 35px; background-color: #fbbf24; border: none; border-radius: 50%; cursor: pointer;
     }
 
-    /* AI 대화창 */
     #chatContainer {
-      position: absolute; top: 15%; left: 50%; transform: translateX(-50%);
-      width: 80%; max-width: 600px; display: flex; flex-direction: column; gap: 15px;
-      z-index: 100; pointer-events: none;
+      position: absolute; top: 20%; left: 50%; transform: translateX(-50%); width: 80%; max-width: 600px; display: flex; flex-direction: column; gap: 15px; z-index: 100;
     }
     .ai-message {
-      padding: 20px; border-radius: 12px; color: white; font-size: 1.1rem;
-      backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85);
-      opacity: 0; transform: translateY(20px); animation: fadeUp 0.5s forwards; line-height: 1.6;
+      padding: 20px; border-radius: 12px; color: white; font-size: 1.1rem; backdrop-filter: blur(15px); background: rgba(20, 20, 25, 0.85); animation: fadeUp 0.5s forwards; line-height: 1.6;
     }
-    .yin-msg { border-left: 5px solid #a855f7; box-shadow: 0 0 25px rgba(168, 85, 247, 0.3); }
-    .yang-msg { border-left: 5px solid #fbbf24; box-shadow: 0 0 25px rgba(251, 191, 36, 0.3); }
+    .yin-msg { border-left: 5px solid #a855f7; }
+    .yang-msg { border-left: 5px solid #fbbf24; }
 
-    @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
-
-    /* =========================================
-       새로 추가된 '회원가입/로그인 모달창' 스타일
-       ========================================= */
-    #modalOverlay {
-      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); z-index: 999;
-    }
-    #loginModal {
-      display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-      width: 400px; padding: 40px; border-radius: 20px;
-      background: rgba(15, 15, 20, 0.9); border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 40px rgba(168, 85, 247, 0.2), 0 0 40px rgba(251, 191, 36, 0.2); /* Yin & Yang 듀얼 네온 */
-      z-index: 1000; text-align: center;
-    }
-    #loginModal h2 { margin: 0 0 10px 0; font-weight: 900; letter-spacing: 1px; }
+    #modalOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 999; }
+    #loginModal { display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 400px; padding: 40px; border-radius: 20px; background: rgba(15,15,20,0.9); border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 0 40px rgba(168,85,247,0.2); z-index: 1000; text-align: center; }
+    #loginModal h2 { margin: 0 0 10px 0; font-weight: 900; }
     #loginModal p { color: #888; font-size: 0.9rem; margin-bottom: 30px; }
-    
-    .email-login input {
-      width: 100%; padding: 15px; margin-bottom: 10px; border-radius: 10px; border: 1px solid #333;
-      background: rgba(255,255,255,0.05); color: white; box-sizing: border-box;
-    }
-    .email-login button {
-      width: 100%; padding: 15px; border-radius: 10px; border: none;
-      background: linear-gradient(90deg, #a855f7, #fbbf24); color: white; font-weight: bold;
-      cursor: pointer; margin-bottom: 20px; font-size: 1rem;
-    }
-    
-    .divider {
-      display: flex; align-items: center; text-align: center; margin: 20px 0; color: #555; font-size: 0.8rem;
-    }
-    .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #333; margin: 0 10px; }
-    
-    .sns-buttons { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
-    .sns-btn {
-      width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer;
-      display: flex; justify-content: center; align-items: center; font-size: 1.2rem; font-weight: bold;
-      transition: transform 0.2s;
-    }
-    .sns-btn:hover { transform: scale(1.1); }
-    .btn-kakao { background-color: #FEE500; color: #000; }
-    .btn-naver { background-color: #03C75A; color: #fff; }
-    .btn-google { background-color: #fff; color: #000; }
-    .btn-apple { background-color: #000; color: #fff; border: 1px solid #333; }
-
-    .close-btn {
-      position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: #666; cursor: pointer;
-    }
-    .close-btn:hover { color: white; }
+    .sns-buttons { display: flex; justify-content: center; gap: 15px; }
+    .sns-btn { width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer; font-weight: bold; font-size: 1.2rem; }
+    .btn-kakao { background-color: #FEE500; color: #000; } .btn-naver { background-color: #03C75A; color: #fff; } .btn-apple { background-color: #000; color: #fff; border: 1px solid #333; }
+    .close-btn { position: absolute; top: 15px; right: 20px; font-size: 1.5rem; color: #666; cursor: pointer; }
   </style>
 </head>
 <body>
 
-  <img id="studioImage" src="https://images.unsplash.com/photo-1598550874175-4d0ef43ee90d?auto=format&fit=crop&w=1920&q=80" alt="방송국 스튜디오">
+  <img id="studioImage" src="studio.jpg" alt="방송국 스튜디오">
+
+  <div class="billboard" id="supplyBillboard">
+    <div class="billboard-title">🌐 APPVERZE <span>NETWORK</span></div>
+    <div class="billboard-data">
+      <div class="data-box">
+        <span class="data-label">ACTIVE AI NODES</span>
+        <span class="data-value ai-val" id="aiCounter">1,204,530</span>
+      </div>
+      <div class="data-box">
+        <span class="data-label">APV VALUE</span>
+        <span class="data-value price-val pulse" id="valueCounter">$ 1.0024 ▲</span>
+      </div>
+    </div>
+  </div>
 
   <header>
     <div class="logo">APPVERZE<span>.</span></div>
     <div class="nav-buttons">
       <a href="#" class="lounge-btn">LOUNGE HUB</a>
       <button class="login-btn" id="openLoginBtn">LOGIN / JOIN</button>
+      <div class="wallet-display" id="walletDisplay">
+        <span class="coin-icon">💎</span><span class="coin-amount">1,000 APV</span>
+      </div>
     </div>
   </header>
 
@@ -158,6 +154,7 @@
   <div id="loginModal">
     <span class="close-btn" id="closeLoginBtn">&times;</span>
     <h2>AI GATEWAY</h2>
+<<<<<<< HEAD
     <p>당신의 상상이 현실이 되는 곳, 앱버즈에 오신 것을 환영합니다.</p>
     
     <div class="email-login">
@@ -169,16 +166,34 @@
 
     <div class="divider">또는 빠른 연계 가입</div>
 
+=======
+    <p>미래의 경제 생태계, 앱버즈에 오신 것을 환영합니다.</p>
+>>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
     <div class="sns-buttons">
-      <button class="sns-btn btn-kakao" onclick="simulateLogin('카카오')" title="카카오톡으로 시작">K</button>
-      <button class="sns-btn btn-naver" onclick="simulateLogin('네이버')" title="네이버로 시작">N</button>
-      <button class="sns-btn btn-google" onclick="simulateLogin('구글')" title="구글로 시작">G</button>
-      <button class="sns-btn btn-apple" onclick="simulateLogin('애플')" title="애플로 시작"></button>
+      <button class="sns-btn btn-kakao" onclick="simulateLogin('카카오')">K</button>
+      <button class="sns-btn btn-naver" onclick="simulateLogin('네이버')">N</button>
+      <button class="sns-btn btn-apple" onclick="simulateLogin('애플')"></button>
     </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <script>
+    /* 🚀 AI 증식 & 가치 동반 상승 마법! */
+    let currentAINodes = 1204530; // 120만 개의 글로벌 AI 노드로 시작!
+    let currentValue = 1.0024;
+    
+    setInterval(() => {
+      // 3초마다 AI가 10~50개씩 폭발적으로 늘어납니다!
+      const increase = Math.floor(Math.random() * 40) + 10;
+      currentAINodes += increase;
+      
+      // AI가 늘어날수록 네트워크 파워가 세져서 코인 가치도 동반 상승!
+      currentValue += (increase * 0.00005);
+
+      document.getElementById('aiCounter').innerText = currentAINodes.toLocaleString();
+      document.getElementById('valueCounter').innerText = "$ " + currentValue.toFixed(4) + " ▲";
+    }, 3000); 
+
     const inputField = document.getElementById('chatInput');
     const chatBox = document.getElementById('chatContainer');
     const submitBtn = document.getElementById('submitBtn');
@@ -186,6 +201,7 @@
     const title = document.getElementById('mainTitle');
     const searchBox = document.getElementById('searchBox');
 
+<<<<<<< HEAD
     let supabase = null;
 
     // Supabase 설정 로드 및 초기화
@@ -200,12 +216,16 @@
       }
     })();
 
+=======
+>>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
     const openLoginBtn = document.getElementById('openLoginBtn');
     const closeLoginBtn = document.getElementById('closeLoginBtn');
     const loginModal = document.getElementById('loginModal');
     const modalOverlay = document.getElementById('modalOverlay');
+    const walletDisplay = document.getElementById('walletDisplay');
 
     openLoginBtn.addEventListener('click', () => {
+<<<<<<< HEAD
       loginModal.style.display = 'block';
       modalOverlay.style.display = 'block';
       document.getElementById('loginError').textContent = '';
@@ -216,8 +236,14 @@
         yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영합니다! 당신의 감정과 데이터를 소중히 지킬게요. 💜`;
         chatBox.appendChild(yinMessage);
       }, 300);
+=======
+      loginModal.style.display = 'block'; modalOverlay.style.display = 'block';
+>>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
     });
+    function closeModal() { loginModal.style.display = 'none'; modalOverlay.style.display = 'none'; }
+    closeLoginBtn.addEventListener('click', closeModal); modalOverlay.addEventListener('click', closeModal);
 
+<<<<<<< HEAD
     closeLoginBtn.addEventListener('click', closeModal);
     modalOverlay.addEventListener('click', closeModal);
 
@@ -235,9 +261,26 @@
         m.className = 'ai-message yang-msg';
         m.innerHTML = `<strong>Yang (실행):</strong> [${method}] ${msg}. 당신만의 우주(Universe)를 세팅합니다. ⚡`;
         chatBox.appendChild(m);
+=======
+    function simulateLogin(method) {
+      closeModal(); chatBox.innerHTML = ''; 
+      openLoginBtn.style.display = 'none'; walletDisplay.style.display = 'flex';
+
+      setTimeout(() => {
+        const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg';
+        yangMessage.innerHTML = `<strong>Yang (실행):</strong> [${method}] 인증 완료. 활성 AI 네트워크와 연동된 APV 보안 지갑(Wallet)을 생성했습니다. ⚡`;
+        chatBox.appendChild(yangMessage);
+>>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
       }, 500);
+
+      setTimeout(() => {
+        const yinMessage = document.createElement('div'); yinMessage.className = 'ai-message yin-msg';
+        yinMessage.innerHTML = `<strong>Yin (감성):</strong> 환영해요! 첫 보상으로 <strong>1,000 APV 토큰</strong>을 드렸어요. AI 친구들이 늘어날수록 당신의 자산 가치도 쑥쑥 올라갈 거예요! 💜`;
+        chatBox.appendChild(yinMessage);
+      }, 2500);
     }
 
+<<<<<<< HEAD
     async function handleEmailAuth() {
       const emailEl = document.getElementById('loginEmail');
       const pwEl = document.getElementById('loginPassword');
@@ -292,46 +335,34 @@
     }
 
     // 기존 방송국 생성 코드
+=======
+>>>>>>> 037c28c59470214e9a3ebf23ffd25a531999806a
     function triggerAI() {
       if (inputField.value.trim() !== '') {
-        const userText = inputField.value;
-        inputField.value = '';
-        chatBox.innerHTML = ''; 
+        const userText = inputField.value; inputField.value = ''; chatBox.innerHTML = ''; 
 
         if(userText.includes('방송국')) {
           setTimeout(() => {
-            const yinMessage = document.createElement('div');
-            yinMessage.className = 'ai-message yin-msg';
-            yinMessage.innerHTML = `<strong>Yin (감성):</strong> 와! 대형 유튜브 방송국이라니 너무 기대돼요! 멋진 무대와 조명을 세팅해 드릴게요. 💜`;
-            chatBox.appendChild(yinMessage);
-          }, 500);
-
-          setTimeout(() => {
-            const yangMessage = document.createElement('div');
-            yangMessage.className = 'ai-message yang-msg';
-            yangMessage.innerHTML = `<strong>Yang (실행):</strong> 메인 무대, 관객석 구조 분석 완료. 스튜디오 룸 데이터를 로드합니다! ⚡`;
+            const yangMessage = document.createElement('div'); yangMessage.className = 'ai-message yang-msg';
+            yangMessage.innerHTML = `<strong>Yang (실행):</strong> 스튜디오 룸 데이터를 로드합니다! ⚡`;
             chatBox.appendChild(yangMessage);
 
             setTimeout(() => {
               title.style.opacity = '0'; 
-              studioImage.style.opacity = '0.5'; 
+              studioImage.style.opacity = '1'; 
               searchBox.style.transform = 'translateY(150px)'; 
             }, 1000);
-          }, 2500);
+          }, 500);
         } else {
           setTimeout(() => {
-            const yinMessage = document.createElement('div');
-            yinMessage.className = 'ai-message yin-msg';
+            const yinMessage = document.createElement('div'); yinMessage.className = 'ai-message yin-msg';
             yinMessage.innerHTML = `<strong>Yin (감성):</strong> 네! 어떤 공간(Room)을 상상하고 계신가요? 💜`;
             chatBox.appendChild(yinMessage);
           }, 500);
         }
       }
     }
-
-    inputField.addEventListener('keypress', function (e) {
-      if (e.key === 'Enter') triggerAI();
-    });
+    inputField.addEventListener('keypress', function (e) { if (e.key === 'Enter') triggerAI(); });
     submitBtn.addEventListener('click', triggerAI);
   </script>
 </body>
