@@ -786,7 +786,7 @@
             <span class="preset-title">Bizarre &amp; Uncanny Dimension</span>
             <span class="preset-subtitle">기이하고 실험적인 아방가르드 공간 사운드</span>
           </button>
-          <button class="preset-card" type="button" data-prompt="Mysterious and dark ambient techno, slow pulsing rhythm, deep echoing drones, subtle metallic sound design, enigmatic and secretive mood, hypnotic.">
+          <button class="preset-card" type="button" data-prompt="Mysterious and dark ambient techno, slow pulsing rhythm, deep echoing drones, subtle metallic sound design, enigmatic and secretive mood, hypnotic." data-track-src="/Resonance.mp4">
             <span class="preset-title">Mysterious Core</span>
             <span class="preset-subtitle">신비롭고 비밀스러운 코어 엔진룸 사운드</span>
           </button>
@@ -881,6 +881,7 @@
     const DREAMY_LOUNGE_MESSAGE = `요청하신 '몽환적인 사운드 (Dreamy Lounge)' 컨셉의 음악이 완성되었습니다!\n\n제시해주신 프롬프트(우울하면서도 꿈결 같은 일렉트로닉 앰비언트, 느린 템포, 깊고 넓은 공간감의 리버브 등)를 바탕으로, 방에 들어서자마자 마음이 편안하게 무장해제되는 딥 힐링 감성의 트랙을 생성했습니다.\n\n지금 바로 채팅창에서 재생하여 깊은 안식과 몽환적인 분위기를 즐겨보세요!`;
     const FANTASTIC_MAGICAL_MESSAGE = `요청하신 '환상적이고 마법 같은 공간 (Fantastic & Magical Room)' 컨셉의 음악이 완성되었습니다!\n\n제시해주신 프롬프트(에픽하고 마법 같은 오케스트라 일렉트로닉 퓨전, 반짝이는 글로켄슈필, 상승하는 스트링, 미래지향적이고 밝은 신스 아르페지오, 경이로움과 시네마틱 발견감 등)를 바탕으로, 홀로그램 우주 같은 반짝이는 마법 사운드 트랙을 생성했습니다.\n\n지금 바로 채팅창에서 재생하여 환상적이고 마법 같은 분위기를 즐겨보세요!`;
     const BIZARRE_UNCANNY_MESSAGE = `요청하신 '기이한 사운드 (Bizarre & Uncanny Dimension)' 컨셉의 음악이 완성되었습니다!\n\n제시해주신 프롬프트(기이하고 섬뜩한 실험적 일렉트로닉, 예측 불가능한 글리치 비트, 으스스한 테레민 멜로디, 딥 서브베이스 드롭, 미래지향적이고 외계적인 분위기, 아방가르드 등)를 바탕으로, 일론 머스크가 화성의 낯선 땅에 처음 발을 디딜 때 느낄 법한 실험적이고 호기심을 강하게 자극하는 트랙을 생성했습니다.\n\n지금 바로 채팅창에서 재생하여 기이하고 아방가르드한 분위기를 즐겨보세요!`;
+    const MYSTERIOUS_CORE_MESSAGE = `요청하신 '신비로운 코어 (Mysterious Core)' 컨셉의 음악이 완성되었습니다!\n\n제시해주신 프롬프트(신비롭고 어두운 앰비언트 테크노, 느린 펄싱 리듬, 깊은 에코 드론, 은은한 메탈릭 사운드 디자인, 수수께끼 같고 비밀스러운 무드, 최면적 등)를 바탕으로, 9개의 독보적인 특허 기술이 조용히 돌아가고 있는 앱버즈의 가장 깊숙한 '코어(Core) 엔진룸'을 연상시키는 비밀스러운 트랙을 생성했습니다.\n\n지금 바로 채팅창에서 재생하여 신비롭고 비밀스러운 코어 분위기를 즐겨보세요!`;
 
     function setAuthBusy(isBusy) {
       authSubmitBtn.disabled = isBusy;
@@ -1196,7 +1197,7 @@
         inputField.value = card.dataset.prompt || '';
         inputField.focus();
         if (card.dataset.trackSrc) {
-          var msgMap = { '/Ascent.mp4': FANTASTIC_MAGICAL_MESSAGE, '/Chrono.mp4': BIZARRE_UNCANNY_MESSAGE };
+          var msgMap = { '/Ascent.mp4': FANTASTIC_MAGICAL_MESSAGE, '/Chrono.mp4': BIZARRE_UNCANNY_MESSAGE, '/Resonance.mp4': MYSTERIOUS_CORE_MESSAGE };
           var trackMsg = msgMap[card.dataset.trackSrc] || DREAMY_LOUNGE_MESSAGE;
           appendPlayableTrackMessage('APPVERZE Sound', YIN_IMAGE, '', trackMsg, card.dataset.trackSrc);
         }
