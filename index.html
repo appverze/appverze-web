@@ -919,9 +919,24 @@
       if (!('speechSynthesis' in window)) return;
       try {
         const utter = new SpeechSynthesisUtterance(text);
-        utter.lang = currentLang === 'KO' ? 'ko-KR' : 'en-US';
+        const langCode = currentLang === 'KO' ? 'ko-KR' : 'en-US';
+        utter.lang = langCode;
         utter.rate = 1.0;
         utter.volume = 1.0;
+
+        // Try to pick a male-sounding voice for Yang
+        const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+        if (voices && voices.length) {
+          const candidates = voices.filter(function (v) {
+            return v.lang && v.lang.startsWith(langCode);
+          });
+          const malePreferred = candidates.find(function (v) {
+            const name = (v.name || '').toLowerCase();
+            return name.includes('male') || name.includes('guy') || name.includes('joon') || name.includes('han');
+          });
+          utter.voice = malePreferred || candidates[0] || voices[0];
+        }
+
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(utter);
       } catch (e) {
