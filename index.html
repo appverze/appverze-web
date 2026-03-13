@@ -944,6 +944,35 @@
       }
     }
 
+    function speakYinEmotion(text) {
+      if (!('speechSynthesis' in window)) return;
+      try {
+        const utter = new SpeechSynthesisUtterance(text);
+        const langCode = currentLang === 'KO' ? 'ko-KR' : 'en-US';
+        utter.lang = langCode;
+        utter.rate = 1.0;
+        utter.volume = 1.0;
+
+        // Try to pick a female-sounding voice for Yin
+        const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+        if (voices && voices.length) {
+          const candidates = voices.filter(function (v) {
+            return v.lang && v.lang.startsWith(langCode);
+          });
+          const femalePreferred = candidates.find(function (v) {
+            const name = (v.name || '').toLowerCase();
+            return name.includes('female') || name.includes('woman') || name.includes('girl') || name.includes('sun') || name.includes('hi') || name.includes('susan') || name.includes('sara');
+          });
+          utter.voice = femalePreferred || candidates[0] || voices[0];
+        }
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utter);
+      } catch (e) {
+        // ignore TTS errors silently
+      }
+    }
+
     function setAuthError(message) {
       authError.textContent = message || '';
     }
@@ -1192,14 +1221,14 @@
       } else {
         title.style.opacity = '0';
         searchBox.style.transform = 'translateY(150px)';
-        addRealVideoMessage(
+        appendFallbackMessage(
           'Yin (Emotion)',
           YIN_IMAGE,
           '',
           langData.replyYin,
-          langData.yinVoice,
           false
         );
+        speakYinEmotion(langData.replyYin);
       }
     }
 
