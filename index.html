@@ -18,6 +18,26 @@
       flex-direction: column;
       overflow: hidden;
     }
+    .site-background-video {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: 0;
+      opacity: 0.34;
+      pointer-events: none;
+      filter: saturate(1.05) brightness(0.5);
+    }
+    .site-background-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(circle at center, rgba(20, 24, 44, 0.18) 0%, rgba(6, 8, 14, 0.68) 68%, rgba(2, 3, 7, 0.84) 100%),
+        linear-gradient(to bottom, rgba(5, 6, 12, 0.62), rgba(5, 6, 12, 0.78));
+    }
 
     /* 🚀 홀로그램 룸 */
     #holodeck {
@@ -640,6 +660,22 @@
       border: 1px solid rgba(255,255,255,0.1);
       flex: 1;
     }
+    .ai-message.playable-message {
+      cursor: pointer;
+      border-color: rgba(251, 191, 36, 0.45);
+      box-shadow: 0 0 0 1px rgba(251, 191, 36, 0.08);
+    }
+    .ai-message.playable-message:hover {
+      border-color: rgba(251, 191, 36, 0.72);
+      background: rgba(28, 22, 12, 0.92);
+    }
+    .play-hint {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 0.82rem;
+      color: #fbbf24;
+      font-weight: 700;
+    }
     #loadingText {
       display: none;
       position: absolute;
@@ -660,6 +696,10 @@
   </style>
 </head>
 <body>
+  <video class="site-background-video" autoplay muted loop playsinline>
+    <source src="/Celestial.mp4" type="video/mp4">
+  </video>
+  <div class="site-background-overlay"></div>
   <div id="holodeck">
     <div class="fade-cover"></div>
     <div class="grid-floor"></div>
@@ -734,7 +774,7 @@
       <div class="sound-presets" id="soundPresets">
         <div class="preset-note">앱버즈 공간별 4가지 맞춤 사운드 프롬프트입니다. 각 공간의 특성에 맞춰 영어로 세팅된 명령어이며, 작곡 AI는 영어 명령어를 가장 정확하게 이해합니다.</div>
         <div class="preset-grid">
-          <button class="preset-card" type="button" data-prompt="Melancholic and dream-like electronic ambient, slow tempo, deep and spacious reverb, ethereal synth pads, soft heartbeat bass rhythm, emotional and atmospheric mood.">
+          <button class="preset-card" type="button" data-prompt="Melancholic and dream-like electronic ambient, slow tempo, deep and spacious reverb, ethereal synth pads, soft heartbeat bass rhythm, emotional and atmospheric mood." data-track-src="/Celestial.mp4">
             <span class="preset-title">Dreamy Lounge</span>
             <span class="preset-subtitle">몽환적이고 깊은 힐링 라운지 사운드</span>
           </button>
@@ -838,6 +878,7 @@
     let currentSession = null;
     const KAKAO_LOGIN_URL = 'https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26client_id%3Df1e1b1fa718719b137cded2b76431d62%26redirect_uri%3Dhttps%253A%252F%252Fntis.go.kr%252FThLoginKaKao.do%26state%3Dhttps%253A%252F%252Fwww.ntis.go.kr%252FThUserRegister.do%26through_account%3Dtrue%26auth_tran_id%3DS2ECVHkigSf9ee_hPMS9TU1VjDXCFkLE6VA2yz9DChcSLQAAAZzgnTEH#login';
     const NAVER_LOGIN_URL = 'https://nid.naver.com/nidlogin.login?mode=form&url=https://www.naver.com/';
+    const DREAMY_LOUNGE_MESSAGE = `요청하신 '몽환적인 사운드 (Dreamy Lounge)' 컨셉의 음악이 완성되었습니다!\n\n제시해주신 프롬프트(우울하면서도 꿈결 같은 일렉트로닉 앰비언트, 느린 템포, 깊고 넓은 공간감의 리버브 등)를 바탕으로, 방에 들어서자마자 마음이 편안하게 무장해제되는 딥 힐링 감성의 트랙을 생성했습니다.\n\n지금 바로 채팅창에서 재생하여 깊은 안식과 몽환적인 분위기를 즐겨보세요!`;
 
     function setAuthBusy(isBusy) {
       authSubmitBtn.disabled = isBusy;
@@ -975,6 +1016,30 @@
         searchBox.style.transform = 'translateY(150px)';
         playHolodeckMusic();
       }
+    }
+
+    function appendPlayableTrackMessage(name, imgSrc, boxClass, textToSay, videoSrc) {
+      const msgWrapper = document.createElement('div');
+      msgWrapper.className = 'msg-wrapper';
+      msgWrapper.innerHTML = `
+        <div class="ai-video-box ${boxClass}">
+          <img src="${imgSrc}" alt="${name}">
+        </div>
+        <div class="ai-message playable-message" data-video-src="${videoSrc}">
+          <strong>${name}:</strong><br>${textToSay.replace(/\n/g, '<br>')}
+          <span class="play-hint">클릭하면 Celestial.mp4 재생</span>
+        </div>
+      `;
+
+      const messageEl = msgWrapper.querySelector('.playable-message');
+      const boxEl = msgWrapper.querySelector('.ai-video-box');
+
+      messageEl.addEventListener('click', function () {
+        if (boxEl.querySelector('video')) return;
+        boxEl.innerHTML = `<video src="${videoSrc}" autoplay controls playsinline></video>`;
+      });
+
+      chatBox.appendChild(msgWrapper);
     }
 
     // Vercel 보안 백엔드 통신 함수
@@ -1131,6 +1196,9 @@
       card.addEventListener('click', function () {
         inputField.value = card.dataset.prompt || '';
         inputField.focus();
+        if (card.dataset.trackSrc) {
+          appendPlayableTrackMessage('APPVERZE Sound', YIN_IMAGE, '', DREAMY_LOUNGE_MESSAGE, card.dataset.trackSrc);
+        }
       });
     });
 
