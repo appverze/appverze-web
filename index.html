@@ -879,6 +879,7 @@
     const KAKAO_LOGIN_URL = 'https://accounts.kakao.com/login/?continue=https%3A%2F%2Fkauth.kakao.com%2Foauth%2Fauthorize%3Fresponse_type%3Dcode%26client_id%3Df1e1b1fa718719b137cded2b76431d62%26redirect_uri%3Dhttps%253A%252F%252Fntis.go.kr%252FThLoginKaKao.do%26state%3Dhttps%253A%252F%252Fwww.ntis.go.kr%252FThUserRegister.do%26through_account%3Dtrue%26auth_tran_id%3DS2ECVHkigSf9ee_hPMS9TU1VjDXCFkLE6VA2yz9DChcSLQAAAZzgnTEH#login';
     const NAVER_LOGIN_URL = 'https://nid.naver.com/nidlogin.login?mode=form&url=https://www.naver.com/';
     const DREAMY_LOUNGE_MESSAGE = `요청하신 '몽환적인 사운드 (Dreamy Lounge)' 컨셉의 음악이 완성되었습니다!\n\n제시해주신 프롬프트(우울하면서도 꿈결 같은 일렉트로닉 앰비언트, 느린 템포, 깊고 넓은 공간감의 리버브 등)를 바탕으로, 방에 들어서자마자 마음이 편안하게 무장해제되는 딥 힐링 감성의 트랙을 생성했습니다.\n\n지금 바로 채팅창에서 재생하여 깊은 안식과 몽환적인 분위기를 즐겨보세요!`;
+    const FANTASTIC_MAGICAL_MESSAGE = `요청하신 '환상적이고 마법 같은 공간 (Fantastic & Magical Room)' 컨셉의 음악이 완성되었습니다!\n\n제시해주신 프롬프트(에픽하고 마법 같은 오케스트라 일렉트로닉 퓨전, 반짝이는 글로켄슈필, 상승하는 스트링, 미래지향적이고 밝은 신스 아르페지오, 경이로움과 시네마틱 발견감 등)를 바탕으로, 홀로그램 우주 같은 반짝이는 마법 사운드 트랙을 생성했습니다.\n\n지금 바로 채팅창에서 재생하여 환상적이고 마법 같은 분위기를 즐겨보세요!`;
 
     function setAuthBusy(isBusy) {
       authSubmitBtn.disabled = isBusy;
@@ -1191,7 +1192,8 @@
         inputField.value = card.dataset.prompt || '';
         inputField.focus();
         if (card.dataset.trackSrc) {
-          appendPlayableTrackMessage('APPVERZE Sound', YIN_IMAGE, '', DREAMY_LOUNGE_MESSAGE, card.dataset.trackSrc);
+          var trackMsg = card.dataset.trackSrc === '/Ascent.mp4' ? FANTASTIC_MAGICAL_MESSAGE : DREAMY_LOUNGE_MESSAGE;
+          appendPlayableTrackMessage('APPVERZE Sound', YIN_IMAGE, '', trackMsg, card.dataset.trackSrc);
         }
       });
     });
