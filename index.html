@@ -915,6 +915,20 @@
       }
     }
 
+    function speakYangRoom(text) {
+      if (!('speechSynthesis' in window)) return;
+      try {
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = currentLang === 'KO' ? 'ko-KR' : 'en-US';
+        utter.rate = 1.0;
+        utter.volume = 1.0;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utter);
+      } catch (e) {
+        // ignore TTS errors silently
+      }
+    }
+
     function setAuthError(message) {
       authError.textContent = message || '';
     }
@@ -1150,16 +1164,16 @@
       const langData = i18n[currentLang];
 
       if (userText.includes('방') || userText.includes('룸') || userText.toLowerCase().includes('room')) {
-        // 사용자 입력 이벤트 체인 안에서 즉시 재생 시도 (자동재생 제한 우회)
+        // 사용자 입력 이벤트 체인 안에서 즉시 재생 시도 (자동재생 및 TTS)
         playHolodeckMusic();
-        addRealVideoMessage(
+        appendFallbackMessage(
           'Yang (Execute)',
           YANG_IMAGE,
           'yang-video-box',
           langData.replyYang,
-          langData.yangVoice,
           true
         );
+        speakYangRoom(langData.replyYang);
       } else {
         title.style.opacity = '0';
         searchBox.style.transform = 'translateY(150px)';
