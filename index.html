@@ -907,6 +907,7 @@
         const utter = new SpeechSynthesisUtterance(WELCOME_TTS_TEXT);
         utter.lang = 'en-US';
         utter.rate = 1.0;
+        utter.volume = 1.0;
         window.speechSynthesis.cancel();
         window.speechSynthesis.speak(utter);
       } catch (e) {
@@ -1218,8 +1219,19 @@
       });
     });
 
-    // Speak a short welcome line when the site loads
-    speakWelcome();
+    // Speak a short welcome line on first user interaction (autoplay-safe)
+    (function () {
+      let welcomed = false;
+      function handleFirstInteraction() {
+        if (welcomed) return;
+        welcomed = true;
+        speakWelcome();
+        window.removeEventListener('click', handleFirstInteraction);
+        window.removeEventListener('keydown', handleFirstInteraction);
+      }
+      window.addEventListener('click', handleFirstInteraction);
+      window.addEventListener('keydown', handleFirstInteraction);
+    })();
 
     initSupabaseAuth();
   </script>
