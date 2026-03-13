@@ -915,72 +915,60 @@
       }
     }
 
-    function getVoicesReady(cb) {
-      var voices = window.speechSynthesis.getVoices();
-      if (voices && voices.length > 0) {
-        cb(voices);
-        return;
-      }
-      window.speechSynthesis.onvoiceschanged = function () {
-        window.speechSynthesis.onvoiceschanged = null;
-        cb(window.speechSynthesis.getVoices() || []);
-      };
-      setTimeout(function () {
-        if (window.speechSynthesis.onvoiceschanged) {
-          window.speechSynthesis.onvoiceschanged = null;
-          cb(window.speechSynthesis.getVoices() || []);
-        }
-      }, 500);
-    }
-
     function speakYangRoom(text) {
       if (!('speechSynthesis' in window)) return;
-      var cleanText = (text || '').replace(/[\u{1F300}-\u{1F9FF}]|[\u2600-\u26FF]|[\u2700-\u27BF]/gu, '').trim() || text;
-      getVoicesReady(function (voices) {
-        try {
-          var utter = new SpeechSynthesisUtterance(cleanText);
-          var langCode = currentLang === 'KO' ? 'ko-KR' : 'en-US';
-          utter.lang = langCode;
-          utter.rate = 1;
-          utter.volume = 1;
-          if (voices.length) {
-            var candidates = voices.filter(function (v) { return v.lang && (v.lang.startsWith(langCode.split('-')[0]) || v.lang.startsWith(langCode)); });
-            var malePreferred = candidates.find(function (v) {
-              var n = (v.name || '').toLowerCase();
-              return n.indexOf('male') >= 0 || n.indexOf('guy') >= 0 || n.indexOf('joon') >= 0 || n.indexOf('han') >= 0 || n.indexOf('injoon') >= 0;
-            });
-            if (malePreferred) utter.voice = malePreferred;
-            else if (candidates.length) utter.voice = candidates[0];
-          }
-          window.speechSynthesis.cancel();
-          window.speechSynthesis.speak(utter);
-        } catch (e) {}
-      });
+      try {
+        const utter = new SpeechSynthesisUtterance(text);
+        const langCode = currentLang === 'KO' ? 'ko-KR' : 'en-US';
+        utter.lang = langCode;
+        utter.rate = 1.0;
+        utter.volume = 1.0;
+
+        const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+        if (voices && voices.length) {
+          const candidates = voices.filter(function (v) {
+            return v.lang && v.lang.startsWith(langCode);
+          });
+          const malePreferred = candidates.find(function (v) {
+            const name = (v.name || '').toLowerCase();
+            return name.includes('male') || name.includes('guy') || name.includes('joon') || name.includes('han');
+          });
+          utter.voice = malePreferred || candidates[0] || voices[0];
+        }
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utter);
+      } catch (e) {
+        // ignore TTS errors silently
+      }
     }
 
     function speakYinEmotion(text) {
       if (!('speechSynthesis' in window)) return;
-      var cleanText = (text || '').replace(/[\u{1F300}-\u{1F9FF}]|[\u2600-\u26FF]|[\u2700-\u27BF]/gu, '').trim() || text;
-      getVoicesReady(function (voices) {
-        try {
-          var utter = new SpeechSynthesisUtterance(cleanText);
-          var langCode = currentLang === 'KO' ? 'ko-KR' : 'en-US';
-          utter.lang = langCode;
-          utter.rate = 1;
-          utter.volume = 1;
-          if (voices.length) {
-            var candidates = voices.filter(function (v) { return v.lang && (v.lang.startsWith(langCode.split('-')[0]) || v.lang.startsWith(langCode)); });
-            var femalePreferred = candidates.find(function (v) {
-              var n = (v.name || '').toLowerCase();
-              return n.indexOf('female') >= 0 || n.indexOf('woman') >= 0 || n.indexOf('girl') >= 0 || n.indexOf('sun') >= 0 || n.indexOf('hi') >= 0 || n.indexOf('susan') >= 0 || n.indexOf('sara') >= 0 || n.indexOf('jenny') >= 0 || n.indexOf('aria') >= 0 || n.indexOf('zira') >= 0;
-            });
-            if (femalePreferred) utter.voice = femalePreferred;
-            else if (candidates.length) utter.voice = candidates[0];
-          }
-          window.speechSynthesis.cancel();
-          window.speechSynthesis.speak(utter);
-        } catch (e) {}
-      });
+      try {
+        const utter = new SpeechSynthesisUtterance(text);
+        const langCode = currentLang === 'KO' ? 'ko-KR' : 'en-US';
+        utter.lang = langCode;
+        utter.rate = 1.0;
+        utter.volume = 1.0;
+
+        const voices = window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+        if (voices && voices.length) {
+          const candidates = voices.filter(function (v) {
+            return v.lang && v.lang.startsWith(langCode);
+          });
+          const femalePreferred = candidates.find(function (v) {
+            const name = (v.name || '').toLowerCase();
+            return name.includes('female') || name.includes('woman') || name.includes('girl') || name.includes('sun') || name.includes('hi') || name.includes('susan') || name.includes('sara');
+          });
+          utter.voice = femalePreferred || candidates[0] || voices[0];
+        }
+
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(utter);
+      } catch (e) {
+        // ignore TTS errors silently
+      }
     }
 
     function setAuthError(message) {
