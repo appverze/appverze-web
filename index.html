@@ -1019,25 +1019,19 @@
     }
 
     function appendPlayableTrackMessage(name, imgSrc, boxClass, textToSay, videoSrc) {
+      title.style.opacity = '0';
+      searchBox.style.transform = 'translateY(150px)';
+
       const msgWrapper = document.createElement('div');
       msgWrapper.className = 'msg-wrapper';
       msgWrapper.innerHTML = `
         <div class="ai-video-box ${boxClass}">
-          <img src="${imgSrc}" alt="${name}">
+          <video src="${videoSrc}" autoplay controls playsinline></video>
         </div>
-        <div class="ai-message playable-message" data-video-src="${videoSrc}">
+        <div class="ai-message">
           <strong>${name}:</strong><br>${textToSay.replace(/\n/g, '<br>')}
-          <span class="play-hint">클릭하면 Celestial.mp4 재생</span>
         </div>
       `;
-
-      const messageEl = msgWrapper.querySelector('.playable-message');
-      const boxEl = msgWrapper.querySelector('.ai-video-box');
-
-      messageEl.addEventListener('click', function () {
-        if (boxEl.querySelector('video')) return;
-        boxEl.innerHTML = `<video src="${videoSrc}" autoplay controls playsinline></video>`;
-      });
 
       chatBox.appendChild(msgWrapper);
     }
