@@ -1023,8 +1023,11 @@
       title.style.opacity = '0';
       searchBox.style.transform = 'translateY(150px)';
 
+      // Remove previous playable track messages (video/icon) so only the latest shows
+      chatBox.querySelectorAll('.msg-wrapper.playable-track-msg').forEach(function (el) { el.remove(); });
+
       const msgWrapper = document.createElement('div');
-      msgWrapper.className = 'msg-wrapper';
+      msgWrapper.className = 'msg-wrapper playable-track-msg';
       msgWrapper.innerHTML = `
         <div class="ai-video-box ${boxClass}">
           <video src="${videoSrc}" autoplay controls playsinline></video>
